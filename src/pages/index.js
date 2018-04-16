@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import {
   createLocalProject,
   getProjectData,
-  deleteLocalProject
+  deleteLocalProject,
 } from '../redux/modules/projects'
 
 import { editProject } from '../redux/modules/user'
@@ -23,6 +23,9 @@ import Table, {
 import BasicTable from '../components/inputs/BasicTable'
 
 const styles = {
+  container: {
+    padding: '1rem'
+  },
   header: {
     marginTop: '4rem',
     marginBottom: '4rem',
@@ -52,7 +55,7 @@ class IndexPage extends React.Component {
     )
 
     return (
-      <Grid container justify="center">
+      <Grid container justify="center" style={styles.container}>
         <Grid item xs={12} md={8}>
           <header style={styles.header}>
             <h1 style={styles.title}>CIMSsimple</h1>
@@ -86,6 +89,8 @@ class IndexPage extends React.Component {
                         <Button
                           component={Link}
                           to={`/form?id=${row.id}`}
+                          color="primary"
+                          variant="raised"
                         >
                           Edit
                         </Button>
@@ -106,7 +111,6 @@ class IndexPage extends React.Component {
               <Button
                 onClick={this.props.createProject}
                 color="primary"
-                variant="raised"
               >
                 Start a new project
               </Button>
@@ -129,13 +133,13 @@ const mapDispatchToProps = dispatch => {
     createProject: () => {
       dispatch(createLocalProject())
     },
-    deleteProject: (id) => {
+    deleteProject: id => {
       dispatch(deleteLocalProject(id))
     },
     getProjectData: () => {
       dispatch(getProjectData())
     },
-    editProject: (id) => {
+    editProject: id => {
       dispatch(editProject(id))
     },
   }

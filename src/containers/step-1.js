@@ -34,7 +34,6 @@ class Step1 extends React.Component {
   render() {
     return (
       <div className="page-container" style={{ padding: '1rem' }}>
-      <p>{`Editing project: ${this.props.formData['initiativeName']}`}</p>
         <PageTitle>Step 1 out of 4: Starting a new project</PageTitle>
 
         <Question>
@@ -259,24 +258,6 @@ class Step1 extends React.Component {
             </ol>
           </CimsInstructions>
         </Question>
-
-        <Grid container justify="space-between">
-          <Grid item>
-            <Button component={Link} to="/" color="primary" variant="raised">
-              Back
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              component={Link}
-              to="/step-2"
-              color="secondary"
-              variant="raised"
-            >
-              On to Step 2
-            </Button>
-          </Grid>
-        </Grid>
       </div>
     )
   }

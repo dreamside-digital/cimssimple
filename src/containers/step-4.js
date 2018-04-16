@@ -78,15 +78,6 @@ class Step4 extends React.Component {
             </ol>
           </CimsInstructions>
         </Question>
-
-        <Grid container justify="space-between">
-          <Grid item>
-            <Button component={Link} to='/step-3' color="primary" variant="raised">Back</Button>
-          </Grid>
-          <Grid item>
-            <Button component={Link} to='/' color="secondary" variant="raised">All done!</Button>
-          </Grid>
-        </Grid>
       </div>
     )
   }
