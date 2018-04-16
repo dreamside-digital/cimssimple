@@ -1,3 +1,5 @@
+// PAGE 1 -------------------------------------------
+
 export const initiativeTypes = [
   'Community development',
   'Community organizing',
@@ -62,4 +64,106 @@ export const peopleResourcesTableHeaders = ['Name', 'Resource / Partner', 'Conta
 
 export const peopleResourcesPlaceholder = [
   { name: 'Sharon', type: 'Resource', contact: 'sharon@nomadiclabs.ca' }
+]
+
+// PAGE 2 -------------------------------------------
+
+export const increasedAbilityOptions = [
+  'Contact media',
+  'Identify a legal issue',
+  'Make contact with appropriate agency',
+  'Make referrals',
+  'Prevent legal problem escalation',
+  'Resolve conflicts',
+  'Self-advocacy',
+  'Take political action',
+  'Use self-help kits, information provided',
+]
+
+export const increasedKnowledgeOptions = [
+  'Barriers',
+  'Benefits',
+  'Clinic services',
+  'Issues',
+  'Justice system',
+  'Laws',
+  'Legal system',
+  'Networking opportunities',
+  'Resources',
+  'Responsibilities',
+  'Rights',
+]
+
+export const longTermOutcomesOptions = [
+  'Community has increased awareness of justice issues',
+  'Increased access to justice',
+  'Increased civic participation',
+  'Increased community capacity',
+  'Increased justice / fairness in the legal system',
+  'Increased legal literacy',
+  'Increased personal empowerment',
+  'Increased social capital',
+  'Increased social inclusion',
+  'Intended benefit of law',
+  'Legal system is more aware of legal needs of low-income people',
+  'Poverty reduction',
+  'Prevention of homelessness'
+]
+
+export const deliverablesTableHeaders = ['Deliverable', 'Target Date']
+
+// PAGE 3 -------------------------------------------
+
+export const docketingTableHeaders = [
+  'Date', 'Docket Type', 'Time Spent (hours)', 'Details'
+]
+
+export const docketingTablePlaceholder = [
+  { date: '01/02/2018', type: 'Advocacy', timeSpent: 10, details: 'Details go here'}
+]
+
+export const docketTypeOptions = [
+  'Advocacy',
+  'Attending govt briefing',
+  'Board / committee / association / conference / working group / workshop - attendance',
+  'Board / committee / association / conference / working group / workshop - organizing',
+  'By-law amendments',
+  'Clinic operational planning (annual, strategic)',
+  'Community development',
+  'Community event',
+  'Community group work',
+  'Community needs assessment',
+  'Developing coalitions & campaigns',
+  'Evaluation',
+  'Event organizing',
+  'Funding application',
+  'Grant application',
+  'Inter-clinic & inter-agency collaboration',
+  'legislative & regulator analysis',
+  'Lobby work',
+  'Materials development & distribution',
+  'Media / communications (includes newsletters, brochures, TV, radio)',
+  'Networking',
+  'Organizational development',
+  'Orientation (board, staff)',
+  'Other',
+  'Partners / network / community groups',
+  'Policy analysis / development',
+  'Policy maker education',
+  'Professional development (staff receiving)',
+  'Professional development organizing',
+  'Recruitment (staff)',
+  'Social media work (Twitter, facebook)',
+  'Speaking engagement',
+  'Stakeholder consultation',
+  'Stakeholder relationship development',
+  'Strategic planning',
+  'Submission preparation',
+  'Survey (conducting / completing)',
+  'Training attendance',
+  'Training organizing',
+]
+
+export const outputsTableHeaders = [
+  'Deliverable', 'Target Date', 'Date Completed', 'Comments'
 ]

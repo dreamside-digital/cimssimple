@@ -6,12 +6,17 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 
 import TextInput from '../components/inputs/TextInput';
+import Select from '../components/inputs/Select';
+import BasicTable from '../components/inputs/BasicTable'
+
 import PageTitle from '../components/PageTitle';
 import Question from '../components/Question';
 import Label from '../components/Label';
 import HelpText from '../components/HelpText';
 import InputSection from '../components/InputSection';
 import CimsInstructions from '../components/CimsInstructions';
+
+import { increasedAbilityOptions, increasedKnowledgeOptions, longTermOutcomesOptions, deliverablesTableHeaders } from '../constants';
 
 class Step2 extends React.Component {
   constructor(props) {
@@ -35,10 +40,16 @@ class Step2 extends React.Component {
         <Question>
           <InputSection>
             <Label htmlFor='goalsObjectives'>
-              1. What are this project’s Goals & Objectives?
+              1. What are this project’s Goals & Objectives? (Mandatory)
             </Label>
             <HelpText>
               <p>The Goals and Objectives section in CIMS does not track the goals and objectives of the initiative, but rather how the initiative fits in with the goals and objectives of your clinic. Linking your CO/CD work to your clinic’s goals and objectives is important way to demonstrate that you are helping your clinic achieve the goals they were funded for. The clinic will use this section to generate reports and performance measures on CD-CO work.</p>
+              <p>The goals & objectives for initiatives in CIMS must be selected from the clinic’s Goals & Objectives entered by the clinic E.D. OPICCO is urging clinics to use three consistent Goals & Objectives, based on ACLCO’s recommended Performance Measures for CD-CO work:</p>
+              <ol>
+                <li>Promote access to justice in our community</li>
+                <li>Confront legislative and policy decisions that regulate the lives of low-income people</li>
+                <li>Nurture community empowerment</li>
+              </ol>
             </HelpText>
             <TextInput id='goalsObjectives' handleChange={this.generateChangeHandler('goalsObjectives')} value={this.props.pageData['goalsObjectives']}/>
           </InputSection>
@@ -57,10 +68,17 @@ class Step2 extends React.Component {
             <Label htmlFor='deliverables'>
               2. What are your project’s deliverables? (Optional)
             </Label>
-            <TextInput id='deliverables' handleChange={this.generateChangeHandler('deliverables')} value={this.props.pageData['deliverables']}/>
             <HelpText>
               <p>The Deliverables field in CIMS provides a useful platform to set out timelines and milestones and will come in handy when tracking outputs. Deliverables can be listed during the planning stage, and more can be added as the project progresses.</p>
             </HelpText>
+            <BasicTable
+              id="deliverables"
+              handleChange={this.generateChangeHandler('deliverables')}
+              tableData={
+                this.props.pageData['deliverables']
+              }
+              tableHeaders={deliverablesTableHeaders}
+            />
           </InputSection>
           <CimsInstructions>
             <p>To enter Deliverables in CIMS:</p>
@@ -78,6 +96,38 @@ class Step2 extends React.Component {
             <Label htmlFor='anticipatedOutcomes'>
               3. Anticipated outcomes (Mandatory)
             </Label>
+            <HelpText>
+              <p>Identifying the outcomes you are aiming for can help you assess the success of your project. CD-CO projects might be aiming for outcomes in three main areas:</p>
+              <ul>
+                <li>Process outcomes: What are we trying to achieve through the way in which we carry out the project? (e.g. project meetings reflect the diversity of the community)</li>
+                <li>Community outcomes: What changes does the project promote among stakeholders, partners, and participants? (e.g. the project aims to improve participants’ public-speaking skills)</li>
+                <li>Results-focused outcomes: What are the systemic or structural changes, both big and small, that the project is trying to achieve? (e.g. getting media attention for an issue, changing a policy)</li>
+              </ul>
+              <p>CIMS includes some checklists of potential project outcomes (see below), as well as some open fields for defining your own outcomes.</p>
+            </HelpText>
+            <Label small>What outcomes is your project aiming for? These can be both short-term and long-term. Select appropriate items from the CIMS list below, and add your own. Also indicate whose knowledge / ability the project is aiming to increase (e.g. clinic staff, community members, tenants, etc.)</Label>
+            <Label small>Increased Ability</Label>
+            <Select
+              id="anticipatedOutcomes"
+              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
+              value={this.props.pageData['anticipatedOutcomes']}
+              options={increasedAbilityOptions}
+            />
+            <Label small>Increased Knowledge</Label>
+            <Select
+              id="anticipatedOutcomes"
+              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
+              value={this.props.pageData['anticipatedOutcomes']}
+              options={increasedKnowledgeOptions}
+            />
+            <Label small>Long Term Outcomes</Label>
+            <Select
+              id="anticipatedOutcomes"
+              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
+              value={this.props.pageData['anticipatedOutcomes']}
+              options={longTermOutcomesOptions}
+            />
+            <Label small>Other</Label>
             <TextInput id='anticipatedOutcomes' handleChange={this.generateChangeHandler('anticipatedOutcomes')} value={this.props.pageData['anticipatedOutcomes']}/>
             <HelpText>
               <p>These can be both short-term and long-term. Select appropriate items from the CIMS list below, and add your own. Also indicate whose knowledge / ability the project is aiming to increase (e.g. clinic staff, community members, tenants, etc.)</p>

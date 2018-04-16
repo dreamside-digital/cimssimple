@@ -18,7 +18,9 @@ const SimpleTable = (props) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.tableData.map((row, index) => {
+      {
+        props.tableData &&
+        props.tableData.map((row, index) => {
           return (
             <TableRow key={`row-${index}`}>
               {
@@ -28,7 +30,8 @@ const SimpleTable = (props) => {
               }
             </TableRow>
           );
-        })}
+        })
+      }
       </TableBody>
     </Table>
   );

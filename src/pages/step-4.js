@@ -62,8 +62,16 @@ class Step4 extends React.Component {
               2. Lessons learned (Mandatory)
             </Label>
             <HelpText>
-              <p>Consider how this project has contributed to the longer-term goals and impacts the clinic is aiming for. What have you learned? Were there any unanticipated outcomes? What comes next? This information will be included in the clinic’s performance measurement of CD-CO work.listed during the planning stage, and more can be added as the project progresses.</p>
+              <p>Consider how this project has contributed to the longer-term goals and impacts the clinic is aiming for. What have you learned? Were there any unanticipated outcomes? What comes next? This information will be included in the clinic’s performance measurement of CD-CO work.</p>
+              <p>This section shows the Goals & Objectives you identified for this project. For each one, comment on how this project has contributed to the goal, what you have learned, and what comes next.</p>
             </HelpText>
+            <Label small>How has this project contributed to the goals / objectives? </Label>
+            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
+            <Label small>What have you learned?</Label>
+            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
+            <Label small>Were there any unanticipated outcomes?</Label>
+            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
+            <Label small>What comes next?</Label>
             <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
           </InputSection>
           <CimsInstructions>

@@ -225,6 +225,13 @@ class Step1 extends React.Component {
         <Question>
           <InputSection>
             <Label htmlFor="peopleResources">4. People and Resources</Label>
+            <HelpText>
+              <p>CIMS provides two fields for identifying the people involved in a project: “Assigned to” will automatically show the name of the worker who created the file, and “Initiative Resources” is a quick and simple way of showing who is involved internally and externally in your Initiative, and can serve as a contact list of all your partners for this project.</p>
+              <p>
+                Your fellow clinic staff are added as 'resources', and all other
+                contacts are added as 'partners'.
+              </p>
+            </HelpText>
             <BasicTable
               id="peopleResources"
               handleChange={this.generateChangeHandler('peopleResources')}
@@ -234,12 +241,6 @@ class Step1 extends React.Component {
               }
               tableHeaders={peopleResourcesTableHeaders}
             />
-            <HelpText>
-              <p>
-                Your fellow clinic staff are added as 'resources', and all other
-                contacts are added as 'partners'.
-              </p>
-            </HelpText>
           </InputSection>
           <CimsInstructions>
             <p>Assigned to</p>
@@ -255,7 +256,7 @@ class Step1 extends React.Component {
             <ol>
               <li>
                 From the menu across the top of the Initiative screen, choose
-                Initiative Resources.{' '}
+                Initiative Resources.
               </li>
               <li>
                 You can add any kind of contact (organization, client, staff

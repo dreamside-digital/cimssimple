@@ -6,12 +6,17 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 
 import TextInput from '../components/inputs/TextInput';
+import BasicTable from '../components/inputs/BasicTable';
+import Select from '../components/inputs/Select';
+
 import PageTitle from '../components/PageTitle';
 import Question from '../components/Question';
 import Label from '../components/Label';
 import HelpText from '../components/HelpText';
 import InputSection from '../components/InputSection';
 import CimsInstructions from '../components/CimsInstructions';
+
+import { docketingTableHeaders, docketingTablePlaceholder, docketTypeOptions, outputsTableHeaders } from '../constants'
 
 class Step3 extends React.Component {
   constructor(props) {
@@ -38,9 +43,23 @@ class Step3 extends React.Component {
               1. Docketing (Mandatory)
             </Label>
             <HelpText>
-              <p>For each activity, select the docket type from the list provided on CIMS, indicate how much time was spent, and add any details you wish.</p>
+              <p>Tracking how CO/CD workers spend their time is important to show how much work goes into CO/CD. Docketing allows us to do this and serves as an ongoing narrative for the initiative. The docket created on this tool can be entered into CIMS during a project or after it is complete.</p>
+              <p>If you are using the Parent and Child Initiatives function to organize your projects, we suggest day-to-day docketing in the child initiatives for any time spent on that particular project, and only using the parent docket when planning/goal setting for your parent initiative. The time you spend on child initiatives will not be reflected in the docket for the parent initiative, however a report can be generated that shows the total time spent on a set of linked (parent/child) initiatives. </p>
+              <p>CIMS requires that you choose a “docket type” (type of activity) for each block of time docketed. The list for these types is VERY long. If time spent on CD-CO projects includes multiple types of activities, we recommend simply selecting Community Development.</p>
             </HelpText>
-            <TextInput id='docketing' handleChange={this.generateChangeHandler('docketing')} value={this.props.pageData['docketing']}/>
+            <Label small>For each activity, select the docket type from the list provided on CIMS, indicate how much time was spent, and add any details you wish.</Label>
+            <BasicTable
+              id="docketing"
+              handleChange={this.generateChangeHandler('docketing')}
+              tableData={
+                this.props.pageData['docketing'] || docketingTablePlaceholder
+              }
+              tableHeaders={docketingTableHeaders}
+            />
+            <Label small>Docket Types</Label>
+            <Select
+              options={docketTypeOptions}
+            />
           </InputSection>
           <CimsInstructions>
             <p>To docket in CIMS:</p>
@@ -59,9 +78,17 @@ class Step3 extends React.Component {
               2. Outputs (Optional)
             </Label>
             <HelpText>
-              <p>The Deliverables field in CIMS provides a useful platform to set out timelines and milestones and will come in handy when tracking outputs. Deliverables can be listed during the planning stage, and more can be added as the project progresses.</p>
+              <p>This is where you can track which deliverables you have completed.</p>
+              <p>Next to each of your deliverables, enter the date it was completed, and add any learnings, further plans, or other comments.</p>
             </HelpText>
-            <TextInput id='outputs' handleChange={this.generateChangeHandler('outputs')} value={this.props.pageData['outputs']}/>
+            <BasicTable
+              id="outputs"
+              handleChange={this.generateChangeHandler('outputs')}
+              tableData={
+                this.props.pageData['outputs']
+              }
+              tableHeaders={outputsTableHeaders}
+            />
           </InputSection>
           <CimsInstructions>
             <p>To enter Outputs into CIMS:</p>
