@@ -4,6 +4,7 @@ const styles = {
   color: '#13505B',
   marginTop: '2rem',
   marginBottom: '3rem',
+  textTransform: 'uppercase',
 }
 
 const PageTitle = (props) => (

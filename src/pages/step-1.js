@@ -93,12 +93,40 @@ class Step1 extends React.Component {
           </CimsInstructions>
         </Question>
 
-        <Grid container justify="center">
+        <Question>
+          <InputSection>
+            <Label htmlFor='peopleResources'>
+              4. People and Resources
+            </Label>
+            <TextInput id='peopleResources' handleChange={this.generateChangeHandler('peopleResources')} value={this.props.pageData['peopleResources']}/>
+            <HelpText>
+              <p>Your fellow clinic staff are added as 'resources', and all other contacts are added as ‘partners’.</p>
+            </HelpText>
+          </InputSection>
+          <CimsInstructions>
+            <p>Assigned to</p>
+            <ul>
+              <li>This field will self-populate based on whose CIMS profile the initiative is created in. If someone else (such as an administrative staff person) is entering this project into CIMS, it should be done within the CIMS profile of the project's lead. </li>
+            </ul>
+            <p>Initiative Resources</p>
+            <ol>
+              <li>From the menu across the top of the Initiative screen, choose Initiative Resources. </li>
+              <li>You can add any kind of contact (organization, client, staff member). Your fellow clinic staff are added as 'resources', and all other contacts are added as 'partners'.</li>
+            </ol>
+
+          </CimsInstructions>
+        </Question>
+
+
+        <Grid container justify="space-between">
           <Grid item>
-            <Button component={Link} to='/' color="secondary" variant="raised">Back</Button>
-            <Button component={Link} to='/step-2' color="primary" variant="raised">Next Step</Button>
+            <Button component={Link} to='/' color="primary" variant="raised">Back</Button>
+          </Grid>
+          <Grid item>
+            <Button component={Link} to='/step-2' color="secondary" variant="raised">On to Step 2</Button>
           </Grid>
         </Grid>
+
       </div>
     )
   }
