@@ -16,11 +16,15 @@ function updatePageData (data) {
 
 export function saveLocalFormData (id, data, projectId) {
   return (dispatch, getState) => {
-    const formState = getState().form;
-    const form = {...formState, [id]: data};
+    const state = getState();
+    const form = {...state.form, [id]: data};
+    const updatedProjects = {
+      ...state.projects,
+      [projectId]: form
+    }
 
-    localForage.setItem(projectId, form).then((dataObj) => {
-      dispatch(updateFormData(dataObj));
+    localForage.setItem('projects', updatedProjects).then((dataObj) => {
+      dispatch(updateFormData(form));
     }).catch(err => {
       console.log('ERROR', err)
     })

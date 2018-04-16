@@ -19,8 +19,10 @@ import CimsInstructions from '../components/CimsInstructions';
 import { increasedAbilityOptions, increasedKnowledgeOptions, longTermOutcomesOptions, deliverablesTableHeaders } from '../constants';
 
 class Step2 extends React.Component {
-  generateChangeHandler = (fieldId ) => {
-    return (value) => { this.props.saveLocalFormData(fieldId, value)}
+  generateChangeHandler = fieldId => {
+    return value => {
+      this.props.saveLocalFormData(fieldId, value, this.props.projectId)
+    }
   }
 
   render() {

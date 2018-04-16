@@ -19,8 +19,10 @@ import CimsInstructions from '../components/CimsInstructions';
 import { docketingTableHeaders, docketingTablePlaceholder, docketTypeOptions, outputsTableHeaders } from '../constants'
 
 class Step3 extends React.Component {
-  generateChangeHandler = (fieldId ) => {
-    return (value) => { this.props.saveLocalFormData(fieldId, value)}
+  generateChangeHandler = fieldId => {
+    return value => {
+      this.props.saveLocalFormData(fieldId, value, this.props.projectId)
+    }
   }
 
   render() {

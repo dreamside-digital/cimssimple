@@ -84,10 +84,8 @@ class IndexPage extends React.Component {
                       <TableCell>{row.name}</TableCell>
                       <TableCell>
                         <Button
-                          onClick={() => {
-                            this.props.editProject(row.id);
-                            navigateTo(`/form`);
-                          }}
+                          component={Link}
+                          to={`/form?id=${row.id}`}
                         >
                           Edit
                         </Button>
@@ -103,14 +101,12 @@ class IndexPage extends React.Component {
               </TableBody>
             </Table>
           )}
-          <Grid container justify="center">
+          <Grid container>
             <Grid item>
               <Button
                 onClick={this.props.createProject}
                 color="primary"
                 variant="raised"
-                component={Link}
-                to={'/form'}
               >
                 Start a new project
               </Button>

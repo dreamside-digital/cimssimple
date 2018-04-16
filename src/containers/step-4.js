@@ -14,8 +14,10 @@ import InputSection from '../components/InputSection';
 import CimsInstructions from '../components/CimsInstructions';
 
 class Step4 extends React.Component {
-  generateChangeHandler = (fieldId ) => {
-    return (value) => { this.props.saveLocalFormData(fieldId, value)}
+  generateChangeHandler = fieldId => {
+    return value => {
+      this.props.saveLocalFormData(fieldId, value, this.props.projectId)
+    }
   }
 
   render() {

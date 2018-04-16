@@ -27,7 +27,7 @@ import {
 class Step1 extends React.Component {
   generateChangeHandler = fieldId => {
     return value => {
-      this.props.saveLocalFormData(fieldId, value)
+      this.props.saveLocalFormData(fieldId, value, this.props.projectId)
     }
   }
 

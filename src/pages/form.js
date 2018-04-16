@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
 import { saveLocalFormData, getLocalFormData } from '../redux/modules/form';
+import { editProject } from '../redux/modules/user';
 
 import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
@@ -21,7 +22,8 @@ class SimpleTabs extends React.Component {
   componentDidMount() {
     const queryString = this.props.location.search
     const params = new URLSearchParams(queryString)
-    const projectId = this.props.editing;
+    const projectId = params.get('id');
+    this.props.editProject(projectId)
     this.props.getLocalFormData(projectId)
   }
 
@@ -79,7 +81,7 @@ class SimpleTabs extends React.Component {
 const mapStateToProps = state => {
   return {
     formData: state.form,
-    editing: state.user.editing
+    projectId: state.user.editing
   }
 }
 
@@ -90,6 +92,9 @@ const mapDispatchToProps = dispatch => {
     },
     getLocalFormData: id => {
       dispatch(getLocalFormData(id))
+    },
+    editProject: (id) => {
+      dispatch(editProject(id))
     },
   }
 }
