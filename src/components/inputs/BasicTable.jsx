@@ -37,8 +37,5 @@ const SimpleTable = (props) => {
   );
 }
 
-SimpleTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default SimpleTable;

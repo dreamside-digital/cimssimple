@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/step3';
+import { saveLocalFormData, getLocalFormData } from '../redux/modules/form';
 import Link from 'gatsby-link';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
@@ -19,14 +19,6 @@ import CimsInstructions from '../components/CimsInstructions';
 import { docketingTableHeaders, docketingTablePlaceholder, docketTypeOptions, outputsTableHeaders } from '../constants'
 
 class Step3 extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.getLocalFormData()
-  }
-
   generateChangeHandler = (fieldId ) => {
     return (value) => { this.props.saveLocalFormData(fieldId, value)}
   }
@@ -52,7 +44,7 @@ class Step3 extends React.Component {
               id="docketing"
               handleChange={this.generateChangeHandler('docketing')}
               tableData={
-                this.props.pageData['docketing'] || docketingTablePlaceholder
+                this.props.formData['docketing'] || docketingTablePlaceholder
               }
               tableHeaders={docketingTableHeaders}
             />
@@ -85,7 +77,7 @@ class Step3 extends React.Component {
               id="outputs"
               handleChange={this.generateChangeHandler('outputs')}
               tableData={
-                this.props.pageData['outputs']
+                this.props.formData['outputs']
               }
               tableHeaders={outputsTableHeaders}
             />
@@ -111,24 +103,6 @@ class Step3 extends React.Component {
       </div>
     )
   }
-
 }
 
-const mapStateToProps = state => {
-  return {
-    pageData: state.step3
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveLocalFormData: (fieldId, value) => {
-      dispatch(saveLocalFormData(fieldId, value))
-    },
-    getLocalFormData: () => {
-      dispatch(getLocalFormData())
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Step3)
+export default Step3

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/step2';
+import { saveLocalFormData, getLocalFormData } from '../redux/modules/form';
 import Link from 'gatsby-link';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
@@ -19,14 +19,6 @@ import CimsInstructions from '../components/CimsInstructions';
 import { increasedAbilityOptions, increasedKnowledgeOptions, longTermOutcomesOptions, deliverablesTableHeaders } from '../constants';
 
 class Step2 extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.getLocalFormData()
-  }
-
   generateChangeHandler = (fieldId ) => {
     return (value) => { this.props.saveLocalFormData(fieldId, value)}
   }
@@ -51,7 +43,7 @@ class Step2 extends React.Component {
                 <li>Nurture community empowerment</li>
               </ol>
             </HelpText>
-            <TextInput id='goalsObjectives' handleChange={this.generateChangeHandler('goalsObjectives')} value={this.props.pageData['goalsObjectives']}/>
+            <TextInput id='goalsObjectives' handleChange={this.generateChangeHandler('goalsObjectives')} value={this.props.formData['goalsObjectives']}/>
           </InputSection>
           <CimsInstructions>
             <p>To select Goals & Objectives for your project in CIMS:</p>
@@ -75,7 +67,7 @@ class Step2 extends React.Component {
               id="deliverables"
               handleChange={this.generateChangeHandler('deliverables')}
               tableData={
-                this.props.pageData['deliverables']
+                this.props.formData['deliverables']
               }
               tableHeaders={deliverablesTableHeaders}
             />
@@ -110,25 +102,25 @@ class Step2 extends React.Component {
             <Select
               id="anticipatedOutcomes"
               handleChange={this.generateChangeHandler('anticipatedOutcomes')}
-              value={this.props.pageData['anticipatedOutcomes']}
+              value={this.props.formData['anticipatedOutcomes']}
               options={increasedAbilityOptions}
             />
             <Label small>Increased Knowledge</Label>
             <Select
               id="anticipatedOutcomes"
               handleChange={this.generateChangeHandler('anticipatedOutcomes')}
-              value={this.props.pageData['anticipatedOutcomes']}
+              value={this.props.formData['anticipatedOutcomes']}
               options={increasedKnowledgeOptions}
             />
             <Label small>Long Term Outcomes</Label>
             <Select
               id="anticipatedOutcomes"
               handleChange={this.generateChangeHandler('anticipatedOutcomes')}
-              value={this.props.pageData['anticipatedOutcomes']}
+              value={this.props.formData['anticipatedOutcomes']}
               options={longTermOutcomesOptions}
             />
             <Label small>Other</Label>
-            <TextInput id='anticipatedOutcomes' handleChange={this.generateChangeHandler('anticipatedOutcomes')} value={this.props.pageData['anticipatedOutcomes']}/>
+            <TextInput id='anticipatedOutcomes' handleChange={this.generateChangeHandler('anticipatedOutcomes')} value={this.props.formData['anticipatedOutcomes']}/>
             <HelpText>
               <p>These can be both short-term and long-term. Select appropriate items from the CIMS list below, and add your own. Also indicate whose knowledge / ability the project is aiming to increase (e.g. clinic staff, community members, tenants, etc.)</p>
             </HelpText>
@@ -154,24 +146,6 @@ class Step2 extends React.Component {
       </div>
     )
   }
-
 }
 
-const mapStateToProps = state => {
-  return {
-    pageData: state.step2
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveLocalFormData: (fieldId, value) => {
-      dispatch(saveLocalFormData(fieldId, value))
-    },
-    getLocalFormData: () => {
-      dispatch(getLocalFormData())
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Step2)
+export default Step2

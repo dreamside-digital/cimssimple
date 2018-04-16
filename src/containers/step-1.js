@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/step1'
+import { saveLocalFormData, getLocalFormData } from '../redux/modules/form'
 import Link from 'gatsby-link'
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
@@ -25,14 +25,6 @@ import {
 } from '../constants'
 
 class Step1 extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  componentDidMount() {
-    this.props.getLocalFormData()
-  }
-
   generateChangeHandler = fieldId => {
     return value => {
       this.props.saveLocalFormData(fieldId, value)
@@ -42,6 +34,7 @@ class Step1 extends React.Component {
   render() {
     return (
       <div className="page-container" style={{ padding: '1rem' }}>
+      <p>{`Editing project: ${this.props.formData['initiativeName']}`}</p>
         <PageTitle>Step 1 out of 4: Starting a new project</PageTitle>
 
         <Question>
@@ -50,7 +43,7 @@ class Step1 extends React.Component {
             <TextInput
               id="initiativeName"
               handleChange={this.generateChangeHandler('initiativeName')}
-              value={this.props.pageData['initiativeName']}
+              value={this.props.formData['initiativeName']}
             />
             <HelpText>
               <p>
@@ -96,7 +89,7 @@ class Step1 extends React.Component {
             <Select
               id="initiativeType"
               handleChange={this.generateChangeHandler('initiativeType')}
-              value={this.props.pageData['initiativeType']}
+              value={this.props.formData['initiativeType']}
               options={initiativeTypes}
             />
             <HelpText>
@@ -118,7 +111,7 @@ class Step1 extends React.Component {
             <Select
               id="initiativeSubType"
               handleChange={this.generateChangeHandler('initiativeSubType')}
-              value={this.props.pageData['initiativeSubType']}
+              value={this.props.formData['initiativeSubType']}
               options={initiativeSubTypes}
             />
             <HelpText>
@@ -190,7 +183,7 @@ class Step1 extends React.Component {
               id="parentOrChild"
               label="Parent or Child"
               handleChange={this.generateChangeHandler('parentOrChild')}
-              value={this.props.pageData['parentOrChild']}
+              value={this.props.formData['parentOrChild']}
               options={['Parent', 'Child']}
             />
           </InputSection>
@@ -236,7 +229,7 @@ class Step1 extends React.Component {
               id="peopleResources"
               handleChange={this.generateChangeHandler('peopleResources')}
               tableData={
-                this.props.pageData['peopleResources'] ||
+                this.props.formData['peopleResources'] ||
                 peopleResourcesPlaceholder
               }
               tableHeaders={peopleResourcesTableHeaders}
@@ -289,21 +282,4 @@ class Step1 extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    pageData: state.step1,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    saveLocalFormData: (fieldId, value) => {
-      dispatch(saveLocalFormData(fieldId, value))
-    },
-    getLocalFormData: () => {
-      dispatch(getLocalFormData())
-    },
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Step1)
+export default Step1

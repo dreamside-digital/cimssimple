@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/step4';
+import { saveLocalFormData, getLocalFormData } from '../redux/modules/form';
 import Link from 'gatsby-link';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
@@ -14,14 +14,6 @@ import InputSection from '../components/InputSection';
 import CimsInstructions from '../components/CimsInstructions';
 
 class Step4 extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.getLocalFormData()
-  }
-
   generateChangeHandler = (fieldId ) => {
     return (value) => { this.props.saveLocalFormData(fieldId, value)}
   }
@@ -40,7 +32,7 @@ class Step4 extends React.Component {
             <HelpText>
               <p>Once the project is complete, take some time to reflect on it. What did your project achieve, and how? Try to get input from others involved in the project – clinic staff, partners, and community members. This information will be included in the clinic’s performance measurement of CD-CO work.</p>
             </HelpText>
-            <TextInput id='initiativeOutcomes' handleChange={this.generateChangeHandler('initiativeOutcomes')} value={this.props.pageData['initiativeOutcomes']}/>
+            <TextInput id='initiativeOutcomes' handleChange={this.generateChangeHandler('initiativeOutcomes')} value={this.props.formData['initiativeOutcomes']}/>
             <HelpText>
               <p>This section shows the anticipated outcomes you identified at the beginning of the project. Assess each outcome – What did you aim for? Was it achieved? How do you know? Were there any unanticipated outcomes?</p>
             </HelpText>
@@ -66,13 +58,13 @@ class Step4 extends React.Component {
               <p>This section shows the Goals & Objectives you identified for this project. For each one, comment on how this project has contributed to the goal, what you have learned, and what comes next.</p>
             </HelpText>
             <Label small>How has this project contributed to the goals / objectives? </Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
+            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
             <Label small>What have you learned?</Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
+            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
             <Label small>Were there any unanticipated outcomes?</Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
+            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
             <Label small>What comes next?</Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.pageData['lessonsLearned']}/>
+            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
           </InputSection>
           <CimsInstructions>
             <p>In CIMS, there are three fields available for project evaluation. You can cut & paste text from this document into these fields:</p>
@@ -96,24 +88,7 @@ class Step4 extends React.Component {
       </div>
     )
   }
-
 }
 
-const mapStateToProps = state => {
-  return {
-    pageData: state.step4
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveLocalFormData: (fieldId, value) => {
-      dispatch(saveLocalFormData(fieldId, value))
-    },
-    getLocalFormData: () => {
-      dispatch(getLocalFormData())
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Step4)
+export default Step4

@@ -3,7 +3,9 @@ import { applyMiddleware } from "redux"
 import appReducers  from '../redux/reducers';
 import thunk from 'redux-thunk';
 
-const initialState = {}
+const initialState = {
+  projects: {}
+}
 
 const createStore = () => reduxCreateStore(appReducers, initialState, applyMiddleware(thunk))
 
