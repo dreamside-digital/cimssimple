@@ -69,47 +69,47 @@ export const peopleResourcesTableStructure = [
 
 // PAGE 2 -------------------------------------------
 
-export const increasedAbilityOptions = [
-  'Contact media',
-  'Identify a legal issue',
-  'Make contact with appropriate agency',
-  'Make referrals',
-  'Prevent legal problem escalation',
-  'Resolve conflicts',
-  'Self-advocacy',
-  'Take political action',
-  'Use self-help kits, information provided',
-]
-
-export const increasedKnowledgeOptions = [
-  'Barriers',
-  'Benefits',
-  'Clinic services',
-  'Issues',
-  'Justice system',
-  'Laws',
-  'Legal system',
-  'Networking opportunities',
-  'Resources',
-  'Responsibilities',
-  'Rights',
-]
-
-export const longTermOutcomesOptions = [
-  'Community has increased awareness of justice issues',
-  'Increased access to justice',
-  'Increased civic participation',
-  'Increased community capacity',
-  'Increased justice / fairness in the legal system',
-  'Increased legal literacy',
-  'Increased personal empowerment',
-  'Increased social capital',
-  'Increased social inclusion',
-  'Intended benefit of law',
-  'Legal system is more aware of legal needs of low-income people',
-  'Poverty reduction',
-  'Prevention of homelessness'
-]
+export const anticipatdOutcomesOptions = {
+  ability: [
+    'Contact media',
+    'Identify a legal issue',
+    'Make contact with appropriate agency',
+    'Make referrals',
+    'Prevent legal problem escalation',
+    'Resolve conflicts',
+    'Self-advocacy',
+    'Take political action',
+    'Use self-help kits, information provided',
+  ],
+  knowledge: [
+    'Barriers',
+    'Benefits',
+    'Clinic services',
+    'Issues',
+    'Justice system',
+    'Laws',
+    'Legal system',
+    'Networking opportunities',
+    'Resources',
+    'Responsibilities',
+    'Rights',
+  ],
+  longterm: [
+    'Community has increased awareness of justice issues',
+    'Increased access to justice',
+    'Increased civic participation',
+    'Increased community capacity',
+    'Increased justice / fairness in the legal system',
+    'Increased legal literacy',
+    'Increased personal empowerment',
+    'Increased social capital',
+    'Increased social inclusion',
+    'Intended benefit of law',
+    'Legal system is more aware of legal needs of low-income people',
+    'Poverty reduction',
+    'Prevention of homelessness'
+  ]
+}
 
 export const deliverablesTableStructure = [
   { header: 'Deliverable', type: 'text', fieldName: 'deliverable' },

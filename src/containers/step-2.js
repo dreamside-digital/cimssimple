@@ -15,6 +15,7 @@ import TextInput from '../components/inputs/TextInput'
 import TextInputToList from '../components/inputs/TextInputToList'
 import MultiSelect from '../components/inputs/MultiSelect'
 import EditableTable from '../components/inputs/EditableTable'
+import AnticipatedOutcomesSelector from '../components/inputs/AnticipatedOutcomesSelector'
 
 import PageTitle from '../components/PageTitle'
 import Question from '../components/Question'
@@ -24,9 +25,7 @@ import InputSection from '../components/InputSection'
 import CimsInstructions from '../components/CimsInstructions'
 
 import {
-  increasedAbilityOptions,
-  increasedKnowledgeOptions,
-  longTermOutcomesOptions,
+  anticipatdOutcomesOptions,
   deliverablesTableStructure,
 } from '../constants'
 
@@ -160,53 +159,18 @@ class Step2 extends React.Component {
                 </li>
               </ul>
               <p>
-                CIMS includes some checklists of potential project outcomes (see
-                below), as well as some open fields for defining your own
-                outcomes.
+                These can be both short-term and long-term. Select appropriate items from the CIMS list below, and add your own. Also indicate whose knowledge / ability the project is aiming to increase (e.g. clinic staff, community members, tenants, etc.)
               </p>
             </HelpText>
             <Label small>
-              What outcomes is your project aiming for? These can be both
-              short-term and long-term. Select appropriate items from the CIMS
-              list below, and add your own. Also indicate whose knowledge /
-              ability the project is aiming to increase (e.g. clinic staff,
-              community members, tenants, etc.)
+              What outcomes is your project aiming for?
             </Label>
-            <Label small>Increased Ability</Label>
-            <MultiSelect
-              id="anticipatedOutcomesAbility"
-              handleChange={this.generateChangeHandler('anticipatedOutcomesAbility')}
-              value={this.props.formData['anticipatedOutcomesAbility'] || []}
-              options={increasedAbilityOptions}
-            />
-            <Label small>Increased Knowledge</Label>
-            <MultiSelect
-              id="anticipatedOutcomesKnowledge"
-              handleChange={this.generateChangeHandler('anticipatedOutcomesKnowledge')}
-              value={this.props.formData['anticipatedOutcomesKnowledge'] || []}
-              options={increasedKnowledgeOptions}
-            />
-            <Label small>Long Term Outcomes</Label>
-            <MultiSelect
+            <AnticipatedOutcomesSelector
               id="anticipatedOutcomesLongTerm"
               handleChange={this.generateChangeHandler('anticipatedOutcomesLongTerm')}
               value={this.props.formData['anticipatedOutcomesLongTerm'] || []}
-              options={longTermOutcomesOptions}
+              options={anticipatdOutcomesOptions}
             />
-            <Label small>Other</Label>
-            <TextInputToList
-              fieldId='anticipatedOutcomesOther'
-              list={this.props.formData['anticipatedOutcomesOther']}
-              handleUpdateList={this.generateChangeHandler('anticipatedOutcomesOther')}
-            />
-            <HelpText>
-              <p>
-                These can be both short-term and long-term. Select appropriate
-                items from the CIMS list below, and add your own. Also indicate
-                whose knowledge / ability the project is aiming to increase
-                (e.g. clinic staff, community members, tenants, etc.)
-              </p>
-            </HelpText>
           </InputSection>
           <CimsInstructions>
             <p>To enter Anticipated Outcomes in CIMS:</p>

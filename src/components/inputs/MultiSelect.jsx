@@ -7,8 +7,6 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { ListItemText } from 'material-ui/List';
 
-import 'react-select/dist/react-select.css'
-
 const styles = {
   width: '100%',
   marginBottom: '1rem',

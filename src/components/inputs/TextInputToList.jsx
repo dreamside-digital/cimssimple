@@ -3,7 +3,6 @@ import uuidv4 from 'uuid/v4';
 import { map } from 'lodash';
 
 import IconButton from 'material-ui/IconButton'
-import Grid from 'material-ui/Grid'
 import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List'
 import TextInputWithButton from './TextInputWithButton'
 
