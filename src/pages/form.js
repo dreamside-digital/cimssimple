@@ -66,7 +66,9 @@ class SimpleTabs extends React.Component {
       <div>
         <AppBar position="static" color="default">
           <Toolbar>
-            <span style={styles.flex}>{`Now editing: ${this.props.formData['initiativeName']}`}</span>
+            <span style={styles.flex}>
+              {`Now editing: ${this.props.formData['initiativeName']}`}
+            </span>
             <Button component={Link} to={'/'}>Exit form</Button>
           </Toolbar>
         </AppBar>

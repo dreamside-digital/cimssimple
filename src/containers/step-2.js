@@ -1,22 +1,34 @@
-import React from 'react';
-import { connect } from "react-redux";
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/form';
-import Link from 'gatsby-link';
-import Button from 'material-ui/Button';
-import Grid from 'material-ui/Grid';
+import React from 'react'
+import { connect } from 'react-redux'
+import uuidv4 from 'uuid/v4';
+import { map } from 'lodash';
 
-import TextInput from '../components/inputs/TextInput';
-import Select from '../components/inputs/Select';
+import { saveLocalFormData, getLocalFormData } from '../redux/modules/form'
+
+import Link from 'gatsby-link'
+import Button from 'material-ui/Button'
+import IconButton from 'material-ui/IconButton'
+import Grid from 'material-ui/Grid'
+import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List'
+
+import TextInput from '../components/inputs/TextInput'
+import TextInputWithButton from '../components/inputs/TextInputWithButton'
+import Select from '../components/inputs/Select'
 import BasicTable from '../components/inputs/BasicTable'
 
-import PageTitle from '../components/PageTitle';
-import Question from '../components/Question';
-import Label from '../components/Label';
-import HelpText from '../components/HelpText';
-import InputSection from '../components/InputSection';
-import CimsInstructions from '../components/CimsInstructions';
+import PageTitle from '../components/PageTitle'
+import Question from '../components/Question'
+import Label from '../components/Label'
+import HelpText from '../components/HelpText'
+import InputSection from '../components/InputSection'
+import CimsInstructions from '../components/CimsInstructions'
 
-import { increasedAbilityOptions, increasedKnowledgeOptions, longTermOutcomesOptions, deliverablesTableHeaders } from '../constants';
+import {
+  increasedAbilityOptions,
+  increasedKnowledgeOptions,
+  longTermOutcomesOptions,
+  deliverablesTableHeaders,
+} from '../constants'
 
 class Step2 extends React.Component {
   generateChangeHandler = fieldId => {
@@ -26,32 +38,96 @@ class Step2 extends React.Component {
   }
 
   render() {
-    return(
-      <div className="page-container" style={{padding: '1rem'}}>
+    const handleAddGoal = goal => {
+      const uuid = uuidv4();
+      const goals = {
+        ...this.props.formData['goalsObjectives'],
+        [uuid]: goal
+      }
+      this.props.saveLocalFormData(
+        'goalsObjectives',
+        goals,
+        this.props.projectId
+      )
+    }
 
+    const handleDeleteGoal = uuid => {
+      return () => {
+        const goals = { ...this.props.formData['goalsObjectives'] }
+        delete goals[uuid];
+        this.props.saveLocalFormData(
+          'goalsObjectives',
+          goals,
+          this.props.projectId
+        )
+      }
+    }
+
+    return (
+      <div className="page-container" style={{ padding: '1rem' }}>
         <PageTitle>Step 2 out of 4: Planning the project</PageTitle>
 
         <Question>
           <InputSection>
-            <Label htmlFor='goalsObjectives'>
+            <Label htmlFor="goalsObjectives">
               1. What are this project’s Goals & Objectives? (Mandatory)
             </Label>
             <HelpText>
-              <p>The Goals and Objectives section in CIMS does not track the goals and objectives of the initiative, but rather how the initiative fits in with the goals and objectives of your clinic. Linking your CO/CD work to your clinic’s goals and objectives is important way to demonstrate that you are helping your clinic achieve the goals they were funded for. The clinic will use this section to generate reports and performance measures on CD-CO work.</p>
-              <p>The goals & objectives for initiatives in CIMS must be selected from the clinic’s Goals & Objectives entered by the clinic E.D. OPICCO is urging clinics to use three consistent Goals & Objectives, based on ACLCO’s recommended Performance Measures for CD-CO work:</p>
+              <p>
+                The Goals and Objectives section in CIMS does not track the
+                goals and objectives of the initiative, but rather how the
+                initiative fits in with the goals and objectives of your clinic.
+                Linking your CO/CD work to your clinic’s goals and objectives is
+                important way to demonstrate that you are helping your clinic
+                achieve the goals they were funded for. The clinic will use this
+                section to generate reports and performance measures on CD-CO
+                work.
+              </p>
+              <p>
+                The goals & objectives for initiatives in CIMS must be selected
+                from the clinic’s Goals & Objectives entered by the clinic E.D.
+                OPICCO is urging clinics to use three consistent Goals &
+                Objectives, based on ACLCO’s recommended Performance Measures
+                for CD-CO work:
+              </p>
               <ol>
                 <li>Promote access to justice in our community</li>
-                <li>Confront legislative and policy decisions that regulate the lives of low-income people</li>
+                <li>
+                  Confront legislative and policy decisions that regulate the
+                  lives of low-income people
+                </li>
                 <li>Nurture community empowerment</li>
               </ol>
             </HelpText>
-            <TextInput id='goalsObjectives' handleChange={this.generateChangeHandler('goalsObjectives')} value={this.props.formData['goalsObjectives']}/>
+            <Label small>Goals and Objectives:</Label>
+            <List subheader={<li />}>
+              {map(this.props.formData['goalsObjectives'], ((goal, uuid) => (
+                <ListItem key={`goals-${uuid}`}>
+                  <ListItemText primary={`${goal}`} />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="Delete" onClick={handleDeleteGoal(uuid)}>
+                      &times;
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              )))}
+            </List>
+            <TextInputWithButton
+              id="goalsObjectives"
+              handleChange={handleAddGoal}
+              submitLabel={'Add'}
+            />
           </InputSection>
           <CimsInstructions>
             <p>To select Goals & Objectives for your project in CIMS:</p>
             <ol>
               <li>Under ‘Goals and Objectives’ click the plus sign.</li>
-              <li>Under the ‘Goals and Objectives’ drop down menu, click the search button (magnifying glass) or select ‘look up more records’ and select the goal/objective that best fits with the work you are doing.</li>
+              <li>
+                Under the ‘Goals and Objectives’ drop down menu, click the
+                search button (magnifying glass) or select ‘look up more
+                records’ and select the goal/objective that best fits with the
+                work you are doing.
+              </li>
               <li>Save.</li>
             </ol>
           </CimsInstructions>
@@ -59,18 +135,21 @@ class Step2 extends React.Component {
 
         <Question>
           <InputSection>
-            <Label htmlFor='deliverables'>
+            <Label htmlFor="deliverables">
               2. What are your project’s deliverables? (Optional)
             </Label>
             <HelpText>
-              <p>The Deliverables field in CIMS provides a useful platform to set out timelines and milestones and will come in handy when tracking outputs. Deliverables can be listed during the planning stage, and more can be added as the project progresses.</p>
+              <p>
+                The Deliverables field in CIMS provides a useful platform to set
+                out timelines and milestones and will come in handy when
+                tracking outputs. Deliverables can be listed during the planning
+                stage, and more can be added as the project progresses.
+              </p>
             </HelpText>
             <BasicTable
               id="deliverables"
               handleChange={this.generateChangeHandler('deliverables')}
-              tableData={
-                this.props.formData['deliverables']
-              }
+              tableData={this.props.formData['deliverables']}
               tableHeaders={deliverablesTableHeaders}
             />
           </InputSection>
@@ -79,7 +158,10 @@ class Step2 extends React.Component {
             <ol>
               <li>Go to Initiative Deliverables & Risks</li>
               <li>Under Initiative Deliverables, choose the plus sign</li>
-              <li>Enter your deliverables into the open field, or cut & paste from this document</li>
+              <li>
+                Enter your deliverables into the open field, or cut & paste from
+                this document
+              </li>
               <li>Save</li>
             </ol>
           </CimsInstructions>
@@ -87,19 +169,46 @@ class Step2 extends React.Component {
 
         <Question>
           <InputSection>
-            <Label htmlFor='anticipatedOutcomes'>
+            <Label htmlFor="anticipatedOutcomes">
               3. Anticipated outcomes (Mandatory)
             </Label>
             <HelpText>
-              <p>Identifying the outcomes you are aiming for can help you assess the success of your project. CD-CO projects might be aiming for outcomes in three main areas:</p>
+              <p>
+                Identifying the outcomes you are aiming for can help you assess
+                the success of your project. CD-CO projects might be aiming for
+                outcomes in three main areas:
+              </p>
               <ul>
-                <li>Process outcomes: What are we trying to achieve through the way in which we carry out the project? (e.g. project meetings reflect the diversity of the community)</li>
-                <li>Community outcomes: What changes does the project promote among stakeholders, partners, and participants? (e.g. the project aims to improve participants’ public-speaking skills)</li>
-                <li>Results-focused outcomes: What are the systemic or structural changes, both big and small, that the project is trying to achieve? (e.g. getting media attention for an issue, changing a policy)</li>
+                <li>
+                  Process outcomes: What are we trying to achieve through the
+                  way in which we carry out the project? (e.g. project meetings
+                  reflect the diversity of the community)
+                </li>
+                <li>
+                  Community outcomes: What changes does the project promote
+                  among stakeholders, partners, and participants? (e.g. the
+                  project aims to improve participants’ public-speaking skills)
+                </li>
+                <li>
+                  Results-focused outcomes: What are the systemic or structural
+                  changes, both big and small, that the project is trying to
+                  achieve? (e.g. getting media attention for an issue, changing
+                  a policy)
+                </li>
               </ul>
-              <p>CIMS includes some checklists of potential project outcomes (see below), as well as some open fields for defining your own outcomes.</p>
+              <p>
+                CIMS includes some checklists of potential project outcomes (see
+                below), as well as some open fields for defining your own
+                outcomes.
+              </p>
             </HelpText>
-            <Label small>What outcomes is your project aiming for? These can be both short-term and long-term. Select appropriate items from the CIMS list below, and add your own. Also indicate whose knowledge / ability the project is aiming to increase (e.g. clinic staff, community members, tenants, etc.)</Label>
+            <Label small>
+              What outcomes is your project aiming for? These can be both
+              short-term and long-term. Select appropriate items from the CIMS
+              list below, and add your own. Also indicate whose knowledge /
+              ability the project is aiming to increase (e.g. clinic staff,
+              community members, tenants, etc.)
+            </Label>
             <Label small>Increased Ability</Label>
             <Select
               id="anticipatedOutcomes"
@@ -122,16 +231,28 @@ class Step2 extends React.Component {
               options={longTermOutcomesOptions}
             />
             <Label small>Other</Label>
-            <TextInput id='anticipatedOutcomes' handleChange={this.generateChangeHandler('anticipatedOutcomes')} value={this.props.formData['anticipatedOutcomes']}/>
+            <TextInput
+              id="anticipatedOutcomes"
+              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
+              value={this.props.formData['anticipatedOutcomes']}
+            />
             <HelpText>
-              <p>These can be both short-term and long-term. Select appropriate items from the CIMS list below, and add your own. Also indicate whose knowledge / ability the project is aiming to increase (e.g. clinic staff, community members, tenants, etc.)</p>
+              <p>
+                These can be both short-term and long-term. Select appropriate
+                items from the CIMS list below, and add your own. Also indicate
+                whose knowledge / ability the project is aiming to increase
+                (e.g. clinic staff, community members, tenants, etc.)
+              </p>
             </HelpText>
           </InputSection>
           <CimsInstructions>
             <p>To enter Anticipated Outcomes in CIMS:</p>
             <ol>
               <li>Go to Initiative Deliverables & Risks</li>
-              <li>In the box next to Anticipated Outcomes, enter your outcomes into the open field, or cut & paste from this document.</li>
+              <li>
+                In the box next to Anticipated Outcomes, enter your outcomes
+                into the open field, or cut & paste from this document.
+              </li>
               <li>Save</li>
             </ol>
           </CimsInstructions>
