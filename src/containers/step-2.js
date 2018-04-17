@@ -12,7 +12,7 @@ import Grid from 'material-ui/Grid'
 import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List'
 
 import TextInput from '../components/inputs/TextInput'
-import TextInputWithButton from '../components/inputs/TextInputWithButton'
+import TextInputToList from '../components/inputs/TextInputToList'
 import Select from '../components/inputs/Select'
 import BasicTable from '../components/inputs/BasicTable'
 
@@ -38,31 +38,6 @@ class Step2 extends React.Component {
   }
 
   render() {
-    const handleAddGoal = goal => {
-      const uuid = uuidv4();
-      const goals = {
-        ...this.props.formData['goalsObjectives'],
-        [uuid]: goal
-      }
-      this.props.saveLocalFormData(
-        'goalsObjectives',
-        goals,
-        this.props.projectId
-      )
-    }
-
-    const handleDeleteGoal = uuid => {
-      return () => {
-        const goals = { ...this.props.formData['goalsObjectives'] }
-        delete goals[uuid];
-        this.props.saveLocalFormData(
-          'goalsObjectives',
-          goals,
-          this.props.projectId
-        )
-      }
-    }
-
     return (
       <div className="page-container" style={{ padding: '1rem' }}>
         <PageTitle>Step 2 out of 4: Planning the project</PageTitle>
@@ -100,22 +75,10 @@ class Step2 extends React.Component {
               </ol>
             </HelpText>
             <Label small>Goals and Objectives:</Label>
-            <List subheader={<li />}>
-              {map(this.props.formData['goalsObjectives'], ((goal, uuid) => (
-                <ListItem key={`goals-${uuid}`}>
-                  <ListItemText primary={`${goal}`} />
-                  <ListItemSecondaryAction>
-                    <IconButton aria-label="Delete" onClick={handleDeleteGoal(uuid)}>
-                      &times;
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              )))}
-            </List>
-            <TextInputWithButton
-              id="goalsObjectives"
-              handleChange={handleAddGoal}
-              submitLabel={'Add'}
+            <TextInputToList
+              fieldId='goalsObjectives'
+              list={this.props.formData['goalsObjectives']}
+              handleUpdateList={this.generateChangeHandler('goalsObjectives')}
             />
           </InputSection>
           <CimsInstructions>
@@ -211,30 +174,33 @@ class Step2 extends React.Component {
             </Label>
             <Label small>Increased Ability</Label>
             <Select
-              id="anticipatedOutcomes"
-              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
-              value={this.props.formData['anticipatedOutcomes']}
+              id="anticipatedOutcomesAbility"
+              handleChange={this.generateChangeHandler('anticipatedOutcomesAbility')}
+              value={this.props.formData['anticipatedOutcomesAbility']}
               options={increasedAbilityOptions}
+              multi={true}
             />
             <Label small>Increased Knowledge</Label>
             <Select
-              id="anticipatedOutcomes"
-              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
-              value={this.props.formData['anticipatedOutcomes']}
+              id="anticipatedOutcomesKnowledge"
+              handleChange={this.generateChangeHandler('anticipatedOutcomesKnowledge')}
+              value={this.props.formData['anticipatedOutcomesKnowledge']}
               options={increasedKnowledgeOptions}
+              multi={true}
             />
             <Label small>Long Term Outcomes</Label>
             <Select
-              id="anticipatedOutcomes"
-              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
-              value={this.props.formData['anticipatedOutcomes']}
+              id="anticipatedOutcomesLongTerm"
+              handleChange={this.generateChangeHandler('anticipatedOutcomesLongTerm')}
+              value={this.props.formData['anticipatedOutcomesLongTerm']}
               options={longTermOutcomesOptions}
+              multi={true}
             />
             <Label small>Other</Label>
-            <TextInput
-              id="anticipatedOutcomes"
-              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
-              value={this.props.formData['anticipatedOutcomes']}
+            <TextInputToList
+              fieldId='anticipatedOutcomesOther'
+              list={this.props.formData['anticipatedOutcomesOther']}
+              handleUpdateList={this.generateChangeHandler('anticipatedOutcomesOther')}
             />
             <HelpText>
               <p>
