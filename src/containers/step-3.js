@@ -6,7 +6,7 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 
 import TextInput from '../components/inputs/TextInput';
-import BasicTable from '../components/inputs/BasicTable';
+import EditableTable from '../components/inputs/EditableTable';
 import SingleSelect from '../components/inputs/SingleSelect';
 
 import PageTitle from '../components/PageTitle';
@@ -16,7 +16,7 @@ import HelpText from '../components/HelpText';
 import InputSection from '../components/InputSection';
 import CimsInstructions from '../components/CimsInstructions';
 
-import { docketingTableHeaders, docketingTablePlaceholder, docketTypeOptions, outputsTableHeaders } from '../constants'
+import { docketingTableStructure, docketTypeOptions, outputsTableStructure } from '../constants'
 
 class Step3 extends React.Component {
   generateChangeHandler = fieldId => {
@@ -42,13 +42,11 @@ class Step3 extends React.Component {
               <p>CIMS requires that you choose a “docket type” (type of activity) for each block of time docketed. The list for these types is VERY long. If time spent on CD-CO projects includes multiple types of activities, we recommend simply selecting Community Development.</p>
             </HelpText>
             <Label small>For each activity, select the docket type from the list provided on CIMS, indicate how much time was spent, and add any details you wish.</Label>
-            <BasicTable
+            <EditableTable
               id="docketing"
               handleChange={this.generateChangeHandler('docketing')}
-              tableData={
-                this.props.formData['docketing'] || docketingTablePlaceholder
-              }
-              tableHeaders={docketingTableHeaders}
+              tableData={this.props.formData['docketing']}
+              tableStructure={docketingTableStructure}
             />
             <Label small>Docket Types</Label>
             <SingleSelect
@@ -75,13 +73,11 @@ class Step3 extends React.Component {
               <p>This is where you can track which deliverables you have completed.</p>
               <p>Next to each of your deliverables, enter the date it was completed, and add any learnings, further plans, or other comments.</p>
             </HelpText>
-            <BasicTable
+            <EditableTable
               id="outputs"
               handleChange={this.generateChangeHandler('outputs')}
-              tableData={
-                this.props.formData['outputs']
-              }
-              tableHeaders={outputsTableHeaders}
+              tableData={this.props.formData['outputs']}
+              tableStructure={outputsTableStructure}
             />
           </InputSection>
           <CimsInstructions>

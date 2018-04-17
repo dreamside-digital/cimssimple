@@ -118,12 +118,11 @@ export const deliverablesTableStructure = [
 
 // PAGE 3 -------------------------------------------
 
-export const docketingTableHeaders = [
-  'Date', 'Docket Type', 'Time Spent (hours)', 'Details'
-]
-
-export const docketingTablePlaceholder = [
-  { date: '01/02/2018', type: 'Advocacy', timeSpent: 10, details: 'Details go here'}
+export const docketingTableStructure = [
+  { header: 'Date', type: 'date', fieldName: 'date' },
+  { header: 'Docket Type', type: 'text', fieldName: 'docketType' },
+  { header: 'Time Spent (hours)', type: 'number', fieldName: 'timeSpent' },
+  { header: 'Details', type: 'text', fieldName: 'details' }
 ]
 
 export const docketTypeOptions = [
@@ -168,6 +167,9 @@ export const docketTypeOptions = [
   'Training organizing',
 ]
 
-export const outputsTableHeaders = [
-  'Deliverable', 'Target Date', 'Date Completed', 'Comments'
+export const outputsTableStructure = [
+  { header: 'Deliverable', type: 'text', fieldName: 'deliverable' },
+  { header: 'Target Date', type: 'date', fieldName: 'targetDate' },
+  { header: 'Date Completed', type: 'date', fieldName: 'dateCompleted' },
+  { header: 'Comments', type: 'text', fieldName: 'comments' }
 ]
