@@ -13,7 +13,7 @@ import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } f
 
 import TextInput from '../components/inputs/TextInput'
 import TextInputToList from '../components/inputs/TextInputToList'
-import Select from '../components/inputs/Select'
+import MultiSelect from '../components/inputs/MultiSelect'
 import BasicTable from '../components/inputs/BasicTable'
 
 import PageTitle from '../components/PageTitle'
@@ -173,28 +173,25 @@ class Step2 extends React.Component {
               community members, tenants, etc.)
             </Label>
             <Label small>Increased Ability</Label>
-            <Select
+            <MultiSelect
               id="anticipatedOutcomesAbility"
               handleChange={this.generateChangeHandler('anticipatedOutcomesAbility')}
-              value={this.props.formData['anticipatedOutcomesAbility']}
+              selected={this.props.formData['anticipatedOutcomesAbility'] || []}
               options={increasedAbilityOptions}
-              multi={true}
             />
             <Label small>Increased Knowledge</Label>
-            <Select
+            <MultiSelect
               id="anticipatedOutcomesKnowledge"
               handleChange={this.generateChangeHandler('anticipatedOutcomesKnowledge')}
-              value={this.props.formData['anticipatedOutcomesKnowledge']}
+              selected={this.props.formData['anticipatedOutcomesKnowledge'] || []}
               options={increasedKnowledgeOptions}
-              multi={true}
             />
             <Label small>Long Term Outcomes</Label>
-            <Select
+            <MultiSelect
               id="anticipatedOutcomesLongTerm"
               handleChange={this.generateChangeHandler('anticipatedOutcomesLongTerm')}
-              value={this.props.formData['anticipatedOutcomesLongTerm']}
+              selected={this.props.formData['anticipatedOutcomesLongTerm'] || []}
               options={longTermOutcomesOptions}
-              multi={true}
             />
             <Label small>Other</Label>
             <TextInputToList

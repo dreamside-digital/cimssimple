@@ -6,7 +6,7 @@ import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 
 import TextInput from '../components/inputs/TextInput'
-import Select from '../components/inputs/Select'
+import SingleSelect from '../components/inputs/SingleSelect'
 import RadioButtons from '../components/inputs/RadioButtons'
 import BasicTable from '../components/inputs/BasicTable'
 
@@ -85,10 +85,10 @@ class Step1 extends React.Component {
         <Question>
           <InputSection>
             <Label htmlFor="initiativeType">2a. Initiative Type</Label>
-            <Select
+            <SingleSelect
               id="initiativeType"
               handleChange={this.generateChangeHandler('initiativeType')}
-              value={this.props.formData['initiativeType']}
+              selected={this.props.formData['initiativeType']}
               options={initiativeTypes}
             />
             <HelpText>
@@ -107,10 +107,10 @@ class Step1 extends React.Component {
             <Label htmlFor="initiativeSubType">
               2b. Initiative Sub-type (optional)
             </Label>
-            <Select
+            <SingleSelect
               id="initiativeSubType"
               handleChange={this.generateChangeHandler('initiativeSubType')}
-              value={this.props.formData['initiativeSubType']}
+              selected={this.props.formData['initiativeSubType']}
               options={initiativeSubTypes}
             />
             <HelpText>

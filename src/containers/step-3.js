@@ -7,7 +7,7 @@ import Grid from 'material-ui/Grid';
 
 import TextInput from '../components/inputs/TextInput';
 import BasicTable from '../components/inputs/BasicTable';
-import Select from '../components/inputs/Select';
+import SingleSelect from '../components/inputs/SingleSelect';
 
 import PageTitle from '../components/PageTitle';
 import Question from '../components/Question';
@@ -51,7 +51,7 @@ class Step3 extends React.Component {
               tableHeaders={docketingTableHeaders}
             />
             <Label small>Docket Types</Label>
-            <Select
+            <SingleSelect
               options={docketTypeOptions}
             />
           </InputSection>
