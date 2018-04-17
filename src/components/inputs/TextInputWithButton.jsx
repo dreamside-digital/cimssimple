@@ -1,5 +1,7 @@
 import React from 'react'
 import Button from 'material-ui/Button';
+import Input from 'material-ui/Input'
+
 
 const styles = {
   container: {
@@ -7,8 +9,6 @@ const styles = {
     display: 'flex'
   },
   input: {
-    border: '1px solid #932F6D',
-    padding: '0.5rem',
     fontSize: '1.2rem',
     flex: '1'
   }
@@ -24,7 +24,7 @@ class TextInputWithButton extends React.Component {
   render() {
     return(
       <form style={styles.container} onSubmit={this.onSubmit}>
-        <input type="text" ref={(el) => this.input = el} style={styles.input} />
+        <Input type="text" inputRef={(el) => this.input = el} style={styles.input} />
         <Button color="primary" type="submit">{this.props.submitLabel}</Button>
       </form>
     )

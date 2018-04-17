@@ -8,7 +8,7 @@ import Grid from 'material-ui/Grid'
 import TextInput from '../components/inputs/TextInput'
 import SingleSelect from '../components/inputs/SingleSelect'
 import RadioButtons from '../components/inputs/RadioButtons'
-import BasicTable from '../components/inputs/BasicTable'
+import EditableTable from '../components/inputs/EditableTable'
 
 import PageTitle from '../components/PageTitle'
 import Question from '../components/Question'
@@ -224,7 +224,7 @@ class Step1 extends React.Component {
                 contacts are added as 'partners'.
               </p>
             </HelpText>
-            <BasicTable
+            <EditableTable
               id="peopleResources"
               handleChange={this.generateChangeHandler('peopleResources')}
               tableData={
