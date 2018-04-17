@@ -166,9 +166,9 @@ class Step2 extends React.Component {
               What outcomes is your project aiming for?
             </Label>
             <AnticipatedOutcomesSelector
-              id="anticipatedOutcomesLongTerm"
-              handleChange={this.generateChangeHandler('anticipatedOutcomesLongTerm')}
-              value={this.props.formData['anticipatedOutcomesLongTerm'] || []}
+              id="anticipatedOutcomes"
+              handleChange={this.generateChangeHandler('anticipatedOutcomes')}
+              value={this.props.formData['anticipatedOutcomes'] || []}
               options={anticipatdOutcomesOptions}
             />
           </InputSection>

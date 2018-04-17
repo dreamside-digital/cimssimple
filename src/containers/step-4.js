@@ -6,6 +6,7 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 
 import TextInput from '../components/inputs/TextInput';
+import InitiativeOutcomesSection from '../components/inputs/InitiativeOutcomesSection';
 import PageTitle from '../components/PageTitle';
 import Question from '../components/Question';
 import Label from '../components/Label';
@@ -33,11 +34,13 @@ class Step4 extends React.Component {
             </Label>
             <HelpText>
               <p>Once the project is complete, take some time to reflect on it. What did your project achieve, and how? Try to get input from others involved in the project – clinic staff, partners, and community members. This information will be included in the clinic’s performance measurement of CD-CO work.</p>
-            </HelpText>
-            <TextInput id='initiativeOutcomes' handleChange={this.generateChangeHandler('initiativeOutcomes')} value={this.props.formData['initiativeOutcomes']}/>
-            <HelpText>
               <p>This section shows the anticipated outcomes you identified at the beginning of the project. Assess each outcome – What did you aim for? Was it achieved? How do you know? Were there any unanticipated outcomes?</p>
             </HelpText>
+            <InitiativeOutcomesSection
+              anticipatedOutcomes={this.props.formData['anticipatedOutcomes'] || []}
+              initiativeOutcomes={this.props.formData['initiativeOutcomes'] || []}
+              handleChange={this.generateChangeHandler('initiativeOutcomes')}
+            />
           </InputSection>
           <CimsInstructions>
             <p>To enter Initiative Outcomes in CIMS:</p>
