@@ -9,7 +9,6 @@ const styles = {
     display: 'flex'
   },
   input: {
-    fontSize: '1.2rem',
     flex: '1'
   }
 }

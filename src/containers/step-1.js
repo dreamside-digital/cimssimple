@@ -20,8 +20,7 @@ import CimsInstructions from '../components/CimsInstructions'
 import {
   initiativeTypes,
   initiativeSubTypes,
-  peopleResourcesPlaceholder,
-  peopleResourcesTableHeaders,
+  peopleResourcesTableStructure,
 } from '../constants'
 
 class Step1 extends React.Component {
@@ -227,11 +226,8 @@ class Step1 extends React.Component {
             <EditableTable
               id="peopleResources"
               handleChange={this.generateChangeHandler('peopleResources')}
-              tableData={
-                this.props.formData['peopleResources'] ||
-                peopleResourcesPlaceholder
-              }
-              tableHeaders={peopleResourcesTableHeaders}
+              tableStructure={peopleResourcesTableStructure}
+              tableData={this.props.formData['peopleResources']}
             />
           </InputSection>
           <CimsInstructions>

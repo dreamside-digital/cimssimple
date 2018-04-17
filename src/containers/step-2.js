@@ -14,7 +14,7 @@ import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } f
 import TextInput from '../components/inputs/TextInput'
 import TextInputToList from '../components/inputs/TextInputToList'
 import MultiSelect from '../components/inputs/MultiSelect'
-import BasicTable from '../components/inputs/BasicTable'
+import EditableTable from '../components/inputs/EditableTable'
 
 import PageTitle from '../components/PageTitle'
 import Question from '../components/Question'
@@ -27,7 +27,7 @@ import {
   increasedAbilityOptions,
   increasedKnowledgeOptions,
   longTermOutcomesOptions,
-  deliverablesTableHeaders,
+  deliverablesTableStructure,
 } from '../constants'
 
 class Step2 extends React.Component {
@@ -109,11 +109,11 @@ class Step2 extends React.Component {
                 stage, and more can be added as the project progresses.
               </p>
             </HelpText>
-            <BasicTable
+            <EditableTable
               id="deliverables"
               handleChange={this.generateChangeHandler('deliverables')}
               tableData={this.props.formData['deliverables']}
-              tableHeaders={deliverablesTableHeaders}
+              tableStructure={deliverablesTableStructure}
             />
           </InputSection>
           <CimsInstructions>

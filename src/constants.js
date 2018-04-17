@@ -60,11 +60,12 @@ export const initiativeSubTypes = [
   'Other'
 ]
 
-export const peopleResourcesTableHeaders = ['Name', 'Resource / Partner', 'Contact information']
-
-export const peopleResourcesPlaceholder = [
-  { name: 'Sharon', type: 'Resource', contact: 'sharon@nomadiclabs.ca' }
+export const peopleResourcesTableStructure = [
+  { header: 'Name', type: 'text', fieldName: 'name' },
+  { header: 'Resource / Partner', type: 'boolean', fieldName: 'resourceType' },
+  { header: 'Contact', type: 'email', fieldName: 'contact' },
 ]
+
 
 // PAGE 2 -------------------------------------------
 
@@ -110,7 +111,10 @@ export const longTermOutcomesOptions = [
   'Prevention of homelessness'
 ]
 
-export const deliverablesTableHeaders = ['Deliverable', 'Target Date']
+export const deliverablesTableStructure = [
+  { header: 'Deliverable', type: 'text', fieldName: 'deliverable' },
+  { header: 'Target Date', type: 'date', fieldName: 'targetDate' }
+]
 
 // PAGE 3 -------------------------------------------
 

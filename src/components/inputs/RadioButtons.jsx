@@ -5,7 +5,6 @@ import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
 const styles = {
   width: '100%',
   border: '1px solid #932F6D',
-  fontSize: '1.2rem'
 }
 
 const RadioButtons = props => {

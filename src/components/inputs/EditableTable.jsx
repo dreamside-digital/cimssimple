@@ -11,70 +11,86 @@ const styles = {
   }
 }
 
-const EditableTable = (props) => {
+class EditableTable extends React.Component {
+  state = {}
 
-  const tableStructure = [
-    { header: 'Name', type: 'text', fieldName: 'name' },
-    { header: 'Resource / Partner', type: 'boolean', fieldName: 'resourceType' },
-    { header: 'Contact', type: 'email', fieldName: 'contact' },
-  ]
+  handleChange = (fieldName, rowIndex) => event => {
+    let newData = [...this.props.tableData];
+    const row = newData[rowIndex];
+    const newRow = { ...row, [fieldName]: event.target.value }
+    newData.splice(rowIndex, 1, newRow)
 
-  const tableData = [
-    { name: 'Sharon', resourceType: 'Partner', contact: 'sharon@nomadiclabs.ca' },
-    { name: 'Sharon', resourceType: 'Resource', contact: 'sharon@nomadiclabs.ca' }
-  ]
-
-  const handleChange = fieldName => event => {
-    console.log(fieldName)
-    console.log(event.target.value)
+    this.props.handleChange(newData)
   }
 
-  return (
-    <Grid container>
-      <Grid item xs={12} style={styles.root}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Resource / Partner</TableCell>
-              <TableCell>Contact</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              tableData.map((row, index) => {
+  defaultRowData = (row={}) => {
+    this.props.tableStructure.map(column => {
+      row[column.fieldName] = '';
+    })
 
-              })
-            }
-            <TableRow>
-              <TableCell>
-                <TextField
-                  defaultValue="Sharon"
-                  onChange={handleChange('name')}
-                  margin="normal"
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  defaultValue="Partner"
-                  onChange={handleChange('resourceType')}
-                  margin="normal"
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  type="email"
-                  defaultValue="sharon@gmail.com"
-                  onChange={handleChange('contact')}
-                  margin="normal"
-                />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+    return row;
+  }
+
+  render() {
+
+    return(
+      <Grid container>
+        <Grid item xs={12} style={styles.root}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {
+                  this.props.tableStructure.map(column => (
+                    <TableCell key={column.fieldName}>{column.header}</TableCell>
+                  ))
+                }
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {
+                this.props.tableData &&
+                this.props.tableData.map((row, index) => (
+                  <TableRow key={`${this.props.id}-row-${index}`}>
+                    {
+                      map(row, ((item, fieldName) => {
+                        return(
+                          <TableCell key={`${fieldName}-${item}`}>
+                            <TextField
+                              defaultValue={item}
+                              onChange={this.handleChange(fieldName, index)}
+                              margin="normal"
+                            />
+                          </TableCell>
+                        )
+                      }))
+                    }
+                  </TableRow>
+                ))
+              }
+              {
+                !this.props.tableData &&
+                <TableRow key={`empty-row`}>
+                  {
+                    map(this.defaultRowData(), ((item, fieldName) => {
+                      return(
+                        <TableCell key={`${fieldName}-${item}`}>
+                          <TextField
+                            defaultValue={item}
+                            onChange={this.handleChange(fieldName, 0)}
+                            margin="normal"
+                          />
+                        </TableCell>
+                      )
+                    }))
+                  }
+                </TableRow>
+              }
+            </TableBody>
+          </Table>
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    );
+  }
 }
 
 

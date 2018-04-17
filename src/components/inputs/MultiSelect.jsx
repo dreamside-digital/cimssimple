@@ -11,7 +11,7 @@ import 'react-select/dist/react-select.css'
 
 const styles = {
   width: '100%',
-  fontSize: '1.2rem',
+  marginBottom: '1rem',
 }
 
 const MultiSelect = props => {

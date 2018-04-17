@@ -3,7 +3,6 @@ import TextField from 'material-ui/TextField'
 
 const styles = {
   width: '100%',
-  fontSize: '1.2rem'
 }
 
 const TextInput = props => {
