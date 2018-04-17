@@ -87,7 +87,7 @@ class Step1 extends React.Component {
             <SingleSelect
               id="initiativeType"
               handleChange={this.generateChangeHandler('initiativeType')}
-              selected={this.props.formData['initiativeType']}
+              value={this.props.formData['initiativeType']}
               options={initiativeTypes}
             />
             <HelpText>
@@ -109,7 +109,7 @@ class Step1 extends React.Component {
             <SingleSelect
               id="initiativeSubType"
               handleChange={this.generateChangeHandler('initiativeSubType')}
-              selected={this.props.formData['initiativeSubType']}
+              value={this.props.formData['initiativeSubType']}
               options={initiativeSubTypes}
             />
             <HelpText>

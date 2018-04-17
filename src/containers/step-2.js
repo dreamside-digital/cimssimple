@@ -176,21 +176,21 @@ class Step2 extends React.Component {
             <MultiSelect
               id="anticipatedOutcomesAbility"
               handleChange={this.generateChangeHandler('anticipatedOutcomesAbility')}
-              selected={this.props.formData['anticipatedOutcomesAbility'] || []}
+              value={this.props.formData['anticipatedOutcomesAbility'] || []}
               options={increasedAbilityOptions}
             />
             <Label small>Increased Knowledge</Label>
             <MultiSelect
               id="anticipatedOutcomesKnowledge"
               handleChange={this.generateChangeHandler('anticipatedOutcomesKnowledge')}
-              selected={this.props.formData['anticipatedOutcomesKnowledge'] || []}
+              value={this.props.formData['anticipatedOutcomesKnowledge'] || []}
               options={increasedKnowledgeOptions}
             />
             <Label small>Long Term Outcomes</Label>
             <MultiSelect
               id="anticipatedOutcomesLongTerm"
               handleChange={this.generateChangeHandler('anticipatedOutcomesLongTerm')}
-              selected={this.props.formData['anticipatedOutcomesLongTerm'] || []}
+              value={this.props.formData['anticipatedOutcomesLongTerm'] || []}
               options={longTermOutcomesOptions}
             />
             <Label small>Other</Label>

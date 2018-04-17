@@ -22,7 +22,7 @@ const MultiSelect = props => {
   return (
     <Select
       multiple
-      value={props.selected}
+      value={props.value}
       onChange={onChange}
       input={<Input />}
       renderValue={selected => selected.join(', ')}
@@ -31,7 +31,7 @@ const MultiSelect = props => {
       {props.options.map(option => {
         return (
           <MenuItem key={option} value={option}>
-            <Checkbox checked={props.selected.indexOf(option) > -1} />
+            <Checkbox checked={props.value.indexOf(option) > -1} />
             <ListItemText primary={option} />
           </MenuItem>
         )

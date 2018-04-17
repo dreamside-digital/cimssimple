@@ -31,10 +31,11 @@ class EditableTable extends React.Component {
     }
   }
 
-  handleChange = (fieldName, rowIndex) => event => {
+  handleChange = (fieldName, rowIndex) => input => {
+    const inputValue = input.target ? input.target.value : input;
     let newData = [...this.props.tableData];
     const row = newData[rowIndex];
-    const newRow = { ...row, [fieldName]: event.target.value }
+    const newRow = { ...row, [fieldName]: inputValue }
     newData.splice(rowIndex, 1, newRow)
 
     this.props.handleChange(newData)
@@ -84,19 +85,32 @@ class EditableTable extends React.Component {
                   tableData.map((row, index) => (
                     <TableRow key={`${this.props.id}-row-${index}`}>
                       {
-                        map(row, ((item, fieldName) => {
+                        this.props.tableStructure.map(column => {
+                          if (column.type === 'custom') {
+                            const InputComponent = this.props.customInputs[column.fieldName]
+                            return(
+                              <TableCell key={`${column.fieldName}-${index}`} padding="dense">
+                                <InputComponent
+                                  value={row[column.fieldName]}
+                                  handleChange={this.handleChange(column.fieldName, index)}
+                                  style={styles.input}
+                                />
+                              </TableCell>
+                            )
+                          }
                           return(
-                            <TableCell key={`${fieldName}-${item}`} padding="dense">
+                            <TableCell key={`${column.fieldName}-${index}`} padding="dense">
                               <Input
-                                defaultValue={item}
-                                onBlur={this.handleChange(fieldName, index)}
+                                type={column.type}
+                                defaultValue={row[column.fieldName]}
+                                onBlur={this.handleChange(column.fieldName, index)}
                                 style={styles.input}
                               />
                             </TableCell>
                           )
-                        }))
+                        })
                       }
-                      <TableCell padding="dense">
+                      <TableCell padding="checkbox">
                         <IconButton aria-label="Delete" onClick={this.handleDeleteRow(index)}>
                           &times;
                         </IconButton>

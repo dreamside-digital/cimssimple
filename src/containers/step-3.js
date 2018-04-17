@@ -18,6 +18,10 @@ import CimsInstructions from '../components/CimsInstructions';
 
 import { docketingTableStructure, docketTypeOptions, outputsTableStructure } from '../constants'
 
+const DocketingDropdown = (props) => (
+  <SingleSelect options={docketTypeOptions} {...props} />
+)
+
 class Step3 extends React.Component {
   generateChangeHandler = fieldId => {
     return value => {
@@ -47,10 +51,9 @@ class Step3 extends React.Component {
               handleChange={this.generateChangeHandler('docketing')}
               tableData={this.props.formData['docketing']}
               tableStructure={docketingTableStructure}
-            />
-            <Label small>Docket Types</Label>
-            <SingleSelect
-              options={docketTypeOptions}
+              customInputs={{
+                docketType: DocketingDropdown
+              }}
             />
           </InputSection>
           <CimsInstructions>

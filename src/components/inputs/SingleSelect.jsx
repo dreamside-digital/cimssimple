@@ -7,11 +7,8 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { ListItemText } from 'material-ui/List';
 
-import 'react-select/dist/react-select.css'
-
 const styles = {
-  width: '100%',
-  marginBottom: '1rem'
+  width: '100%'
 }
 
 const SingleSelect = props => {
@@ -22,7 +19,7 @@ const SingleSelect = props => {
   return (
     <Select
       multiple={props.multiple}
-      value={props.selected || ''}
+      value={props.value || ''}
       onChange={onChange}
       input={<Input />}
       style={styles}

@@ -62,8 +62,8 @@ export const initiativeSubTypes = [
 
 export const peopleResourcesTableStructure = [
   { header: 'Name', type: 'text', fieldName: 'name' },
-  { header: 'Resource / Partner', type: 'boolean', fieldName: 'resourceType' },
-  { header: 'Contact', type: 'email', fieldName: 'contact' },
+  { header: 'Resource / Partner', type: 'text', fieldName: 'resourceType' },
+  { header: 'Contact', type: 'text', fieldName: 'contact' },
 ]
 
 
@@ -120,7 +120,7 @@ export const deliverablesTableStructure = [
 
 export const docketingTableStructure = [
   { header: 'Date', type: 'date', fieldName: 'date' },
-  { header: 'Docket Type', type: 'text', fieldName: 'docketType' },
+  { header: 'Docket Type', type: 'custom', fieldName: 'docketType' },
   { header: 'Time Spent (hours)', type: 'number', fieldName: 'timeSpent' },
   { header: 'Details', type: 'text', fieldName: 'details' }
 ]
