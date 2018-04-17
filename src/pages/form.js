@@ -38,8 +38,12 @@ class SimpleTabs extends React.Component {
     this.props.getLocalFormData(projectId)
   }
 
+  scrollToTop = () => {
+    window.scrollTo({ top: 0 })
+  }
+
   handleChange = (event, value) => {
-    this.setState({ value })
+    this.setState({ value }, this.scrollToTop)
   }
 
   nextTab = () => {
@@ -47,7 +51,7 @@ class SimpleTabs extends React.Component {
     const next = currentTab + 1;
     const value = next > 3 ? 0 : next;
 
-    this.setState({ value });
+    this.setState({ value }, this.scrollToTop);
   }
 
   previousTab = () => {
@@ -55,7 +59,7 @@ class SimpleTabs extends React.Component {
     const prev = currentTab - 1;
     const value = prev < 0 ? 0 : prev;
 
-    this.setState({ value });
+    this.setState({ value }, this.scrollToTop);
   }
 
   render() {
