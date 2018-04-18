@@ -17,6 +17,7 @@ import Step1 from '../containers/step-1'
 import Step2 from '../containers/step-2'
 import Step3 from '../containers/step-3'
 import Step4 from '../containers/step-4'
+import SaveStatus from '../components/SaveStatus'
 
 
 const styles = {
@@ -72,6 +73,7 @@ class SimpleTabs extends React.Component {
           <Toolbar>
             <span style={styles.flex}>
               {`Now editing: ${this.props.formData['initiativeName']}`}
+              <SaveStatus />
             </span>
             <Button component={Link} to={'/'}>Exit form</Button>
           </Toolbar>

@@ -14,8 +14,21 @@ function updatePageData (data) {
   }
 }
 
+function updateSaveStatus(isSaved) {
+  return {
+    type: 'UPDATE_SAVE_STATUS', isSaved
+  }
+}
+
+function saveError(error) {
+  return {
+    type: 'SAVE_ERROR', error
+  }
+}
+
 export function saveLocalFormData (id, data, projectId) {
   return (dispatch, getState) => {
+    dispatch(updateSaveStatus(false))
     const state = getState();
     const form = {...state.form, [id]: data};
     const updatedProjects = {
@@ -27,6 +40,7 @@ export function saveLocalFormData (id, data, projectId) {
       dispatch(updateFormData(form));
     }).catch(err => {
       console.log('ERROR', err)
+      dispatch(saveError(err))
     })
   };
 }
@@ -48,7 +62,9 @@ export const reducer = (state = {}, action) => {
     case 'UPDATE_FORM_DATA': {
       return {
         ...state,
-        ...action.dataObj
+        ...action.dataObj,
+        isSaved: true,
+        saveError: false
       };
     }
 
@@ -56,6 +72,21 @@ export const reducer = (state = {}, action) => {
       return {
         ...state,
         ...action.data
+      }
+    }
+
+    case 'UPDATE_SAVE_STATUS': {
+      return {
+        ...state,
+        isSaved: action.isSaved,
+        saveError: false
+      }
+    }
+
+    case 'SAVE_ERROR': {
+      return {
+        ...state,
+        saveError: action.error
       }
     }
 
