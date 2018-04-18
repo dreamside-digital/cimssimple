@@ -7,6 +7,7 @@ import Grid from 'material-ui/Grid';
 
 import TextInput from '../components/inputs/TextInput';
 import InitiativeOutcomesSection from '../components/inputs/InitiativeOutcomesSection';
+import LessonsLearnedSection from '../components/inputs/LessonsLearnedSection';
 import PageTitle from '../components/PageTitle';
 import Question from '../components/Question';
 import Label from '../components/Label';
@@ -62,14 +63,12 @@ class Step4 extends React.Component {
               <p>Consider how this project has contributed to the longer-term goals and impacts the clinic is aiming for. What have you learned? Were there any unanticipated outcomes? What comes next? This information will be included in the clinic’s performance measurement of CD-CO work.</p>
               <p>This section shows the Goals & Objectives you identified for this project. For each one, comment on how this project has contributed to the goal, what you have learned, and what comes next.</p>
             </HelpText>
-            <Label small>How has this project contributed to the goals / objectives? </Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
-            <Label small>What have you learned?</Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
-            <Label small>Were there any unanticipated outcomes?</Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
-            <Label small>What comes next?</Label>
-            <TextInput id='lessonsLearned' handleChange={this.generateChangeHandler('lessonsLearned')} value={this.props.formData['lessonsLearned']}/>
+            <LessonsLearnedSection
+              goalsObjectives={this.props.formData['goalsObjectives'] || []}
+              lessonsLearned={this.props.formData['lessonsLearned'] || []}
+              handleChange={this.generateChangeHandler('lessonsLearned')}
+              value={this.props.formData['lessonsLearned']}
+            />
           </InputSection>
           <CimsInstructions>
             <p>In CIMS, there are three fields available for project evaluation. You can cut & paste text from this document into these fields:</p>
