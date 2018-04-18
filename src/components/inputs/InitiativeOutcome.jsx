@@ -14,27 +14,26 @@ const styles = {
   },
   buttonDiv: {
     textAlign: 'right'
+  },
+  disabled: {
+    fontStyle: 'italic',
+    textTransform: 'uppercase',
   }
 }
 
 const InitiativeOutcome = props => {
 
-  const onChangeAnticipatedOutcome = (e) => {
-    const newValue = { ...props.value, anticipatedOutcome: e.target.value }
+  const onChange = (field) => (event) => {
+    const newValue = { ...props.value, [field]: event.target.value }
     props.handleChange(newValue);
-  };
-
-  const onChangeActualOutcome = (e) => {
-    const newValue = { ...props.value, actualOutcome: e.target.value }
-    props.handleChange(newValue);
-  };
+  }
 
   return (
     <Paper style={styles.paper}>
       <Label small>Anticipated Outcome:</Label>
       <TextField
         type="text"
-        onChange={onChangeAnticipatedOutcome}
+        onChange={onChange('anticipatedOutcome')}
         value={props.value.anticipatedOutcome || ''}
         style={styles.input}
       />
@@ -43,13 +42,22 @@ const InitiativeOutcome = props => {
         multiline
         rowsMax=""
         type="text"
-        onChange={onChangeActualOutcome}
+        onChange={onChange('actualOutcome')}
         value={props.value.actualOutcome || ''}
         style={styles.input}
       />
-      <div style={styles.buttonDiv}>
-        <Button onClick={props.handleDelete}>Delete</Button>
-      </div>
+      {
+        props.value.allowDelete &&
+        <div style={styles.buttonDiv}>
+          <Button onClick={props.handleDelete}>Delete</Button>
+        </div>
+      }
+      {
+        !props.value.allowDelete &&
+        <div style={styles.buttonDiv}>
+          <small style={styles.disabled}>Imported from Step 2</small>
+        </div>
+      }
     </Paper>
   )
 }

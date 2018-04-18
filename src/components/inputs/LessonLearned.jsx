@@ -14,6 +14,10 @@ const styles = {
   },
   buttonDiv: {
     textAlign: 'right'
+  },
+  disabled: {
+    fontStyle: 'italic',
+    textTransform: 'uppercase',
   }
 }
 
@@ -65,10 +69,18 @@ const LessonLearned = props => {
         value={props.value.next || ''}
         style={styles.input}
       />
-
-      <div style={styles.buttonDiv}>
-        <Button onClick={props.handleDelete}>Delete</Button>
-      </div>
+      {
+        props.value.allowDelete &&
+        <div style={styles.buttonDiv}>
+          <Button onClick={props.handleDelete}>Delete</Button>
+        </div>
+      }
+      {
+        !props.value.allowDelete &&
+        <div style={styles.buttonDiv}>
+          <small style={styles.disabled}>Imported from Step 2</small>
+        </div>
+      }
     </Paper>
   )
 }

@@ -6,65 +6,76 @@ import Button from 'material-ui/Button';
 
 import LessonLearned from './LessonLearned'
 
-const LessonsLearnedSection = props => {
-  const onChange = (index) => (newData) => {
-    const lessons = [...props.lessonsLearned];
+class LessonsLearnedSection extends React.Component {
+  componentDidMount() {
+    this.insertGoalsObjectives()
+  }
+
+  insertGoalsObjectives = () => {
+    const emptyLessons = map(this.props.goalsObjectives, ((goal, id) => {
+      const exists = find(this.props.lessonsLearned, ['goal', goal])
+      if (!exists) {
+        return {
+          goal: goal,
+          contributed: '',
+          learned: '',
+          unanticipated: '',
+          next: '',
+          allowDelete: false
+        };
+      }
+    }))
+
+    const updatedLessons = [...this.props.lessonsLearned].concat(compact(emptyLessons))
+
+    this.props.handleChange(updatedLessons)
+  }
+
+  onChange = (index) => (newData) => {
+    const lessons = [...this.props.lessonsLearned];
     lessons.splice(index, 1, newData)
 
-    props.handleChange(lessons)
+    this.props.handleChange(lessons)
   }
 
-  const onDelete = (index) => () => {
-    const lessons = [...props.lessonsLearned];
+  onDelete = (index) => () => {
+    const lessons = [...this.props.lessonsLearned];
     lessons.splice(index, 1)
 
-    props.handleChange(lessons)
+    this.props.handleChange(lessons)
   }
 
-  const createNewLessonLearned = () => {
+  createNewLessonLearned = () => {
     const emptyLesson = {
       goal: '',
       contributed: '',
       learned: '',
       unanticipated: '',
-      next: ''
+      next: '',
+      allowDelete: true
     };
-    const oldData = props.lessonsLearned ? props.lessonsLearned : [];
+    const oldData = this.props.lessonsLearned ? this.props.lessonsLearned : [];
     const newData = oldData.concat(emptyLesson);
 
-    props.handleChange(newData)
+    this.props.handleChange(newData)
   }
 
-
-  const emptyLessonsLearned = map(props.goalsObjectives, ((goal, id) => {
-    const exists = find(props.goalsObjectives, ['goal', goal])
-    if (!exists) {
-      return {
-        goal: goal,
-        contributed: '',
-        learned: '',
-        unanticipated: '',
-        next: ''
-      };
-    }
-  }))
-
-  const lessonsToEvaluate = props.lessonsLearned.concat(compact(emptyLessonsLearned))
-
-  return (
-    <Grid container spacing={16}>
-      {
-        lessonsToEvaluate.map((lesson, index) => {
-          return(
-            <Grid item xs={12} key={`lesson-${index}`}>
-              <LessonLearned value={lesson} handleChange={onChange(index)} handleDelete={onDelete(index)} />
-            </Grid>
-          )
-        })
-      }
-      <Button onClick={createNewLessonLearned}>Add Lesson Learned</Button>
-    </Grid>
-  )
+  render() {
+    return (
+      <Grid container spacing={16}>
+        {
+          this.props.lessonsLearned.map((lesson, index) => {
+            return(
+              <Grid item xs={12} key={`lesson-${index}`}>
+                <LessonLearned value={lesson} handleChange={this.onChange(index)} handleDelete={this.onDelete(index)} />
+              </Grid>
+            )
+          })
+        }
+        <Button onClick={this.createNewLessonLearned}>Add Lesson Learned</Button>
+      </Grid>
+    )
+  }
 }
 
 export default LessonsLearnedSection
