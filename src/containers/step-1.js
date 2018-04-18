@@ -51,6 +51,9 @@ class Step1 extends React.Component {
                 Reform.”{' '}
               </p>
               <p>
+                <strong>Naming convention</strong>
+              </p>
+              <p>
                 You may want to adopt a consistent system, called a naming
                 convention, to name all your projects in CIMS. This will allow
                 you to search them more easily. Having a naming convention will
@@ -127,26 +130,14 @@ class Step1 extends React.Component {
         <Question>
           <InputSection>
             <Label htmlFor="parentOrChild">
-              3. Keeping initiatives organized (Optional)
+              3. Parent / child initiatives (Optional)
             </Label>
             <HelpText>
               <p>
-                <strong>Naming convention</strong>
-              </p>
-              <p>
-                You may want to adopt a consistent system, called a naming
-                convention, to name all your projects in CIMS. This will allow
-                you to search them more easily. Having a naming convention will
-                increase consistency and clarity, especially when multiple staff
-                work on the same project. A clinic could establish naming
-                conventions that all staff use, to make it even easier to search
-                and group projects in CIMS. For example, you may want to decide
-                whether or not to use abbreviations (such as PLE), and / or a
-                consistent order for names (such as clinic name – type of
-                activity – community and / or topic).
-              </p>
-              <p>
-                <strong>Parent / child initiatives</strong>
+                In CIMS, a “parent” initiative is a long-term project or
+                campaign with an overarching goal, while a “child” initiative is
+                a specific action, event, or activity that contributes to the
+                campaign.
               </p>
               <p>
                 CO/CD campaigns are often long-term campaigns aiming to create
@@ -155,12 +146,6 @@ class Step1 extends React.Component {
                 ongoing campaigns they are part of – so that you can show all
                 the work that goes into a larger campaign, and the results of
                 that work, even when the campaign is ongoing.
-              </p>
-              <p>
-                In CIMS, a “parent” initiative is a long-term project or
-                campaign with an overarching goal, while a “child” initiative is
-                a specific action, event, or activity that contributes to the
-                campaign.
               </p>
               <p>
                 For example, the parent initiative (overall goal/campaign) may
@@ -215,7 +200,7 @@ class Step1 extends React.Component {
 
         <Question>
           <InputSection>
-            <Label htmlFor="peopleResources">4. People and Resources</Label>
+            <Label htmlFor="peopleResources">4. People and Resources (Optional)</Label>
             <HelpText>
               <p>CIMS provides two fields for identifying the people involved in a project: “Assigned to” will automatically show the name of the worker who created the file, and “Initiative Resources” is a quick and simple way of showing who is involved internally and externally in your Initiative, and can serve as a contact list of all your partners for this project.</p>
               <p>

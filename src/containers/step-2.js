@@ -48,16 +48,6 @@ class Step2 extends React.Component {
             </Label>
             <HelpText>
               <p>
-                The Goals and Objectives section in CIMS does not track the
-                goals and objectives of the initiative, but rather how the
-                initiative fits in with the goals and objectives of your clinic.
-                Linking your CO/CD work to your clinic’s goals and objectives is
-                important way to demonstrate that you are helping your clinic
-                achieve the goals they were funded for. The clinic will use this
-                section to generate reports and performance measures on CD-CO
-                work.
-              </p>
-              <p>
                 The goals & objectives for initiatives in CIMS must be selected
                 from the clinic’s Goals & Objectives entered by the clinic E.D.
                 OPICCO is urging clinics to use three consistent Goals &
@@ -72,6 +62,16 @@ class Step2 extends React.Component {
                 </li>
                 <li>Nurture community empowerment</li>
               </ol>
+              <p>
+                The Goals and Objectives section in CIMS does not track the
+                goals and objectives of the initiative, but rather how the
+                initiative fits in with the goals and objectives of your clinic.
+                Linking your CO/CD work to your clinic’s goals and objectives is
+                important way to demonstrate that you are helping your clinic
+                achieve the goals they were funded for. The clinic will use this
+                section to generate reports and performance measures on CD-CO
+                work.
+              </p>
             </HelpText>
             <Label small>Goals and Objectives:</Label>
             <TextInputToList
