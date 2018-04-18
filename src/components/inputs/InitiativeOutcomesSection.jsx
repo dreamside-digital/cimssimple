@@ -1,4 +1,5 @@
 import React from 'react'
+import { find, compact } from 'lodash'
 import TextField from 'material-ui/TextField'
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
@@ -6,31 +7,44 @@ import Button from 'material-ui/Button';
 import InitiativeOutcome from './InitiativeOutcome'
 
 const InitiativeOutcomesSection = props => {
-  const onChange = e => {
-    console.log(e)
+  const onChange = (index) => (newData) => {
+    const outcomeArray = [...props.initiativeOutcomes];
+    outcomeArray.splice(index, 1, newData)
+
+    props.handleChange(outcomeArray)
+  }
+
+  const onDelete = (index) => () => {
+    const outcomeArray = [...props.initiativeOutcomes];
+    outcomeArray.splice(index, 1)
+
+    props.handleChange(outcomeArray)
   }
 
   const createNewOutcome = () => {
     const emptyOutcome = { anticipatedOutcome: '', actualOutcome: '' };
-    let newOutcomeData = props.initiativeOutcomes ? [props.initiativeOutcomes] : [];
-    newOutcomeData.push(emptyOutcome);
+    const oldOutcomeData = props.initiativeOutcomes ? props.initiativeOutcomes : [];
+    const newOutcomeData = oldOutcomeData.concat(emptyOutcome);
 
     props.handleChange(newOutcomeData)
   }
 
-  const anticipatedOutcomes = props.anticipatedOutcomes.map(outcome => {
-    return { anticipatedOutcome: outcome, actualOutcome: ''}
+  const emptyAnticipatedOutcomes = props.anticipatedOutcomes.map(outcome => {
+    const exists = find(props.initiativeOutcomes, ['anticipatedOutcome', outcome])
+    if (!exists) {
+      return { anticipatedOutcome: outcome, actualOutcome: ''}
+    }
   })
 
-  const outcomesToEvaluate = props.initiativeOutcomes.concat(anticipatedOutcomes)
+  const outcomesToEvaluate = props.initiativeOutcomes.concat(compact(emptyAnticipatedOutcomes))
 
   return (
     <Grid container spacing={16}>
       {
-        outcomesToEvaluate.map(outcome => {
+        outcomesToEvaluate.map((outcome, index) => {
           return(
-            <Grid item xs={12}>
-              <InitiativeOutcome value={outcome} handleChange={onChange} />
+            <Grid item xs={12} key={`outcome-${index}`}>
+              <InitiativeOutcome value={outcome} handleChange={onChange(index)} handleDelete={onDelete(index)} />
             </Grid>
           )
         })

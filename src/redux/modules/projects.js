@@ -37,7 +37,6 @@ export function createLocalProject () {
 
     localForage.setItem('projects', projects).then((val) => {
       dispatch(createProject(val));
-      dispatch(editProject(projectId));
     }).catch(err => {
       console.log('ERROR', err)
     })
