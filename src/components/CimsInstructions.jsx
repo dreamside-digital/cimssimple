@@ -18,7 +18,7 @@ const styles = {
 
 const CimsInstructions = (props) => (
   <Grid item xs={12} md={4}>
-    <aside style={styles.container} className="cims-instructions">
+    <aside style={styles.container}>
       <div style={styles.header}><strong>CIMS Instructions</strong></div>
       <div style={styles.body}>
         {props.children}

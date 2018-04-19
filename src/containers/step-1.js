@@ -32,7 +32,7 @@ class Step1 extends React.Component {
 
   render() {
     return (
-      <div className="page-container" style={{ padding: '1rem' }}>
+      <div style={{ padding: '1rem' }}>
         <PageTitle>Step 1 out of 4: Starting a new project</PageTitle>
 
         <Question>

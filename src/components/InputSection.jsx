@@ -7,7 +7,7 @@ const styles = {
 
 const InputSection = (props) => (
   <Grid item xs={12} md={8}>
-    <article {...props} className="input-area" style={styles}>{props.children}</article>
+    <article {...props} style={styles}>{props.children}</article>
   </Grid>
 )
 

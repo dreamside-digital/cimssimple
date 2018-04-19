@@ -26,7 +26,7 @@ const styles = {
   }
 }
 
-class SimpleTabs extends React.Component {
+class TabbedForm extends React.Component {
   state = {
     value: 0,
   }
@@ -163,4 +163,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SimpleTabs)
+export default connect(mapStateToProps, mapDispatchToProps)(TabbedForm)

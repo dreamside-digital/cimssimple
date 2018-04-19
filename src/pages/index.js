@@ -49,7 +49,7 @@ class IndexPage extends React.Component {
     const projectTableData = map(
       this.props.projects,
       (projectData, projectId) => {
-        const name = projectData ? projectData.initiativeName : 'hi'
+        const name = projectData ? projectData.initiativeName : 'Unnamed project'
         return { id: projectId, name }
       }
     )
@@ -93,6 +93,12 @@ class IndexPage extends React.Component {
                           variant="raised"
                         >
                           Edit
+                        </Button>
+                        <Button
+                          component={Link}
+                          to={`/print?id=${row.id}`}
+                        >
+                          Print View
                         </Button>
                         <Button
                           onClick={() => this.props.deleteProject(row.id)}
