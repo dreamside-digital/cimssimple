@@ -21,11 +21,12 @@ import {
   initiativeTypes,
   initiativeSubTypes,
   peopleResourcesTableStructure,
-} from '../constants'
+} from '../config/constants'
 
 class Step1 extends React.Component {
   generateChangeHandler = fieldId => {
     return value => {
+      this.props.startEditing()
       this.props.saveLocalFormData(fieldId, value, this.props.projectId)
     }
   }
@@ -200,9 +201,18 @@ class Step1 extends React.Component {
 
         <Question>
           <InputSection>
-            <Label htmlFor="peopleResources">4. People and Resources (Optional)</Label>
+            <Label htmlFor="peopleResources">
+              4. People and Resources (Optional)
+            </Label>
             <HelpText>
-              <p>CIMS provides two fields for identifying the people involved in a project: “Assigned to” will automatically show the name of the worker who created the file, and “Initiative Resources” is a quick and simple way of showing who is involved internally and externally in your Initiative, and can serve as a contact list of all your partners for this project.</p>
+              <p>
+                CIMS provides two fields for identifying the people involved in
+                a project: “Assigned to” will automatically show the name of the
+                worker who created the file, and “Initiative Resources” is a
+                quick and simple way of showing who is involved internally and
+                externally in your Initiative, and can serve as a contact list
+                of all your partners for this project.
+              </p>
               <p>
                 Your fellow clinic staff are added as 'resources', and all other
                 contacts are added as 'partners'.

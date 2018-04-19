@@ -1,6 +1,6 @@
 import React from 'react'
 import Link, { navigateTo } from 'gatsby-link'
-import { map } from 'lodash'
+import { map, compact } from 'lodash'
 
 import { connect } from 'react-redux'
 import {
@@ -21,19 +21,26 @@ import Table, {
 } from 'material-ui/Table'
 
 import BasicTable from '../components/inputs/BasicTable'
+import AuthButton from '../components/AuthButton'
+import Label from '../components/Label'
+import SyncStatus from '../components/SyncStatus'
 
 const styles = {
   container: {
-    padding: '1rem'
+    padding: '1rem',
+    marginBottom: '2rem'
   },
   header: {
-    marginTop: '4rem',
     marginBottom: '4rem',
     textAlign: 'center',
   },
   title: {
     color: '#932F6D',
   },
+  tableHeader: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  }
 }
 
 class IndexPage extends React.Component {
@@ -49,81 +56,91 @@ class IndexPage extends React.Component {
     const projectTableData = map(
       this.props.projects,
       (projectData, projectId) => {
-        const name = projectData ? projectData.initiativeName : 'Unnamed project'
-        return { id: projectId, name }
+        if (!!projectId) {
+          const name = projectData ? projectData.initiativeName : 'Unnamed project'
+          return { id: projectId, name }
+        }
       }
     )
 
     return (
-      <Grid container justify="center" style={styles.container}>
-        <Grid item xs={12} md={8}>
-          <header style={styles.header}>
-            <h1 style={styles.title}>CIMSsimple</h1>
-            <p>Planning, Docketing, and Evaluation Tool</p>
-          </header>
-          <h2>Purpose & Context</h2>
-          <p>
-            This tool is intended to provide legal workers with a simple,
-            user-friendly template for planning, documenting, and evaluating
-            their CD-CO work. It also serves as a roadmap for documenting CD-CO
-            work in CIMS. The fields on the form correspond to the fields in
-            CIMS Initiatives, and the content entered into some parts of this
-            form can be cut & pasted right into CIMS. This will enable legal
-            workers to plan, docket, and evaluate projects, and transfer the
-            necessary information into CIMS at a later time.
-          </p>
-          {!!projectTableData.length && (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Project Name</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {projectTableData.map((row, index) => {
-                  return (
-                    <TableRow key={`row-${row.id}`}>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>
-                        <Button
-                          component={Link}
-                          to={`/form?id=${row.id}`}
-                          color="primary"
-                          variant="raised"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          component={Link}
-                          to={`/print?id=${row.id}`}
-                        >
-                          Print View
-                        </Button>
-                        <Button
-                          onClick={() => this.props.deleteProject(row.id)}
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          )}
-          <Grid container>
-            <Grid item>
-              <Button
-                onClick={this.props.createProject}
-                color="primary"
-              >
-                Start a new project
-              </Button>
+      <div>
+        <Grid container justify="flex-end" style={styles.container}>
+          <Grid item>
+          <AuthButton />
+          </Grid>
+        </Grid>
+        <Grid container justify="center" style={styles.container}>
+          <Grid item xs={12} md={8}>
+            <header style={styles.header}>
+              <h1 style={styles.title}>CIMSsimple</h1>
+              <p>Planning, Docketing, and Evaluation Tool</p>
+            </header>
+            <h2>Purpose & Context</h2>
+            <p>
+              This tool is intended to provide legal workers with a simple,
+              user-friendly template for planning, documenting, and evaluating
+              their CD-CO work. It also serves as a roadmap for documenting CD-CO
+              work in CIMS. The fields on the form correspond to the fields in
+              CIMS Initiatives, and the content entered into some parts of this
+              form can be cut & pasted right into CIMS. This will enable legal
+              workers to plan, docket, and evaluate projects, and transfer the
+              necessary information into CIMS at a later time.
+            </p>
+            <div style={styles.tableHeader}><Label>Your Projects</Label><SyncStatus /></div>
+            {!!projectTableData.length && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Project Name</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {compact(projectTableData).map((row, index) => {
+                    return (
+                      <TableRow key={`row-${row.id}`}>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>
+                          <Button
+                            component={Link}
+                            to={`/form?id=${row.id}`}
+                            color="primary"
+                            variant="raised"
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            component={Link}
+                            to={`/print?id=${row.id}`}
+                          >
+                            Print View
+                          </Button>
+                          <Button
+                            onClick={() => this.props.deleteProject(row.id)}
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            )}
+            <Grid container>
+              <Grid item>
+                <Button
+                  onClick={this.props.createProject}
+                  color="primary"
+                >
+                  Start a new project
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </div>
     )
   }
 }

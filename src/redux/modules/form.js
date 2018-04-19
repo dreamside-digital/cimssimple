@@ -1,4 +1,6 @@
 import * as localForage from "localforage";
+import firebase from '../../config/firebase';
+import { syncStatus } from './user';
 
 // Actions
 
@@ -26,9 +28,17 @@ function saveError(error) {
   }
 }
 
+export function startEditing() {
+  return dispatch => {
+    dispatch(syncStatus(false))
+    dispatch(updateSaveStatus(false))
+  }
+}
+
 export function saveLocalFormData (id, data, projectId) {
   return (dispatch, getState) => {
     dispatch(updateSaveStatus(false))
+
     const state = getState();
     const form = {...state.form, [id]: data};
     const updatedProjects = {

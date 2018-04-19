@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'gatsby-link'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/form';
+import { saveLocalFormData, getLocalFormData, startEditing } from '../redux/modules/form';
 import { editProject } from '../redux/modules/user';
 
 import { withStyles } from 'material-ui/styles'
@@ -18,6 +18,9 @@ import Step2 from '../containers/step-2'
 import Step3 from '../containers/step-3'
 import Step4 from '../containers/step-4'
 import SaveStatus from '../components/SaveStatus'
+import SyncStatus from '../components/SyncStatus'
+import AuthButton from '../components/AuthButton'
+import SyncFormButton from '../components/SyncFormButton'
 
 
 const styles = {
@@ -74,8 +77,11 @@ class TabbedForm extends React.Component {
             <span style={styles.flex}>
               {`Now editing: ${this.props.formData['initiativeName']}`}
               <SaveStatus />
+              <SyncStatus />
             </span>
-            <Button component={Link} to={'/'}>Exit form</Button>
+            <SyncFormButton />
+            <Button component={Link} to={'/'}>Save & Exit</Button>
+            <AuthButton />
           </Toolbar>
         </AppBar>
         <AppBar position="static">
@@ -88,6 +94,7 @@ class TabbedForm extends React.Component {
         </AppBar>
         {value === 0 && (
           <Step1
+            startEditing={this.props.startEditing}
             formData={this.props.formData}
             saveLocalFormData={this.props.saveLocalFormData}
             projectId={this.props.projectId}
@@ -97,6 +104,7 @@ class TabbedForm extends React.Component {
           <Step2
             formData={this.props.formData}
             saveLocalFormData={this.props.saveLocalFormData}
+            startEditing={this.props.startEditing}
             projectId={this.props.projectId}
           />
         )}
@@ -104,6 +112,7 @@ class TabbedForm extends React.Component {
           <Step3
             formData={this.props.formData}
             saveLocalFormData={this.props.saveLocalFormData}
+            startEditing={this.props.startEditing}
             projectId={this.props.projectId}
           />
         )}
@@ -111,6 +120,7 @@ class TabbedForm extends React.Component {
           <Step4
             formData={this.props.formData}
             saveLocalFormData={this.props.saveLocalFormData}
+            startEditing={this.props.startEditing}
             projectId={this.props.projectId}
           />
         )}
@@ -151,6 +161,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    startEditing: () => {
+      dispatch(startEditing())
+    },
     saveLocalFormData: (fieldId, value, projectId) => {
       dispatch(saveLocalFormData(fieldId, value, projectId))
     },

@@ -12,15 +12,15 @@ const styles = {
 }
 
 const SingleSelect = props => {
-  const onChange = event => {
-    props.handleChange(event.target.value)
+  const handleChange = event => {
+    props.handleSave(event.target.value)
   }
 
   return (
     <Select
       multiple={props.multiple}
       value={props.value || ''}
-      onChange={onChange}
+      onChange={handleChange}
       input={<Input />}
       style={styles}
     >

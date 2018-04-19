@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import uuidv4 from 'uuid/v4';
-import { map } from 'lodash';
+import uuidv4 from 'uuid/v4'
+import { map } from 'lodash'
 
 import { saveLocalFormData, getLocalFormData } from '../redux/modules/form'
 
@@ -9,7 +9,12 @@ import Link from 'gatsby-link'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import Grid from 'material-ui/Grid'
-import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List'
+import List, {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemSecondaryAction,
+} from 'material-ui/List'
 
 import TextInput from '../components/inputs/TextInput'
 import TextInputToList from '../components/inputs/TextInputToList'
@@ -27,7 +32,7 @@ import CimsInstructions from '../components/CimsInstructions'
 import {
   anticipatdOutcomesOptions,
   deliverablesTableStructure,
-} from '../constants'
+} from '../config/constants'
 
 class Step2 extends React.Component {
   generateChangeHandler = fieldId => {
@@ -75,7 +80,7 @@ class Step2 extends React.Component {
             </HelpText>
             <Label small>Goals and Objectives:</Label>
             <TextInputToList
-              fieldId='goalsObjectives'
+              fieldId="goalsObjectives"
               list={this.props.formData['goalsObjectives']}
               handleUpdateList={this.generateChangeHandler('goalsObjectives')}
             />
@@ -159,12 +164,13 @@ class Step2 extends React.Component {
                 </li>
               </ul>
               <p>
-                These can be both short-term and long-term. Select appropriate items from the CIMS list below, and add your own. Also indicate whose knowledge / ability the project is aiming to increase (e.g. clinic staff, community members, tenants, etc.)
+                These can be both short-term and long-term. Select appropriate
+                items from the CIMS list below, and add your own. Also indicate
+                whose knowledge / ability the project is aiming to increase
+                (e.g. clinic staff, community members, tenants, etc.)
               </p>
             </HelpText>
-            <Label small>
-              What outcomes is your project aiming for?
-            </Label>
+            <Label small>What outcomes is your project aiming for?</Label>
             <AnticipatedOutcomesSelector
               id="anticipatedOutcomes"
               handleChange={this.generateChangeHandler('anticipatedOutcomes')}
