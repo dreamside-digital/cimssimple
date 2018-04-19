@@ -34,9 +34,14 @@ class AuthButton extends React.Component {
     });
   }
 
+  logOut = () => {
+    firebase.auth().signOut();
+    this.props.userLoggedOut();
+  }
+
   render() {
     if (this.props.isLoggedIn) {
-      return <Button component={Link} to={'/logout'}>Log Out</Button>
+      return <Button onClick={this.logOut}>Log Out</Button>
     } else {
       return <Button component={Link} to={'/login'} variant="raised" color="secondary">Log In</Button>
     }
