@@ -21,6 +21,10 @@ const styles = {
   },
   button: {
     marginLeft: '1rem'
+  },
+  disabled: {
+    fontStyle: 'italic',
+    textTransform: 'uppercase',
   }
 }
 
@@ -52,12 +56,11 @@ class EditableTable extends React.Component {
     this.props.tableStructure.map(column => {
       row[column.fieldName] = '';
     })
-
     return row;
   }
 
   createNewRow = () => {
-    const emptyRowData = this.defaultRowData();
+    const emptyRowData = this.defaultRowData({ allowDelete: true });
     let newTableData = this.props.tableData ? [...this.props.tableData] : [];
     newTableData.push(emptyRowData);
 
@@ -111,9 +114,13 @@ class EditableTable extends React.Component {
                         })
                       }
                       <TableCell padding="checkbox">
-                        <IconButton aria-label="Delete" onClick={this.handleDeleteRow(index)}>
-                          &times;
-                        </IconButton>
+                        {
+                          !!row.allowDelete ?
+                          <IconButton aria-label="Delete" onClick={this.handleDeleteRow(index)}>
+                            &times;
+                          </IconButton> :
+                          <small style={styles.disabled}>Imported</small>
+                        }
                       </TableCell>
                     </TableRow>
                   ))

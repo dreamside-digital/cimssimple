@@ -8,6 +8,7 @@ import Grid from 'material-ui/Grid';
 import TextInput from '../components/inputs/TextInput';
 import EditableTable from '../components/inputs/EditableTable';
 import SingleSelect from '../components/inputs/SingleSelect';
+import OutputsTable from '../components/inputs/OutputsTable';
 
 import PageTitle from '../components/PageTitle';
 import Question from '../components/Question';
@@ -76,10 +77,11 @@ class Step3 extends React.Component {
               <p>This is where you can track which deliverables you have completed.</p>
               <p>Next to each of your deliverables, enter the date it was completed, and add any learnings, further plans, or other comments.</p>
             </HelpText>
-            <EditableTable
+            <OutputsTable
               id="outputs"
               handleChange={this.generateChangeHandler('outputs')}
-              tableData={this.props.formData['outputs']}
+              outputs={this.props.formData['outputs'] || []}
+              deliverables={this.props.formData['deliverables'] || []}
               tableStructure={outputsTableStructure}
             />
           </InputSection>
