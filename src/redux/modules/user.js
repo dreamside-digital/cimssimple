@@ -1,9 +1,9 @@
 import * as localForage from 'localforage'
+import { syncProjectData, getProjectData } from './projects'
 
 // Actions
 
 export function editProject(id) {
-  console.log(id)
   return {
     type: 'EDIT_PROJECT',
     id,
@@ -23,6 +23,36 @@ export function userLoggedIn(user = null) {
 
 export function userLoggedOut() {
   return { type: 'USER_LOGGED_OUT' }
+}
+
+export function newLogin(user = null) {
+  return dispatch => {
+    localForage.getItem('cimsUser').then((lastUser) => {
+      if (!lastUser) {
+        localForage.setItem('cimsUser', user).then(savedUser => {
+          dispatch(userLoggedIn(savedUser))
+          dispatch(syncProjectData())
+          console.log('logging in for the first time')
+        })
+      } else if (user.uid !== lastUser.uid) {
+        localForage.clear().then(() => {
+          localForage.setItem('cimsUser', user).then(savedUser => {
+            dispatch(userLoggedIn(savedUser))
+            dispatch(getProjectData())
+            console.log('switching to a new user')
+          })
+        }).catch((err) => {
+            console.log(err);
+        });
+      } else {
+        dispatch(userLoggedIn(user))
+        dispatch(syncProjectData())
+        console.log('logging in a previously logged in user')
+      }
+    }).catch(err => {
+      console.log('ERROR', err)
+    })
+  }
 }
 
 // Reducer

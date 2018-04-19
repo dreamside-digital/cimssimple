@@ -39,8 +39,6 @@ export function createLocalProject() {
     const projectState = state.projects
     const user = state.user.user;
     const isLoggedIn = state.user.isLoggedIn;
-    const db = firebase.database();
-    const ref = db.ref(`users/${user.uid}/projects`);
     const projectId = uuidv4()
     const newProject = {
       [projectId]: emptyProject,
@@ -57,6 +55,8 @@ export function createLocalProject() {
       })
 
     if (isLoggedIn) {
+      const db = firebase.database();
+      const ref = db.ref(`users/${user.uid}/projects`);
       ref.update(projects).then(() => {
         dispatch(syncStatus(true));
       }).catch(err => {
@@ -74,6 +74,7 @@ export function getProjectData() {
 
     if (isLoggedIn && !!user.projects) {
       dispatch(populateProjectData(user.projects))
+      dispatch(syncStatus(true))
     } else {
       localForage
         .getItem('projects')
@@ -91,6 +92,11 @@ export function syncProjectData() {
   return (dispatch, getState) => {
     const state = getState()
     const user = state.user.user
+
+    if (!state.user.isLoggedIn) {
+      dispatch(syncStatus(false));
+      return null;
+    }
 
     const db = firebase.database()
     const ref = db.ref(`users/${user.uid}/projects`)
@@ -140,8 +146,6 @@ export function deleteLocalProject(id) {
     const isLoggedIn = state.user.isLoggedIn
     const projectState = state.projects
 
-    const db = firebase.database()
-    const ref = db.ref(`users/${user.uid}/projects/${id}`)
 
     let updatedProjects = {
       ...projectState,
@@ -158,6 +162,9 @@ export function deleteLocalProject(id) {
       })
 
     if (isLoggedIn) {
+      const db = firebase.database()
+      const ref = db.ref(`users/${user.uid}/projects/${id}`)
+
       ref.remove().then(() => {
         dispatch(syncStatus(true));
       }).catch(err => {
