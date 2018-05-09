@@ -12,6 +12,9 @@ import Input from 'material-ui/Input'
 import IconButton from 'material-ui/IconButton'
 import Button from 'material-ui/Button'
 import Paper from 'material-ui/Paper'
+import TextField from "material-ui/TextField";
+
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   container: {
@@ -21,8 +24,16 @@ const styles = {
   table: {
     marginBottom: '1rem',
   },
+  cell: {
+    whiteSpace: "normal",
+    wordWrap: "break-word",
+    verticalAlign: "bottom"
+  },
+  formControl: {
+    width: "100%"
+  },
   input: {
-    fontSize: '0.8rem',
+    fontSize: "0.8rem"
   },
   button: {
     marginLeft: '1rem',
@@ -100,6 +111,7 @@ class EditableTable extends React.Component {
                       <TableCell
                         key={`${column.fieldName}-${index}`}
                         padding="dense"
+                        className={this.props.classes.cell}
                       >
                         <InputComponent
                           value={row[column.fieldName]}
@@ -116,12 +128,15 @@ class EditableTable extends React.Component {
                     <TableCell
                       key={`${column.fieldName}-${index}`}
                       padding="dense"
+                      className={this.props.classes.cell}
                     >
-                      <Input
+                      <TextField
                         type={column.type}
                         defaultValue={row[column.fieldName]}
                         onBlur={this.handleChange(column.fieldName, index)}
-                        style={styles.input}
+                        InputProps={{ className: this.props.classes.input }}
+                        className={this.props.classes.formControl}
+                        multiline={true}
                       />
                     </TableCell>
                   )
@@ -150,4 +165,4 @@ class EditableTable extends React.Component {
   }
 }
 
-export default EditableTable
+export default withStyles(styles)(EditableTable);

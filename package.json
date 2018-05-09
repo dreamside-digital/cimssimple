@@ -21,6 +21,13 @@
     "redux-debounced": "^0.5.0",
     "redux-thunk": "^2.2.0"
   },
+  "browserslist": [
+    "last 2 versions",
+    "safari >= 9",
+    "IE >= 9",
+    "chrome >= 50",
+    "firefox >= 50"
+  ],
   "keywords": [
     "gatsby"
   ],

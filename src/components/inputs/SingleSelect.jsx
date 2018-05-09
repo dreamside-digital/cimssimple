@@ -13,7 +13,7 @@ const styles = {
 
 const SingleSelect = props => {
   const handleChange = event => {
-    props.handleSave(event.target.value)
+    props.handleChange(event.target.value)
   }
 
   return (
