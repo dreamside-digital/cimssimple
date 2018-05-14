@@ -10,7 +10,7 @@ const SyncFormButton = props => {
       onClick={props.syncProjectData}
       variant="raised"
       color="secondary"
-      disabled={props.synced}
+      disabled={!props.isLoggedIn || props.synced}
     >
       Sync form
     </Button>
@@ -20,6 +20,7 @@ const SyncFormButton = props => {
 const mapStateToProps = state => {
   return {
     synced: state.user.synced,
+    isLoggedIn: state.user.isLoggedIn,
   }
 }
 

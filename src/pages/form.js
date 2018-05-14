@@ -38,8 +38,10 @@ class TabbedForm extends React.Component {
     const queryString = this.props.location.search
     const params = new URLSearchParams(queryString)
     const projectId = params.get('id');
-    this.props.editProject(projectId)
-    this.props.getLocalFormData(projectId)
+    const startingTab = !!params.get('step') ? (parseInt(params.get('step')) - 1) : 0;
+    this.props.saveLocalFormData('currentTab', startingTab, projectId)
+    this.props.editProject(projectId);
+    this.props.getLocalFormData(projectId);
   }
 
   scrollToTop = () => {
@@ -47,7 +49,8 @@ class TabbedForm extends React.Component {
   }
 
   handleChange = (event, value) => {
-    this.setState({ value }, this.scrollToTop)
+    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.scrollToTop()
   }
 
   nextTab = () => {
@@ -55,7 +58,8 @@ class TabbedForm extends React.Component {
     const next = currentTab + 1;
     const value = next > 3 ? 0 : next;
 
-    this.setState({ value }, this.scrollToTop);
+    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.scrollToTop()
   }
 
   previousTab = () => {
@@ -63,12 +67,14 @@ class TabbedForm extends React.Component {
     const prev = currentTab - 1;
     const value = prev < 0 ? 0 : prev;
 
-    this.setState({ value }, this.scrollToTop);
+    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.scrollToTop()
   }
 
   render() {
     const { classes } = this.props
     const { value } = this.state
+    const currentTab = this.props.formData.currentTab ? parseInt(this.props.formData.currentTab) : 0
 
     return (
       <div>
@@ -85,14 +91,14 @@ class TabbedForm extends React.Component {
           </Toolbar>
         </AppBar>
         <AppBar position="static">
-          <Tabs value={value} onChange={this.handleChange} centered>
+          <Tabs value={currentTab} onChange={this.handleChange} centered>
             <Tab label="Step 1" />
             <Tab label="Step 2" />
             <Tab label="Step 3" />
             <Tab label="Step 4" />
           </Tabs>
         </AppBar>
-        {value === 0 && (
+        {currentTab === 0 && (
           <Step1
             startEditing={this.props.startEditing}
             formData={this.props.formData}
@@ -100,7 +106,7 @@ class TabbedForm extends React.Component {
             projectId={this.props.projectId}
             />
         )}
-        {value === 1 && (
+        {currentTab === 1 && (
           <Step2
             formData={this.props.formData}
             saveLocalFormData={this.props.saveLocalFormData}
@@ -108,7 +114,7 @@ class TabbedForm extends React.Component {
             projectId={this.props.projectId}
           />
         )}
-        {value === 2 && (
+        {currentTab === 2 && (
           <Step3
             formData={this.props.formData}
             saveLocalFormData={this.props.saveLocalFormData}
@@ -116,7 +122,7 @@ class TabbedForm extends React.Component {
             projectId={this.props.projectId}
           />
         )}
-        {value === 3 && (
+        {currentTab === 3 && (
           <Step4
             formData={this.props.formData}
             saveLocalFormData={this.props.saveLocalFormData}

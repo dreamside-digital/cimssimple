@@ -13,6 +13,7 @@ import { editProject } from '../redux/modules/user'
 
 import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
+import Paper from 'material-ui/Paper'
 import Table, {
   TableBody,
   TableCell,
@@ -28,7 +29,12 @@ import SyncStatus from '../components/SyncStatus'
 const styles = {
   container: {
     padding: '1rem',
-    marginBottom: '2rem'
+    marginBottom: '2rem',
+  },
+  paper: {
+    overflowX: 'auto',
+    width: '100%',
+    marginBottom: '1rem',
   },
   header: {
     marginBottom: '4rem',
@@ -39,7 +45,14 @@ const styles = {
   },
   tableHeader: {
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+  },
+  button: {
+    marginRight: '0.4rem',
+    fontSize: '0.8rem'
+  },
+  actionContainer: {
+    whiteSpace: 'nowrap',
   }
 }
 
@@ -56,9 +69,15 @@ class IndexPage extends React.Component {
     const projectTableData = map(
       this.props.projects,
       (projectData, projectId) => {
-        if (!!projectId) {
-          const name = projectData ? projectData.initiativeName : 'Unnamed project'
-          return { id: projectId, name }
+        if (!!projectId && projectId !== 'undefined') {
+          const name = projectData
+            ? projectData.initiativeName
+            : 'Unnamed project'
+          const currentTab =
+            (projectData && projectData.currentTab > -1)
+              ? parseInt(projectData.currentTab)
+              : null
+          return { id: projectId, name, currentTab }
         }
       }
     )
@@ -67,7 +86,7 @@ class IndexPage extends React.Component {
       <div>
         <Grid container justify="flex-end" style={styles.container}>
           <Grid item>
-          <AuthButton />
+            <AuthButton />
           </Grid>
         </Grid>
         <Grid container justify="center" style={styles.container}>
@@ -80,60 +99,74 @@ class IndexPage extends React.Component {
             <p>
               This tool is intended to provide legal workers with a simple,
               user-friendly template for planning, documenting, and evaluating
-              their CD-CO work. It also serves as a roadmap for documenting CD-CO
-              work in CIMS. The fields on the form correspond to the fields in
-              CIMS Initiatives, and the content entered into some parts of this
-              form can be cut & pasted right into CIMS. This will enable legal
-              workers to plan, docket, and evaluate projects, and transfer the
-              necessary information into CIMS at a later time.
+              their CD-CO work. It also serves as a roadmap for documenting
+              CD-CO work in CIMS. The fields on the form correspond to the
+              fields in CIMS Initiatives, and the content entered into some
+              parts of this form can be cut & pasted right into CIMS. This will
+              enable legal workers to plan, docket, and evaluate projects, and
+              transfer the necessary information into CIMS at a later time.
             </p>
-            <div style={styles.tableHeader}><Label>Your Projects</Label><SyncStatus /></div>
+            <div style={styles.tableHeader}>
+              <Label>Your Projects</Label>
+              <SyncStatus />
+            </div>
             {!!projectTableData.length && (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Project Name</TableCell>
-                    <TableCell>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {compact(projectTableData).map((row, index) => {
-                    return (
-                      <TableRow key={`row-${row.id}`}>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>
-                          <Button
-                            component={Link}
-                            to={`/form?id=${row.id}`}
-                            color="primary"
-                            variant="raised"
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            component={Link}
-                            to={`/print?id=${row.id}`}
-                          >
-                            Print View
-                          </Button>
-                          <Button
-                            onClick={() => this.props.deleteProject(row.id)}
-                          >
-                            Delete
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
+              <Paper style={styles.paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Project Name</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {compact(projectTableData).map((row, index) => {
+                      return (
+                        <TableRow key={`row-${row.id}`}>
+                          <TableCell>{row.name}</TableCell>
+                          <TableCell>
+                            <div style={styles.actionContainer}>
+                              <Button
+                                component={Link}
+                                to={`/form?id=${row.id}&step=1`}
+                                color="primary"
+                                variant="raised"
+                                style={styles.button}
+                              >
+                                Edit
+                              </Button>
+                              {(row.currentTab > 0) && (
+                                <Button
+                                  component={Link}
+                                  to={`/form?id=${row.id}&step=${row.currentTab + 1}`}
+                                  color="secondary"
+                                  variant="raised"
+                                  style={styles.button}
+                                >
+                                  {`Back to Step ${row.currentTab + 1}`}
+                                </Button>
+                              )}
+                              <Link to={`/print?id=${row.id}`} style={styles.button}>
+                                Print View
+                              </Link>
+                              <Link
+                                to={'#'}
+                                onClick={() => this.props.deleteProject(row.id)}
+                              >
+                                Delete
+                              </Link>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                  </TableBody>
+                </Table>
+              </Paper>
             )}
             <Grid container>
               <Grid item>
-                <Button
-                  onClick={this.props.createProject}
-                  color="primary"
-                >
+                <Button onClick={this.props.createProject} color="primary">
                   Start a new project
                 </Button>
               </Grid>
