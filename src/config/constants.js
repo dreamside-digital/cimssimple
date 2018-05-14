@@ -122,7 +122,7 @@ export const docketingTableStructure = [
   { header: 'Date', type: 'date', fieldName: 'date' },
   { header: 'Docket Type', type: 'custom', fieldName: 'docketType' },
   { header: 'Time Spent (hours)', type: 'number', fieldName: 'timeSpent' },
-  { header: 'Details', type: 'text', fieldName: 'details' }
+  { header: 'Details', type: 'fullWidthTextArea', fieldName: 'details' }
 ]
 
 export const docketTypeOptions = [

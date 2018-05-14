@@ -8,7 +8,10 @@ import { MenuItem } from 'material-ui/Menu';
 import { ListItemText } from 'material-ui/List';
 
 const styles = {
-  width: '100%'
+  width: '100%',
+  menu: {
+    whiteSpace: 'pre-wrap'
+  }
 }
 
 const SingleSelect = props => {
@@ -23,6 +26,7 @@ const SingleSelect = props => {
       onChange={handleChange}
       input={<Input />}
       style={styles}
+      SelectDisplayProps={{ style: styles.menu }}
     >
       {props.options.map(option => {
         return (

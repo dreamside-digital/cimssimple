@@ -136,7 +136,7 @@ class EditableTable extends React.Component {
                         onBlur={this.handleChange(column.fieldName, index)}
                         InputProps={{ className: this.props.classes.input }}
                         className={this.props.classes.formControl}
-                        multiline={true}
+                        multiline={column.type === 'text'}
                       />
                     </TableCell>
                   )

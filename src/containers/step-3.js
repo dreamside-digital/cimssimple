@@ -5,10 +5,8 @@ import Link from 'gatsby-link'
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 
-import TextInput from '../components/inputs/TextInput'
-import EditableTable from '../components/inputs/EditableTable'
-import SingleSelect from '../components/inputs/SingleSelect'
 import OutputsTable from '../components/inputs/OutputsTable'
+import DocketingTable from '../components/inputs/DocketingTable'
 
 import PageTitle from '../components/PageTitle'
 import Question from '../components/Question'
@@ -19,13 +17,8 @@ import CimsInstructions from '../components/CimsInstructions'
 
 import {
   docketingTableStructure,
-  docketTypeOptions,
   outputsTableStructure,
 } from '../config/constants'
-
-const DocketingDropdown = props => (
-  <SingleSelect options={docketTypeOptions} {...props} />
-)
 
 class Step3 extends React.Component {
   generateChangeHandler = fieldId => {
@@ -75,14 +68,11 @@ class Step3 extends React.Component {
               on CIMS, indicate how much time was spent, and add any details you
               wish.
             </Label>
-            <EditableTable
+            <DocketingTable
               id="docketing"
               handleChange={this.generateChangeHandler('docketing')}
               tableData={this.props.formData['docketing']}
               tableStructure={docketingTableStructure}
-              customInputs={{
-                docketType: DocketingDropdown,
-              }}
             />
           </InputSection>
           <CimsInstructions>
