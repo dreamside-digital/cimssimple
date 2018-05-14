@@ -6,7 +6,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
-    "gatsby": "^1.9.247",
+    "gatsby": "^1.9.260",
     "gatsby-link": "^1.6.40",
     "gatsby-plugin-manifest": "^1.0.19",
     "gatsby-plugin-offline": "^1.0.15",
