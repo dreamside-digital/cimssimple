@@ -18,12 +18,14 @@ import Step1 from '../containers/step-1'
 import Step2 from '../containers/step-2'
 import Step3 from '../containers/step-3'
 import Step4 from '../containers/step-4'
-import SaveStatus from '../components/SaveStatus'
+import SaveStatus from '../components/navigation/SaveStatus'
 
 const styles = {
-  flex: {
-    flex: 1,
-  },
+  initiativeName: {
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  }
 }
 
 class LongForm extends React.Component {
@@ -45,19 +47,23 @@ class LongForm extends React.Component {
       <div>
         <AppBar position="static" color="default">
           <Toolbar>
-            <span style={styles.flex}>
-              {`${this.props.formData['initiativeName']}`}
-            </span>
-            <Button
-              variant="raised"
-              color="secondary"
-              onClick={() => window.print()}
-            >
-              Print
-            </Button>
-            <Button component={Link} to={'/'}>
-              Exit form
-            </Button>
+            <Grid container justify="space-between">
+              <Grid item style={styles.initiativeName} hidden={{ smDown: true }}>
+                {`${this.props.formData['initiativeName']}`}
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="raised"
+                  color="secondary"
+                  onClick={() => window.print()}
+                >
+                  Print
+                </Button>
+                <Button component={Link} to={'/'}>
+                  Exit form
+                </Button>
+              </Grid>
+            </Grid>
           </Toolbar>
         </AppBar>
         <div id="pdf-form">

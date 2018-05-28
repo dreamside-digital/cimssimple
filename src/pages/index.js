@@ -22,9 +22,9 @@ import Table, {
 } from 'material-ui/Table'
 
 import BasicTable from '../components/inputs/BasicTable'
-import AuthButton from '../components/AuthButton'
+import AuthButton from '../components/navigation/AuthButton'
 import Label from '../components/Label'
-import SyncStatus from '../components/SyncStatus'
+import SyncStatus from '../components/navigation/SyncStatus'
 
 const styles = {
   container: {
