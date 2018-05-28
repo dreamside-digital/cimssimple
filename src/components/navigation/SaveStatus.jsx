@@ -4,11 +4,9 @@ import Chip from 'material-ui/Chip';
 
 const styles = {
   saved: {
-    marginLeft: '1rem',
     backgroundColor: '#e2e8df'
   },
   error: {
-    marginLeft: '1rem',
     backgroundColor: '#ead4e2'
   }
 }

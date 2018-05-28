@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Button from 'material-ui/Button';
 import Link from 'gatsby-link';
-import firebase from '../config/firebase';
-import { userLoggedIn, userLoggedOut, newLogin } from '../redux/modules/user'
+import firebase from '../../config/firebase';
+import { userLoggedIn, userLoggedOut, newLogin } from '../../redux/modules/user'
 
 class AuthButton extends React.Component {
   componentWillMount() {

@@ -17,10 +17,7 @@ import Step1 from '../containers/step-1'
 import Step2 from '../containers/step-2'
 import Step3 from '../containers/step-3'
 import Step4 from '../containers/step-4'
-import SaveStatus from '../components/SaveStatus'
-import SyncStatus from '../components/SyncStatus'
-import AuthButton from '../components/AuthButton'
-import SyncFormButton from '../components/SyncFormButton'
+import Navigation from '../components/navigation/Navigation'
 
 
 const styles = {
@@ -78,18 +75,7 @@ class TabbedForm extends React.Component {
 
     return (
       <div>
-        <AppBar position="static" color="default">
-          <Toolbar>
-            <span style={styles.flex}>
-              {`Now editing: ${this.props.formData['initiativeName']}`}
-              <SaveStatus />
-              <SyncStatus />
-            </span>
-            <SyncFormButton />
-            <Button component={Link} to={'/'}>Save & Exit</Button>
-            <AuthButton />
-          </Toolbar>
-        </AppBar>
+        <Navigation initiativeName={this.props.formData['initiativeName']} />
         <AppBar position="static">
           <Tabs value={currentTab} onChange={this.handleChange} centered>
             <Tab label="Step 1" />
