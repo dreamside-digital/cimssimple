@@ -8,8 +8,13 @@ import {
   getProjectData,
   deleteLocalProject,
 } from '../redux/modules/projects'
+import {
+  createLocalPlan,
+  getPlanData,
+  deleteLocalPlan,
+} from '../redux/modules/plans'
 
-import { editProject } from '../redux/modules/user'
+import { editProject, editPlan } from '../redux/modules/user'
 
 import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
@@ -61,8 +66,9 @@ class IndexPage extends React.Component {
     super(props)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getProjectData()
+    this.props.getPlanData()
   }
 
   render() {
@@ -72,12 +78,28 @@ class IndexPage extends React.Component {
         if (!!projectId && projectId !== 'undefined') {
           const name = projectData
             ? projectData.initiativeName
-            : 'Unnamed project'
+            : 'Unnamed project';
+            console.log('project name', name)
           const currentTab =
             (projectData && projectData.currentTab > -1)
               ? parseInt(projectData.currentTab)
               : null
           return { id: projectId, name, currentTab }
+        }
+      }
+    )
+
+    const planTableData = map(
+      this.props.plans,
+      (planData, planId) => {
+        if (!!planId && planId !== 'undefined') {
+          const name = planData
+            ? planData.projectTitle
+            : 'Unnamed project';
+
+            console.log('name', name)
+
+          return { id: planId, name }
         }
       }
     )
@@ -172,6 +194,60 @@ class IndexPage extends React.Component {
               </Grid>
             </Grid>
           </Grid>
+
+          <Grid item xs={12} md={8}>
+            <div style={styles.tableHeader}>
+              <Label>Your Project Plans</Label>
+              <SyncStatus />
+            </div>
+            {!!planTableData.length && (
+              <Paper style={styles.paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Project Name</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {compact(planTableData).map((row, index) => {
+                      return (
+                        <TableRow key={`row-${row.id}`}>
+                          <TableCell>{row.name}</TableCell>
+                          <TableCell>
+                            <div style={styles.actionContainer}>
+                              <Button
+                                component={Link}
+                                to={`/planning-tool?id=${row.id}`}
+                                color="primary"
+                                variant="raised"
+                                style={styles.button}
+                              >
+                                Edit
+                              </Button>
+                              <Link
+                                to={'#'}
+                                onClick={() => this.props.deletePlan(row.id)}
+                              >
+                                Delete
+                              </Link>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                  </TableBody>
+                </Table>
+              </Paper>
+            )}
+            <Grid container>
+              <Grid item>
+                <Button onClick={this.props.createPlan} color="primary">
+                  Start a new project plan
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
       </div>
     )
@@ -181,6 +257,7 @@ class IndexPage extends React.Component {
 const mapStateToProps = state => {
   return {
     projects: state.projects,
+    plans: state.plans,
   }
 }
 
@@ -197,6 +274,18 @@ const mapDispatchToProps = dispatch => {
     },
     editProject: id => {
       dispatch(editProject(id))
+    },
+    createPlan: () => {
+      dispatch(createLocalPlan())
+    },
+    deletePlan: id => {
+      dispatch(deleteLocalPlan(id))
+    },
+    getPlanData: () => {
+      dispatch(getPlanData())
+    },
+    editPlan: id => {
+      dispatch(editPlan(id))
     },
   }
 }

@@ -10,6 +10,13 @@ export function editProject(id) {
   }
 }
 
+export function editPlan(id) {
+  return {
+    type: 'EDIT_PLAN',
+    id,
+  }
+}
+
 export function syncStatus(synced) {
   return {
     type: 'SYNC_STATUS',
@@ -63,6 +70,13 @@ export const reducer = (state = {}, action) => {
       return {
         ...state,
         editing: action.id,
+      }
+    }
+
+    case 'EDIT_PLAN': {
+      return {
+        ...state,
+        editingPlan: action.id,
       }
     }
 
