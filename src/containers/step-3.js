@@ -39,8 +39,8 @@ class Step3 extends React.Component {
             <Label htmlFor="docketing">1. Docketing (Mandatory)</Label>
             <HelpText>
               <p>
-                Tracking how CO/CD workers spend their time is important to show
-                how much work goes into CO/CD. Docketing allows us to do this
+                Tracking how CD-CO workers spend their time is important to show
+                how much work goes into CD-CO. Docketing allows us to do this
                 and serves as an ongoing narrative for the initiative. The
                 docket created on this tool can be entered into CIMS during a
                 project or after it is complete.

@@ -121,7 +121,8 @@ export const deliverablesTableStructure = [
 export const docketingTableStructure = [
   { header: 'Date', type: 'date', fieldName: 'date' },
   { header: 'Docket Type', type: 'custom', fieldName: 'docketType' },
-  { header: 'Time Spent (hours)', type: 'number', fieldName: 'timeSpent' },
+  { header: 'Hours spent', type: 'number', fieldName: 'hours' },
+  { header: 'Minutes spent', type: 'number', fieldName: 'minutes' },
   { header: 'Details', type: 'fullWidthTextArea', fieldName: 'details' }
 ]
 

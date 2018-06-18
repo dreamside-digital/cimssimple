@@ -9,6 +9,7 @@ import SaveStatus from './SaveStatus'
 import SyncStatus from './SyncStatus'
 import AuthButton from './AuthButton'
 import SyncFormButton from './SyncFormButton'
+import SaveAndExitButton from './SaveAndExitButton'
 import DropdownMenu from './DropdownMenu'
 
 const styles = {
@@ -35,9 +36,7 @@ const Navigation = props => {
               </Grid>
               <Grid item>
                 <SyncFormButton />
-                <Button component={Link} to={'/'}>
-                  Save & Exit
-                </Button>
+                <SaveAndExitButton />
                 <AuthButton />
               </Grid>
             </Grid>

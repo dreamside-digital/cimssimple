@@ -28,6 +28,12 @@ function saveError(error) {
   }
 }
 
+function clearForm() {
+  return {
+    type: 'CLEAR_FORM'
+  }
+}
+
 export function startEditing() {
   return dispatch => {
     dispatch(syncStatus(false))
@@ -98,6 +104,10 @@ export const reducer = (state = {}, action) => {
         ...state,
         saveError: action.error
       }
+    }
+
+    case 'CLEAR_FORM': {
+      return {}
     }
 
     default: {

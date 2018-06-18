@@ -25,7 +25,7 @@ import Table, {
   TableHead,
   TableRow,
 } from 'material-ui/Table'
-
+import Toolbar from 'material-ui/Toolbar'
 import BasicTable from '../components/inputs/BasicTable'
 import AuthButton from '../components/navigation/AuthButton'
 import Label from '../components/Label'
@@ -33,7 +33,6 @@ import SyncStatus from '../components/navigation/SyncStatus'
 
 const styles = {
   container: {
-    padding: '1rem',
     marginBottom: '2rem',
   },
   paper: {
@@ -58,6 +57,12 @@ const styles = {
   },
   actionContainer: {
     whiteSpace: 'nowrap',
+  },
+  startButton: {
+    marginBottom: '1rem'
+  },
+  toolbar: {
+    justifyContent: 'flex-end'
   }
 }
 
@@ -106,17 +111,19 @@ class IndexPage extends React.Component {
 
     return (
       <div>
-        <Grid container justify="flex-end" style={styles.container}>
-          <Grid item>
-            <AuthButton />
-          </Grid>
-        </Grid>
-        <Grid container justify="center" style={styles.container}>
-          <Grid item xs={12} md={8}>
+        <Toolbar style={styles.toolbar}>
+          <SyncStatus />
+          <AuthButton />
+        </Toolbar>
+        <Grid container justify="center">
+          <Grid item xs={11} md={8} style={styles.container}>
             <header style={styles.header}>
               <h1 style={styles.title}>CIMSsimple</h1>
               <p>Planning, Docketing, and Evaluation Tool</p>
             </header>
+            <p>Welcome to CIMSsimple. To start using this tool simply click on <strong>Start a New Project</strong> or <strong>Start a New Project Plan</strong> below.</p>
+            <p>You do not need to log in or create a profile to get started - your projects will be saved automatically on your device. However this is only temporary storage (it will be deleted when you clear your browser cache) and is intended to let you use the tool offline.</p>
+            <p>To save your projects permanently and access your projects on multiple devices, choose <strong>Log In</strong> and create an account using your email address. Your projects will then be automatically synced online. You can still use the tool offline and sync your changes when you have an internet connection.</p>
             <h2>Purpose & Context</h2>
             <p>
               This tool is intended to provide legal workers with a simple,
@@ -130,8 +137,14 @@ class IndexPage extends React.Component {
             </p>
             <div style={styles.tableHeader}>
               <Label>Your Projects</Label>
-              <SyncStatus />
             </div>
+            <Grid container style={styles.startButton}>
+              <Grid item>
+                <Button onClick={this.props.createProject} color="primary" variant="raised">
+                  Start a new project
+                </Button>
+              </Grid>
+            </Grid>
             {!!projectTableData.length && (
               <Paper style={styles.paper}>
                 <Table>
@@ -186,20 +199,19 @@ class IndexPage extends React.Component {
                 </Table>
               </Paper>
             )}
+          </Grid>
+
+          <Grid item xs={11} md={8} style={styles.container}>
+            <div style={styles.tableHeader}>
+              <Label>Your Project Plans</Label>
+            </div>
             <Grid container>
-              <Grid item>
-                <Button onClick={this.props.createProject} color="primary">
-                  Start a new project
+              <Grid item style={styles.startButton}>
+                <Button onClick={this.props.createPlan} color="primary" variant="raised">
+                  Start a new project plan
                 </Button>
               </Grid>
             </Grid>
-          </Grid>
-
-          <Grid item xs={12} md={8}>
-            <div style={styles.tableHeader}>
-              <Label>Your Project Plans</Label>
-              <SyncStatus />
-            </div>
             {!!planTableData.length && (
               <Paper style={styles.paper}>
                 <Table>
@@ -240,13 +252,6 @@ class IndexPage extends React.Component {
                 </Table>
               </Paper>
             )}
-            <Grid container>
-              <Grid item>
-                <Button onClick={this.props.createPlan} color="primary">
-                  Start a new project plan
-                </Button>
-              </Grid>
-            </Grid>
           </Grid>
         </Grid>
       </div>

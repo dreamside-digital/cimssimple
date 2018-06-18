@@ -141,7 +141,7 @@ class Step1 extends React.Component {
                 campaign.
               </p>
               <p>
-                CO/CD campaigns are often long-term campaigns aiming to create
+                CD-CO campaigns are often long-term campaigns aiming to create
                 specific social or political change, made up of a series of
                 actions or events. CIMS lets you link specific activities to the
                 ongoing campaigns they are part of – so that you can show all

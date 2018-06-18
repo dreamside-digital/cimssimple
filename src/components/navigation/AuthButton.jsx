@@ -43,7 +43,7 @@ class AuthButton extends React.Component {
     if (this.props.isLoggedIn) {
       return <Button onClick={this.logOut}>Log Out</Button>
     } else {
-      return <Button component={Link} to={'/login'} variant="raised" color="secondary">Log In</Button>
+      return <Button component={Link} to={'/login'} color="secondary">Log In</Button>
     }
   }
 }

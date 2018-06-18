@@ -53,11 +53,10 @@ class Step2 extends React.Component {
             </Label>
             <HelpText>
               <p>
-                The goals & objectives for initiatives in CIMS must be selected
-                from the clinic’s Goals & Objectives entered by the clinic E.D.
-                OPICCO is urging clinics to use three consistent Goals &
-                Objectives, based on ACLCO’s recommended Performance Measures
-                for CD-CO work:
+                The goals & objectives for initiatives in CIMS must be selected from the clinic’s Goals & Objectives entered by the clinic's ED. Obtain the list of your clinic's goals adn objectives for this year, and enter the ones that align with this project in the fields below.
+              </p>
+              <p>
+                In addition to the clinic-specific goals and objectives, OPICCO is urging clinics to use three consistent Goals & Objectives, based on ACLCO’s recommended performance Measures for CD-CO work:
               </p>
               <ol>
                 <li>Promote access to justice in our community</li>
@@ -71,7 +70,7 @@ class Step2 extends React.Component {
                 The Goals and Objectives section in CIMS does not track the
                 goals and objectives of the initiative, but rather how the
                 initiative fits in with the goals and objectives of your clinic.
-                Linking your CO/CD work to your clinic’s goals and objectives is
+                Linking your CD-CO work to your clinic’s goals and objectives is
                 important way to demonstrate that you are helping your clinic
                 achieve the goals they were funded for. The clinic will use this
                 section to generate reports and performance measures on CD-CO
