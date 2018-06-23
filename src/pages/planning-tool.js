@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'gatsby-link'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { saveLocalPlanData, getLocalPlanData, startEditingPlan } from '../redux/modules/planningTool';
+import { saveLocalPlanData, getLocalPlanData, updateSaveStatus } from '../redux/modules/planningTool';
 import { editPlan } from '../redux/modules/user';
 
 import Grid from 'material-ui/Grid'
@@ -98,9 +98,10 @@ class PlanningTool extends React.Component {
 
   render() {
     const tableData = (this.props.planData && this.props.planData.tableData) ? this.props.planData.tableData : initialTableData
+    console.log('this.props.planData', this.props.planData)
     return (
       <div>
-        <Navigation initiativeName={this.props.planData.projectTitle}/>
+        <Navigation initiativeName={this.props.planData.projectTitle} />
         <div className={this.props.classes.contentContainer}>
           <div className={this.props.classes.titleInput}>
             <InputSection>
@@ -117,6 +118,7 @@ class PlanningTool extends React.Component {
             handleSave={this.saveTable}
             tableStructure={tableStructure}
             tableData={tableData}
+            onChange={() => updateSaveStatus(false)}
           />
         </div>
       </div>
@@ -133,9 +135,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    startEditingPlan: () => {
-      dispatch(startEditingPlan())
-    },
     saveLocalPlanData: (fieldId, value, planId) => {
       dispatch(saveLocalPlanData(fieldId, value, planId))
     },
@@ -144,6 +143,9 @@ const mapDispatchToProps = dispatch => {
     },
     editPlan: (id) => {
       dispatch(editPlan(id))
+    },
+    updateSaveStatus: (status) => {
+      dispatch(updateSaveStatus(status))
     },
   }
 }

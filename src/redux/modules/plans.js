@@ -79,6 +79,7 @@ export function getPlanData() {
       localForage
         .getItem('plans')
         .then(data => {
+          console.log('data', data)
           dispatch(populatePlanData(data))
         })
         .catch(err => {

@@ -31,14 +31,13 @@ export function deleteProject(id) {
   }
 }
 
-export function createLocalProject() {
+export function createLocalProject({ projectId = uuidv4() }) {
   return (dispatch, getState) => {
     dispatch(syncStatus(false));
     const state = getState()
     const projectState = state.projects
     const user = state.user.user;
     const isLoggedIn = state.user.isLoggedIn;
-    const projectId = uuidv4()
     const newProject = {
       [projectId]: emptyProject,
     }

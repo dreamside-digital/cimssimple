@@ -3,8 +3,13 @@ import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
 
 import { syncProjectData } from '../../redux/modules/projects'
+import { syncPlanData } from '../../redux/modules/projects'
 
 const SyncFormButton = props => {
+  const syncAllData = () => {
+    syncProjectData()
+    syncPlanData()
+  }
   return (
     <Button
       onClick={props.syncProjectData}

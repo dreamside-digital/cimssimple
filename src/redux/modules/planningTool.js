@@ -16,7 +16,7 @@ function updatePageData (data) {
   }
 }
 
-function updateSaveStatus(isSaved) {
+export function updateSaveStatus(isSaved) {
   return {
     type: 'UPDATE_SAVE_STATUS', isSaved
   }
@@ -25,6 +25,12 @@ function updateSaveStatus(isSaved) {
 function saveError(error) {
   return {
     type: 'SAVE_ERROR', error
+  }
+}
+
+export function clearPlanningTool() {
+  return {
+    type: 'CLEAR_PLANNING_TOOL'
   }
 }
 
@@ -37,7 +43,7 @@ export function startEditingPlan() {
 
 export function saveLocalPlanData (id, data, planId) {
   return (dispatch, getState) => {
-    dispatch(updateSaveStatus(false))
+    dispatch(startEditingPlan())
 
     const state = getState();
     const planningTool = {...state.planningTool, [id]: data};
@@ -83,12 +89,14 @@ const initialState = {
       'Nurture community empowerment',
     ],
   },
-  projectTitle: 'Unnamed project'
+  projectTitle: 'Unnamed project',
+  isSaved: true,
 }
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_PLANNING_TOOL_DATA': {
+      console.log('saving tool')
       return {
         ...state,
         ...action.dataObj,
@@ -117,6 +125,10 @@ export const reducer = (state = initialState, action) => {
         ...state,
         saveError: action.error
       }
+    }
+
+    case 'CLEAR_PLANNING_TOOL': {
+      return {}
     }
 
     default: {

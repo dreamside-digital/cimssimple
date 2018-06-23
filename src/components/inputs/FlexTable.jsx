@@ -52,6 +52,9 @@ class FlexTable extends React.Component {
   }
 
   handleChange = (fieldName, index) => event => {
+    if (this.props.onChange) {
+      this.props.onChange()
+    }
     const inputValue = event.target.value;
     let newData = [...this.state.tableData[fieldName]];
     newData.splice(index, 1, inputValue);

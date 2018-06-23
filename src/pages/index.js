@@ -98,13 +98,11 @@ class IndexPage extends React.Component {
       this.props.plans,
       (planData, planId) => {
         if (!!planId && planId !== 'undefined') {
-          const name = planData
+          const projectTitle = planData
             ? planData.projectTitle
             : 'Unnamed project';
 
-            console.log('name', name)
-
-          return { id: planId, name }
+          return { id: planId, projectTitle }
         }
       }
     )
@@ -225,7 +223,7 @@ class IndexPage extends React.Component {
                     {compact(planTableData).map((row, index) => {
                       return (
                         <TableRow key={`row-${row.id}`}>
-                          <TableCell>{row.name}</TableCell>
+                          <TableCell>{row.projectTitle}</TableCell>
                           <TableCell>
                             <div style={styles.actionContainer}>
                               <Button

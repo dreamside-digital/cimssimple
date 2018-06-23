@@ -1,5 +1,6 @@
 import * as localForage from 'localforage'
 import { syncProjectData, getProjectData } from './projects'
+import { syncPlanData, getPlanData } from './plans'
 
 // Actions
 
@@ -39,6 +40,7 @@ export function newLogin(user = null) {
         localForage.setItem('cimsUser', user).then(savedUser => {
           dispatch(userLoggedIn(savedUser))
           dispatch(syncProjectData())
+          dispatch(syncPlanData())
           console.log('logging in for the first time')
         })
       } else if (user.uid !== lastUser.uid) {
@@ -46,6 +48,7 @@ export function newLogin(user = null) {
           localForage.setItem('cimsUser', user).then(savedUser => {
             dispatch(userLoggedIn(savedUser))
             dispatch(getProjectData())
+            dispatch(getPlanData())
             console.log('switching to a new user')
           })
         }).catch((err) => {
@@ -54,6 +57,7 @@ export function newLogin(user = null) {
       } else {
         dispatch(userLoggedIn(user))
         dispatch(syncProjectData())
+        dispatch(syncPlanData())
         console.log('logging in a previously logged in user')
       }
     }).catch(err => {
@@ -69,7 +73,7 @@ export const reducer = (state = {}, action) => {
     case 'EDIT_PROJECT': {
       return {
         ...state,
-        editing: action.id,
+        editingProject: action.id,
       }
     }
 

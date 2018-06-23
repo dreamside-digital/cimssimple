@@ -1,6 +1,6 @@
 import * as localForage from "localforage";
-import firebase from '../../config/firebase';
 import { syncStatus } from './user';
+import { syncProjectData } from './projects'
 
 // Actions
 
@@ -28,7 +28,7 @@ function saveError(error) {
   }
 }
 
-function clearForm() {
+export function clearForm() {
   return {
     type: 'CLEAR_FORM'
   }
@@ -44,6 +44,7 @@ export function startEditing() {
 export function saveLocalFormData (id, data, projectId) {
   return (dispatch, getState) => {
     dispatch(updateSaveStatus(false))
+    dispatch(syncStatus(false))
 
     const state = getState();
     const form = {...state.form, [id]: data};
@@ -73,7 +74,11 @@ export function getLocalFormData (editingProjectId) {
 
 // Reducer
 
-export const reducer = (state = {}, action) => {
+const initialState = {
+  isSaved: true,
+}
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_FORM_DATA': {
       return {

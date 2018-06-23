@@ -1,9 +1,11 @@
 import React from 'react'
-import Link from 'gatsby-link'
+import Link, { navigateTo } from 'gatsby-link'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
 import { saveLocalFormData, getLocalFormData, startEditing } from '../redux/modules/form';
 import { editProject } from '../redux/modules/user';
+import { createLocalProject } from '../redux/modules/projects';
+import uuidv4 from 'uuid/v4'
 
 import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
@@ -36,9 +38,19 @@ class TabbedForm extends React.Component {
     const params = new URLSearchParams(queryString)
     const projectId = params.get('id');
     const startingTab = !!params.get('step') ? (parseInt(params.get('step')) - 1) : 0;
+    if (!projectId) {
+      return this.createProjectAndStartEditing()
+    }
     this.props.saveLocalFormData('currentTab', startingTab, projectId)
     this.props.editProject(projectId);
     this.props.getLocalFormData(projectId);
+  }
+
+  createProjectAndStartEditing() {
+    const projectId = uuidv4();
+    this.props.createProject({ projectId })
+    this.props.editProject(projectId)
+    navigateTo(`/form?id=${projectId}`)
   }
 
   scrollToTop = () => {
@@ -147,7 +159,7 @@ class TabbedForm extends React.Component {
 const mapStateToProps = state => {
   return {
     formData: state.form,
-    projectId: state.user.editing
+    projectId: state.user.editingProject
   }
 }
 
@@ -164,6 +176,9 @@ const mapDispatchToProps = dispatch => {
     },
     editProject: (id) => {
       dispatch(editProject(id))
+    },
+    createProject: (opts) => {
+      dispatch(createLocalProject(opts))
     },
   }
 }
