@@ -3,14 +3,20 @@ import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
 
 import { syncProjectData } from '../../redux/modules/projects'
+import { syncPlanData } from '../../redux/modules/projects'
 
 const SyncFormButton = props => {
+  const syncAllData = () => {
+    syncProjectData()
+    syncPlanData()
+  }
+
   return (
     <Button
       onClick={props.syncProjectData}
       variant="raised"
       color="secondary"
-      disabled={!props.isLoggedIn || props.synced}
+      disabled={!props.isLoggedIn || props.isSynced}
     >
       Sync form
     </Button>
@@ -19,7 +25,7 @@ const SyncFormButton = props => {
 
 const mapStateToProps = state => {
   return {
-    synced: state.user.synced,
+    isSynced: state.user.isSynced,
     isLoggedIn: state.user.isLoggedIn,
   }
 }

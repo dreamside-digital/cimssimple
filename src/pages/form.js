@@ -1,9 +1,11 @@
 import React from 'react'
-import Link from 'gatsby-link'
+import Link, { navigateTo } from 'gatsby-link'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
-import { saveLocalFormData, getLocalFormData, startEditing } from '../redux/modules/form';
+import { updateForm, getLocalFormData, startEditing, saveAndExit, clearForm } from '../redux/modules/form';
 import { editProject } from '../redux/modules/user';
+import { createLocalProject } from '../redux/modules/projects';
+import uuidv4 from 'uuid/v4'
 
 import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
@@ -18,6 +20,7 @@ import Step2 from '../containers/step-2'
 import Step3 from '../containers/step-3'
 import Step4 from '../containers/step-4'
 import Navigation from '../components/navigation/Navigation'
+import PageContainer from '../components/PageContainer'
 
 
 const styles = {
@@ -27,18 +30,36 @@ const styles = {
 }
 
 class TabbedForm extends React.Component {
-  state = {
-    value: 0,
+  constructor(props) {
+    super(props)
+    const queryString = this.props.location.search
+    this.params = new URLSearchParams(queryString)
+    const startingTab = this.params.get('step') ? (parseInt(this.params.get('step')) - 1) : 0
+    this.state = {
+      value: startingTab
+    }
+    this.props.clearForm();
   }
 
   componentDidMount() {
-    const queryString = this.props.location.search
-    const params = new URLSearchParams(queryString)
-    const projectId = params.get('id');
-    const startingTab = !!params.get('step') ? (parseInt(params.get('step')) - 1) : 0;
-    this.props.saveLocalFormData('currentTab', startingTab, projectId)
-    this.props.editProject(projectId);
+    const projectId = this.params.get('id');
+    if (!projectId) {
+      return this.createProjectAndStartEditing()
+    }
     this.props.getLocalFormData(projectId);
+    this.props.editProject(projectId);
+  }
+
+  componentWillUnmount() {
+    this.props.updateForm('currentTab', this.state.value, this.props.projectId)
+    this.props.saveAndExit()
+  }
+
+  createProjectAndStartEditing() {
+    const projectId = uuidv4();
+    this.props.createProject(projectId)
+    this.props.editProject(projectId)
+    navigateTo(`/form?id=${projectId}`)
   }
 
   scrollToTop = () => {
@@ -46,7 +67,8 @@ class TabbedForm extends React.Component {
   }
 
   handleChange = (event, value) => {
-    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.props.updateForm('currentTab', value, this.props.projectId)
+    this.setState({ value })
     this.scrollToTop()
   }
 
@@ -55,7 +77,8 @@ class TabbedForm extends React.Component {
     const next = currentTab + 1;
     const value = next > 3 ? 0 : next;
 
-    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.props.updateForm('currentTab', value, this.props.projectId)
+    this.setState({ value })
     this.scrollToTop()
   }
 
@@ -64,81 +87,86 @@ class TabbedForm extends React.Component {
     const prev = currentTab - 1;
     const value = prev < 0 ? 0 : prev;
 
-    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.props.updateForm('currentTab', value, this.props.projectId)
+    this.setState({ value })
     this.scrollToTop()
   }
 
   render() {
     const { classes } = this.props
     const { value } = this.state
-    const currentTab = this.props.formData.currentTab ? parseInt(this.props.formData.currentTab) : 0
+    console.log('this.props.formData', this.props.formData)
+    console.log('this.props.user', this.props.user)
+    console.log('this.props.projectId', this.props.projectId)
 
     return (
       <div>
         <Navigation initiativeName={this.props.formData['initiativeName']} />
-        <AppBar position="static">
-          <Tabs value={currentTab} onChange={this.handleChange} centered>
-            <Tab label="Step 1" />
-            <Tab label="Step 2" />
-            <Tab label="Step 3" />
-            <Tab label="Step 4" />
-          </Tabs>
-        </AppBar>
-        {currentTab === 0 && (
-          <Step1
-            startEditing={this.props.startEditing}
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            projectId={this.props.projectId}
+        <PageContainer>
+          <AppBar position="static">
+            <Tabs value={value} onChange={this.handleChange} centered>
+              <Tab label="Step 1" />
+              <Tab label="Step 2" />
+              <Tab label="Step 3" />
+              <Tab label="Step 4" />
+            </Tabs>
+          </AppBar>
+          {value === 0 && (
+            <Step1
+              startEditing={this.props.startEditing}
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              projectId={this.props.projectId}
+              />
+          )}
+          {value === 1 && (
+            <Step2
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              startEditing={this.props.startEditing}
+              projectId={this.props.projectId}
             />
-        )}
-        {currentTab === 1 && (
-          <Step2
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            startEditing={this.props.startEditing}
-            projectId={this.props.projectId}
-          />
-        )}
-        {currentTab === 2 && (
-          <Step3
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            startEditing={this.props.startEditing}
-            projectId={this.props.projectId}
-          />
-        )}
-        {currentTab === 3 && (
-          <Step4
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            startEditing={this.props.startEditing}
-            projectId={this.props.projectId}
-          />
-        )}
+          )}
+          {value === 2 && (
+            <Step3
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              startEditing={this.props.startEditing}
+              projectId={this.props.projectId}
+            />
+          )}
+          {value === 3 && (
+            <Step4
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              startEditing={this.props.startEditing}
+              projectId={this.props.projectId}
+            />
+          )}
 
-        <Grid container justify="space-between">
-          <Grid item>
-            {
-              this.state.value > 0 &&
-            <Button color="primary" variant="raised" onClick={this.previousTab}>Back</Button>
-            }
-            {
-              this.state.value === 0 &&
-              <Button color="primary" variant="raised" component={Link} to={'/'}>Home</Button>
-            }
+          <Grid container justify="space-between">
+            <Grid item>
+              {
+                this.state.value > 0 &&
+              <Button color="primary" variant="raised" onClick={this.previousTab}>Back</Button>
+              }
+              {
+                this.state.value === 0 &&
+                <Button color="primary" variant="raised" component={Link} to={'/'}>Home</Button>
+              }
+            </Grid>
+            <Grid item>
+              {
+                this.state.value === 3 &&
+                <Button color="secondary" variant="raised" component={Link} to={'/'}>All done!</Button>
+              }
+              {
+                this.state.value < 3 &&
+              <Button color="secondary" variant="raised" onClick={this.nextTab}>Next</Button>
+              }
+            </Grid>
           </Grid>
-          <Grid item>
-            {
-              this.state.value === 3 &&
-              <Button color="secondary" variant="raised" component={Link} to={'/'}>All done!</Button>
-            }
-            {
-              this.state.value < 3 &&
-            <Button color="secondary" variant="raised" onClick={this.nextTab}>Next</Button>
-            }
-          </Grid>
-        </Grid>
+        </PageContainer>
       </div>
     )
   }
@@ -147,7 +175,8 @@ class TabbedForm extends React.Component {
 const mapStateToProps = state => {
   return {
     formData: state.form,
-    projectId: state.user.editing
+    projectId: state.user.editingProject,
+    user: state.user
   }
 }
 
@@ -156,14 +185,23 @@ const mapDispatchToProps = dispatch => {
     startEditing: () => {
       dispatch(startEditing())
     },
-    saveLocalFormData: (fieldId, value, projectId) => {
-      dispatch(saveLocalFormData(fieldId, value, projectId))
+    updateForm: (fieldId, value, projectId) => {
+      dispatch(updateForm(fieldId, value, projectId))
     },
     getLocalFormData: id => {
       dispatch(getLocalFormData(id))
     },
     editProject: (id) => {
       dispatch(editProject(id))
+    },
+    createProject: (projectId) => {
+      dispatch(createLocalProject(projectId))
+    },
+    saveAndExit: () => {
+      dispatch(saveAndExit())
+    },
+    clearForm: () => {
+      dispatch(clearForm())
     },
   }
 }

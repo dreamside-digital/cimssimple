@@ -1,6 +1,6 @@
 import * as localForage from "localforage";
-import firebase from '../../config/firebase';
-import { syncStatus } from './user';
+import { updateSaveStatus, updateSyncStatus, saveError } from './user';
+import { saveProjectData } from './projects'
 
 // Actions
 
@@ -16,42 +16,39 @@ function updatePageData (data) {
   }
 }
 
-function updateSaveStatus(isSaved) {
+export function clearForm() {
   return {
-    type: 'UPDATE_SAVE_STATUS', isSaved
+    type: 'CLEAR_FORM'
   }
 }
 
-function saveError(error) {
-  return {
-    type: 'SAVE_ERROR', error
+export function saveAndExit() {
+  return (dispatch, getState) => {
+    console.log('SAVE AND EXIT')
+    const state = getState()
+    const form = state.form
+    const projectId = state.user.editingProject
+
+    dispatch(updateFormData(form))
+    dispatch(saveProjectData())
   }
 }
 
 export function startEditing() {
   return dispatch => {
-    dispatch(syncStatus(false))
+    dispatch(updateSyncStatus(false))
     dispatch(updateSaveStatus(false))
   }
 }
 
-export function saveLocalFormData (id, data, projectId) {
+export function updateForm (id, data, projectId) {
   return (dispatch, getState) => {
-    dispatch(updateSaveStatus(false))
 
     const state = getState();
     const form = {...state.form, [id]: data};
-    const updatedProjects = {
-      ...state.projects,
-      [projectId]: form
-    }
 
-    localForage.setItem('projects', updatedProjects).then((dataObj) => {
-      dispatch(updateFormData(form));
-    }).catch(err => {
-      console.log('ERROR', err)
-      dispatch(saveError(err))
-    })
+    dispatch(updateFormData(form));
+    dispatch(saveProjectData())
   };
 }
 
@@ -72,32 +69,18 @@ export const reducer = (state = {}, action) => {
     case 'UPDATE_FORM_DATA': {
       return {
         ...state,
-        ...action.dataObj,
-        isSaved: true,
-        saveError: false
+        ...action.dataObj
       };
     }
 
     case 'POPULATE_PAGE_DATA': {
       return {
-        ...state,
         ...action.data
       }
     }
 
-    case 'UPDATE_SAVE_STATUS': {
-      return {
-        ...state,
-        isSaved: action.isSaved,
-        saveError: false
-      }
-    }
-
-    case 'SAVE_ERROR': {
-      return {
-        ...state,
-        saveError: action.error
-      }
+    case 'CLEAR_FORM': {
+      return {}
     }
 
     default: {

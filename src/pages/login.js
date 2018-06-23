@@ -17,18 +17,19 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     textAlign: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    minHeight: '300px',
+    height: '100vh',
   }
 }
 
 const LoginPage = () => {
   return (
-    <div className="container full-screen" style={styles.container}>
+    <div style={styles.container}>
         <h1>Sign up / Sign in</h1>
         <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   )
 }
-
 
 export default LoginPage

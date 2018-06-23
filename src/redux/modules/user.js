@@ -1,5 +1,6 @@
 import * as localForage from 'localforage'
 import { syncProjectData, getProjectData } from './projects'
+import { syncPlanData, getPlanData } from './plans'
 
 // Actions
 
@@ -10,10 +11,35 @@ export function editProject(id) {
   }
 }
 
-export function syncStatus(synced) {
+export function editPlan(id) {
   return {
-    type: 'SYNC_STATUS',
-    synced,
+    type: 'EDIT_PLAN',
+    id,
+  }
+}
+
+export function updateSyncStatus(isSynced) {
+  return {
+    type: 'UPDATE_SYNC_STATUS',
+    isSynced,
+  }
+}
+
+export function updateSaveStatus(isSaved) {
+  return {
+    type: 'UPDATE_SAVE_STATUS', isSaved
+  }
+}
+
+export function saveError(saveError) {
+  return {
+    type: 'SAVE_ERROR', saveError
+  }
+}
+
+export function syncError(syncError) {
+  return {
+    type: 'SYNC_ERROR', syncError
   }
 }
 
@@ -32,6 +58,7 @@ export function newLogin(user = null) {
         localForage.setItem('cimsUser', user).then(savedUser => {
           dispatch(userLoggedIn(savedUser))
           dispatch(syncProjectData())
+          dispatch(syncPlanData())
           console.log('logging in for the first time')
         })
       } else if (user.uid !== lastUser.uid) {
@@ -39,6 +66,7 @@ export function newLogin(user = null) {
           localForage.setItem('cimsUser', user).then(savedUser => {
             dispatch(userLoggedIn(savedUser))
             dispatch(getProjectData())
+            dispatch(getPlanData())
             console.log('switching to a new user')
           })
         }).catch((err) => {
@@ -47,6 +75,7 @@ export function newLogin(user = null) {
       } else {
         dispatch(userLoggedIn(user))
         dispatch(syncProjectData())
+        dispatch(syncPlanData())
         console.log('logging in a previously logged in user')
       }
     }).catch(err => {
@@ -57,12 +86,28 @@ export function newLogin(user = null) {
 
 // Reducer
 
-export const reducer = (state = {}, action) => {
+const initialState = {
+  editingProject: null,
+  editingPlan: null,
+  isLoggedIn: false,
+  isSynced: false,
+  isSaved: false,
+  user: null
+}
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'EDIT_PROJECT': {
       return {
         ...state,
-        editing: action.id,
+        editingProject: action.id,
+      }
+    }
+
+    case 'EDIT_PLAN': {
+      return {
+        ...state,
+        editingPlan: action.id,
       }
     }
 
@@ -70,14 +115,35 @@ export const reducer = (state = {}, action) => {
       return { ...state, isLoggedIn: true, user: action.user }
     }
 
-    case 'USER_LOGGED_OUT':{
+    case 'USER_LOGGED_OUT': {
       return { ...state, isLoggedIn: false, user: null }
     }
 
-    case 'SYNC_STATUS': {
+    case 'UPDATE_SYNC_STATUS': {
       return {
         ...state,
-        synced: action.synced,
+        isSynced: action.isSynced,
+      }
+    }
+
+    case 'UPDATE_SAVE_STATUS': {
+      return {
+        ...state,
+        isSaved: action.isSaved,
+      }
+    }
+
+    case 'SYNC_ERROR': {
+      return {
+        ...state,
+        syncError: action.syncError,
+      }
+    }
+
+    case 'SAVE_ERROR': {
+      return {
+        ...state,
+        saveError: action.saveError,
       }
     }
 

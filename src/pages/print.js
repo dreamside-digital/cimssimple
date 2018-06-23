@@ -99,7 +99,7 @@ class LongForm extends React.Component {
 const mapStateToProps = state => {
   return {
     formData: state.form,
-    projectId: state.user.editing,
+    projectId: state.user.editingProject,
   }
 }
 

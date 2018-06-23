@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { map } from 'lodash'
+import { map, find, without } from 'lodash'
+import uuidv4 from 'uuid/v4'
 import Table, {
   TableBody,
   TableCell,
@@ -52,28 +53,132 @@ const styles = {
   },
 }
 
-class EditableTable extends React.Component {
-  componentDidMount() {
-    if (!this.props.tableData) {
-      this.createNewRow()
-    }
-  }
+const DocketForm = props => {
+  const { docket } = props;
 
-  handleChange = (fieldName, rowIndex) => input => {
+  return(
+    <TableRow className={props.classes.row}>
+      <TableCell
+        style={styles.docketContainer}
+        className={props.classes.cell}
+      >
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <FormControl className={props.classes.formControl}>
+              <InputLabel htmlFor="docket-type" shrink={true}>
+                Docket Type
+              </InputLabel>
+              <SingleSelect
+                value={docket.docketType}
+                options={docketTypeOptions}
+                id="docket-type"
+                handleChange={props.handleChange('docketType', docket.uid)}
+                style={styles.input}
+                SelectDisplayProps={{
+                  style: { whiteSpace: 'pre-wrap' },
+                }}
+                inputProps={{ style: { fontSize: '0.8rem' } }}
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={24} justify="space-between">
+          <Grid item xs={12} sm={4}>
+            <TextField
+              type={'date'}
+              label="Date"
+              value={docket.date}
+              onChange={props.handleChange('date', docket.uid)}
+              InputProps={{ className: props.classes.input }}
+              className={props.classes.formControl}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              type={'number'}
+              label="Hours spent"
+              value={docket.hours}
+              onChange={props.handleChange('hours', docket.uid)}
+              InputProps={{ className: props.classes.input }}
+              className={props.classes.formControl}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              type={'number'}
+              label="Minutes spent"
+              value={docket.minutes}
+              onChange={props.handleChange('minutes', docket.uid)}
+              InputProps={{ className: props.classes.input }}
+              className={props.classes.formControl}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              type={'text'}
+              label="Description"
+              value={docket.details}
+              onChange={props.handleChange('details', docket.uid)}
+              InputProps={{ className: props.classes.input }}
+              className={props.classes.formControl}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+        </Grid>
+      </TableCell>
+
+      <TableCell
+        padding="checkbox"
+        className={props.classes.cell}
+      >
+
+          <IconButton
+            aria-label="Delete"
+            onClick={props.handleDelete}
+          >
+            &times;
+          </IconButton>
+
+      </TableCell>
+    </TableRow>
+  )
+}
+
+
+class DocketingTable extends React.Component {
+  handleChange = (fieldName, uid) => input => {
     const inputValue = input.target ? input.target.value : input
-    let newData = [...this.props.tableData]
-    const row = newData[rowIndex]
-    const newRow = { ...row, [fieldName]: inputValue }
-    newData.splice(rowIndex, 1, newRow)
+    let newTableData = [...this.props.tableData]
+    const docketToUpdate = find(newTableData, docket => docket.uid === uid)
+    const docketIndex = newTableData.indexOf(docketToUpdate)
+    docketToUpdate[fieldName] = inputValue
+    newTableData[docketIndex] = docketToUpdate
 
-    this.props.handleChange(newData)
+    this.props.handleChange(newTableData)
   }
 
-  handleDeleteRow = rowIndex => () => {
-    let newData = [...this.props.tableData]
-    newData.splice(rowIndex, 1)
+  handleDeleteDocket = (uid) => () => {
+    const docketToDelete = find(this.props.tableData, (docket) => {return docket.uid === uid})
+    const newTableData = without(this.props.tableData, docketToDelete)
 
-    this.props.handleChange(newData)
+    this.props.handleChange(newTableData)
   }
 
   defaultRowData = (row = {}) => {
@@ -84,16 +189,16 @@ class EditableTable extends React.Component {
   }
 
   createNewRow = () => {
-    const emptyRowData = this.defaultRowData({ allowDelete: true })
-    let newTableData = this.props.tableData ? [...this.props.tableData] : []
-    newTableData.unshift(emptyRowData)
+    const uid = uuidv4()
+    const emptyDocket = this.defaultRowData({ allowDelete: true, uid: uid })
+    let newTableData = this.props.tableData ? this.props.tableData : []
+    newTableData.unshift(emptyDocket)
 
     this.props.handleChange(newTableData)
   }
 
   render() {
     const tableData = this.props.tableData ? this.props.tableData : []
-
     return (
       <Paper style={styles.container}>
         <Button
@@ -112,114 +217,16 @@ class EditableTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableData.map((row, index) => (
-              <TableRow
-                key={`${this.props.id}-row-${index}`}
-                className={this.props.classes.row}
-              >
-                <TableCell
-                  style={styles.docketContainer}
-                  className={this.props.classes.cell}
-                >
-                  <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                      <FormControl className={this.props.classes.formControl}>
-                        <InputLabel htmlFor="docket-type" shrink={true}>
-                          Docket Type
-                        </InputLabel>
-                        <SingleSelect
-                          value={row.docketType}
-                          options={docketTypeOptions}
-                          id="docket-type"
-                          handleChange={this.handleChange('docketType', index)}
-                          style={styles.input}
-                          SelectDisplayProps={{
-                            style: { whiteSpace: 'pre-wrap' },
-                          }}
-                          inputProps={{ style: { fontSize: '0.8rem' } }}
-                        />
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={24} justify="space-between">
-                    <Grid item xs={12} sm={4}>
-                      <TextField
-                        type={'date'}
-                        label="Date"
-                        defaultValue={row.date}
-                        onBlur={this.handleChange('date', index)}
-                        InputProps={{ className: this.props.classes.input }}
-                        className={this.props.classes.formControl}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <TextField
-                        type={'number'}
-                        label="Hours spent"
-                        defaultValue={row.hours}
-                        onBlur={this.handleChange('hours', index)}
-                        InputProps={{ className: this.props.classes.input }}
-                        className={this.props.classes.formControl}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <TextField
-                        type={'number'}
-                        label="Minutes spent"
-                        defaultValue={row.minutes}
-                        onBlur={this.handleChange('minutes', index)}
-                        InputProps={{ className: this.props.classes.input }}
-                        className={this.props.classes.formControl}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        multiline
-                        type={'text'}
-                        label="Description"
-                        defaultValue={row.details}
-                        onBlur={this.handleChange('details', index)}
-                        InputProps={{ className: this.props.classes.input }}
-                        className={this.props.classes.formControl}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                </TableCell>
-
-                <TableCell
-                  padding="checkbox"
-                  className={this.props.classes.cell}
-                >
-                  {!!row.allowDelete ? (
-                    <IconButton
-                      aria-label="Delete"
-                      onClick={this.handleDeleteRow(index)}
-                    >
-                      &times;
-                    </IconButton>
-                  ) : (
-                    <small style={styles.disabled}>Imported</small>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
+            {map(tableData, (docket, index) => {
+              return(
+                <DocketForm key={`${this.props.id}-row-${docket.uid}`}
+                  docket={docket}
+                  handleDelete={this.handleDeleteDocket(docket.uid)}
+                  handleChange={this.handleChange}
+                  classes={this.props.classes}
+                />
+            )}
+          )}
           </TableBody>
         </Table>
       </Paper>
@@ -227,4 +234,4 @@ class EditableTable extends React.Component {
   }
 }
 
-export default withStyles(styles)(EditableTable)
+export default withStyles(styles)(DocketingTable)

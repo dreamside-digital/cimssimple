@@ -4,68 +4,71 @@ import firebase from '../../config/firebase'
 import { map } from 'lodash'
 import { updateSyncStatus, updateSaveStatus, saveError, syncError } from './user';
 
-const emptyProject = {
-  initiativeName: 'Unnamed project',
+const emptyPlan = {
+  projectTitle: 'Unnamed project',
 }
 
 // Actions
 
-export function createProject(newProject) {
+export function createPlan(newPlan) {
+  const planId = uuidv4()
   return {
-    type: 'CREATE_PROJECT',
-    newProject,
+    type: 'CREATE_PLAN',
+    newPlan,
   }
 }
 
-export function updateProjectData(projectData) {
+export function updatePlanData(planData) {
   return {
-    type: 'UPDATE_PROJECT_DATA',
-    projectData,
+    type: 'UPDATE_PLAN_DATA',
+    planData,
   }
 }
 
-export function populateProjectData(projectData) {
+export function populatePlanData(planData) {
   return {
-    type: 'POPULATE_PROJECT_DATA',
-    projectData,
+    type: 'POPULATE_PLAN_DATA',
+    planData,
   }
 }
 
-export function deleteProject(id) {
+export function deletePlan(id) {
   return {
-    type: 'DELETE_PROJECT',
+    type: 'DELETE_PLAN',
     id,
   }
 }
 
-export function createLocalProject(projectId=uuidv4()) {
+export function createLocalPlan() {
   return (dispatch, getState) => {
     dispatch(updateSyncStatus(false));
     dispatch(updateSaveStatus(false))
     const state = getState()
-    const projectState = state.projects
+    const planState = state.plans
     const user = state.user.user;
     const isLoggedIn = state.user.isLoggedIn;
-    const newProject = {
-      [projectId]: emptyProject,
+    const planId = uuidv4()
+    const newPlan = {
+      [planId]: emptyPlan,
     }
-    const projects = { ...projectState, ...newProject }
+    const plans = { ...planState, ...newPlan }
 
     localForage
-      .setItem('projects', projects)
+      .setItem('plans', plans)
       .then(val => {
-        dispatch(createProject(val))
+        dispatch(createPlan(val))
         dispatch(updateSaveStatus(true))
       })
       .catch(err => {
         console.log('ERROR', err)
+        dispatch(updateSaveStatus(false))
         dispatch(saveError(err))
       })
 
     if (isLoggedIn) {
       const db = firebase.database();
-      const ref = db.ref(`users/${user.uid}/projects`);
-      ref.update(projects).then(() => {
+      const ref = db.ref(`users/${user.uid}/plans`);
+      ref.update(plans).then(() => {
         dispatch(updateSyncStatus(true));
       }).catch(err => {
         dispatch(updateSyncStatus(false));
@@ -75,46 +78,44 @@ export function createLocalProject(projectId=uuidv4()) {
   }
 }
 
-export function getProjectData() {
+export function getPlanData() {
   return (dispatch, getState) => {
     const state = getState()
     const isLoggedIn = state.user.isLoggedIn
     const user = state.user.user
 
-    if (isLoggedIn && !!user.projects) {
-      dispatch(populateProjectData(user.projects))
+    if (isLoggedIn && !!user.plans) {
+      dispatch(populatePlanData(user.plans))
       dispatch(updateSyncStatus(true))
     } else {
       localForage
-        .getItem('projects')
+        .getItem('plans')
         .then(data => {
-          dispatch(populateProjectData(data))
-          dispatch(updateSaveStatus(true))
+          console.log('data', data)
+          dispatch(populatePlanData(data))
         })
         .catch(err => {
           console.log('ERROR', err)
-          dispatch(saveError(err))
         })
     }
   }
 }
 
-export function saveProjectData () {
+export function savePlanData () {
   return (dispatch, getState) => {
     dispatch(updateSaveStatus(false))
     dispatch(updateSyncStatus(false))
 
     const state = getState();
-    const form = state.form;
-    const projectId = state.user.editingProject
-    const updatedProjects = {
-      ...state.projects,
-      [projectId]: form
+    const planningTool = state.planningTool;
+    const planId = state.user.editingPlan;
+    const updatedPlans = {
+      ...state.plans,
+      [planId]: planningTool
     }
 
-
-    localForage.setItem('projects', updatedProjects).then((dataObj) => {
-      dispatch(updateProjectData(updatedProjects))
+    localForage.setItem('plans', updatedPlans).then((dataObj) => {
+      dispatch(updatePlanData(updatedPlans))
       dispatch(updateSaveStatus(true))
     }).catch(err => {
       console.log('ERROR', err)
@@ -123,7 +124,7 @@ export function saveProjectData () {
   };
 }
 
-export function syncProjectData() {
+export function syncPlanData() {
   return (dispatch, getState) => {
     const state = getState()
     const user = state.user.user
@@ -134,30 +135,30 @@ export function syncProjectData() {
     }
 
     const db = firebase.database()
-    const ref = db.ref(`users/${user.uid}/projects`)
+    const ref = db.ref(`users/${user.uid}/plans`)
 
     ref
       .once('value')
       .then(snapshot => {
-        const onlineProjects = snapshot.val()
+        const onlinePlans = snapshot.val()
         localForage
-          .getItem('projects')
-          .then(localProjects => {
-            const syncedProjects = { ...onlineProjects, ...localProjects }
+          .getItem('plans')
+          .then(localPlans => {
+            const syncedPlans = { ...onlinePlans, ...localPlans }
 
-            ref.update(syncedProjects).then(val => {
-              console.log('SYNCED WITH FIREBASE!!')
+            ref.update(syncedPlans).then(val => {
+              console.log('SYNCED PLANS WITH FIREBASE!!')
               dispatch(updateSyncStatus(true))
             }).catch(err => {
               console.log('FIREBASE ERROR', err)
               dispatch(updateSyncStatus(false))
+              dispatch(syncError(err))
             })
 
-
             localForage
-              .setItem('projects', syncedProjects)
+              .setItem('plans', syncedPlans)
               .then(data => {
-                dispatch(populateProjectData(data))
+                dispatch(populatePlanData(data))
                 dispatch(updateSaveStatus(true))
               })
               .catch(err => {
@@ -179,26 +180,25 @@ export function syncProjectData() {
   }
 }
 
-export function deleteLocalProject(id) {
+export function deleteLocalPlan(id) {
   return (dispatch, getState) => {
     dispatch(updateSyncStatus(false));
     dispatch(updateSaveStatus(false));
     const state = getState()
     const user = state.user.user
     const isLoggedIn = state.user.isLoggedIn
-    const projectState = state.projects
+    const planState = state.plans
 
 
-    let updatedProjects = {
-      ...projectState,
+    let updatedPlans = {
+      ...planState,
     }
-    delete updatedProjects[id]
-
+    delete updatedPlans[id]
 
     localForage
-      .setItem('projects', updatedProjects)
-      .then(projects => {
-        dispatch(populateProjectData(projects))
+      .setItem('plans', updatedPlans)
+      .then(plans => {
+        dispatch(populatePlanData(plans))
         dispatch(updateSaveStatus(true))
       })
       .catch(err => {
@@ -209,7 +209,7 @@ export function deleteLocalProject(id) {
 
     if (isLoggedIn) {
       const db = firebase.database()
-      const ref = db.ref(`users/${user.uid}/projects/${id}`)
+      const ref = db.ref(`users/${user.uid}/plans/${id}`)
 
       ref.remove().then(() => {
         dispatch(updateSyncStatus(true));
@@ -226,30 +226,30 @@ export function deleteLocalProject(id) {
 
 export const reducer = (state = {}, action) => {
   switch (action.type) {
-    case 'CREATE_PROJECT': {
+    case 'CREATE_PLAN': {
       return {
         ...state,
-        ...action.newProject,
+        ...action.newPlan,
       }
     }
 
-    case 'UPDATE_PROJECT_DATA': {
-      return {
-        ...state,
-        ...action.projectData,
-      }
-    }
-
-    case 'DELETE_PROJECT': {
+    case 'DELETE_PLAN': {
       return {
         ...state,
         [action.id]: null,
       }
     }
 
-    case 'POPULATE_PROJECT_DATA': {
+    case 'UPDATE_PLAN_DATA': {
       return {
-        ...action.projectData,
+        ...state,
+        ...action.planData,
+      }
+    }
+
+    case 'POPULATE_PLAN_DATA': {
+      return {
+        ...action.planData,
       }
     }
 

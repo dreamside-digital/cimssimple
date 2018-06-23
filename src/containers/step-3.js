@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/form'
+import { updateForm, getLocalFormData } from '../redux/modules/form'
 import Link from 'gatsby-link'
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
@@ -23,7 +23,7 @@ import {
 class Step3 extends React.Component {
   generateChangeHandler = fieldId => {
     return value => {
-      this.props.saveLocalFormData(fieldId, value, this.props.projectId)
+      this.props.updateForm(fieldId, value, this.props.projectId)
     }
   }
 
@@ -39,8 +39,8 @@ class Step3 extends React.Component {
             <Label htmlFor="docketing">1. Docketing (Mandatory)</Label>
             <HelpText>
               <p>
-                Tracking how CO/CD workers spend their time is important to show
-                how much work goes into CO/CD. Docketing allows us to do this
+                Tracking how CD-CO workers spend their time is important to show
+                how much work goes into CD-CO. Docketing allows us to do this
                 and serves as an ongoing narrative for the initiative. The
                 docket created on this tool can be entered into CIMS during a
                 project or after it is complete.
@@ -71,7 +71,7 @@ class Step3 extends React.Component {
             <DocketingTable
               id="docketing"
               handleChange={this.generateChangeHandler('docketing')}
-              tableData={this.props.formData['docketing']}
+              tableData={this.props.formData['docketing'] || []}
               tableStructure={docketingTableStructure}
             />
           </InputSection>

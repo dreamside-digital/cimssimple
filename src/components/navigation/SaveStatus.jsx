@@ -12,16 +12,22 @@ const styles = {
 }
 
 const SaveStatus = (props) => {
-  if (props.saveError) {
+
+  if (props.user.saveError) {
     return <Chip label='Unable to save, please refresh and try again.' style={styles.error} />
   }
-  return <Chip label="Saved locally" style={styles.saved} />
+
+  if (props.user.isSaved) {
+    return <Chip label="Saved locally" style={styles.saved} />
+  }
+
+  return <Chip label='Editing...' />
+
 }
 
 const mapStateToProps = (state) => {
   return {
-    isSaved: state.form.isSaved,
-    saveError: state.form.saveError
+    user: state.user
   }
 }
 
