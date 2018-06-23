@@ -13,7 +13,7 @@ const SaveAndExitButton = props => {
     }
 
     if (props.user.editingPlan) {
-      props.savePlanningToolData()
+      props.savePlanData()
     }
 
     navigateTo('/')
@@ -45,6 +45,9 @@ const mapDispatchToProps = dispatch => {
     },
     saveProjectData: () => {
       dispatch(saveProjectData())
+    },
+    savePlanData: () => {
+      dispatch(savePlanData())
     },
   }
 }

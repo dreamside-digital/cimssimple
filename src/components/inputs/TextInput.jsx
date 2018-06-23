@@ -14,7 +14,8 @@ class TextInput extends React.Component {
     }
   }
 
-  handleChange = value => {
+  handleChange = event => {
+    const value = event.target.value;
     if (this.props.onChange) {
       this.props.onChange(value)
     }
@@ -31,7 +32,6 @@ class TextInput extends React.Component {
         onChange={this.handleChange}
         value={this.state.value}
         style={styles}
-        {...this.props}
       />
     )
   }
