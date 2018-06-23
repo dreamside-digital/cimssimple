@@ -22,6 +22,18 @@ export function clearForm() {
   }
 }
 
+export function saveAndExit() {
+  return (dispatch, getState) => {
+    console.log('SAVE AND EXIT')
+    const state = getState()
+    const form = state.form
+    const projectId = state.user.editingProject
+
+    dispatch(updateFormData(form))
+    dispatch(saveProjectData())
+  }
+}
+
 export function startEditing() {
   return dispatch => {
     dispatch(updateSyncStatus(false))
@@ -63,7 +75,6 @@ export const reducer = (state = {}, action) => {
 
     case 'POPULATE_PAGE_DATA': {
       return {
-        ...state,
         ...action.data
       }
     }

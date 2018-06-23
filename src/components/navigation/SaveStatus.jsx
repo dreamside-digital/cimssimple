@@ -12,7 +12,6 @@ const styles = {
 }
 
 const SaveStatus = (props) => {
-  console.log('save status props', props)
 
   if (props.user.saveError) {
     return <Chip label='Unable to save, please refresh and try again.' style={styles.error} />

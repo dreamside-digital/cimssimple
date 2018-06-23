@@ -116,7 +116,7 @@ export const reducer = (state = initialState, action) => {
     }
 
     case 'USER_LOGGED_OUT': {
-      return initialState
+      return { ...state, isLoggedIn: false, user: null }
     }
 
     case 'UPDATE_SYNC_STATUS': {

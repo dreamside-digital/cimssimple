@@ -50,6 +50,7 @@ export function createLocalProject(projectId=uuidv4()) {
       [projectId]: emptyProject,
     }
     const projects = { ...projectState, ...newProject }
+
     localForage
       .setItem('projects', projects)
       .then(val => {
@@ -111,6 +112,7 @@ export function saveProjectData () {
       [projectId]: form
     }
 
+
     localForage.setItem('projects', updatedProjects).then((dataObj) => {
       dispatch(updateProjectData(updatedProjects))
       dispatch(updateSaveStatus(true))
@@ -138,7 +140,6 @@ export function syncProjectData() {
       .once('value')
       .then(snapshot => {
         const onlineProjects = snapshot.val()
-        console.log("onlineProjects", onlineProjects)
         localForage
           .getItem('projects')
           .then(localProjects => {
@@ -151,6 +152,7 @@ export function syncProjectData() {
               console.log('FIREBASE ERROR', err)
               dispatch(updateSyncStatus(false))
             })
+
 
             localForage
               .setItem('projects', syncedProjects)
@@ -191,6 +193,7 @@ export function deleteLocalProject(id) {
       ...projectState,
     }
     delete updatedProjects[id]
+
 
     localForage
       .setItem('projects', updatedProjects)

@@ -7,6 +7,7 @@ import SaveStatus from './SaveStatus'
 import SyncStatus from './SyncStatus'
 import AuthButton from './AuthButton'
 import SyncFormButton from './SyncFormButton'
+import SaveAndExitButton from './SaveAndExitButton'
 
 class MenuDropdown extends React.Component {
   state = {
@@ -46,9 +47,7 @@ class MenuDropdown extends React.Component {
           </MenuItem>
 
           <MenuItem>
-            <Button component={Link} to={'/'}>
-              Save & Exit
-            </Button>
+            <SaveAndExitButton />
           </MenuItem>
 
           <MenuItem>

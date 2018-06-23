@@ -88,7 +88,6 @@ class IndexPage extends React.Component {
           const name = projectData
             ? projectData.initiativeName
             : 'Unnamed project';
-            console.log('project name', name)
           const currentTab =
             (projectData && projectData.currentTab > -1)
               ? parseInt(projectData.currentTab)
@@ -192,7 +191,12 @@ class IndexPage extends React.Component {
                                 </Link>
                                 <Link
                                   to={'#'}
-                                  onClick={() => this.props.deleteProject(row.id)}
+                                  onClick={() => {
+                                    const del = confirm('Are you sure you want to delete this project?')
+                                    if (del) {
+                                      this.props.deleteProject(row.id)
+                                    }
+                                  }}
                                 >
                                   Delete
                                 </Link>
