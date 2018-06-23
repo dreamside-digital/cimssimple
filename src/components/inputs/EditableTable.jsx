@@ -45,6 +45,12 @@ const styles = {
 }
 
 class EditableTable extends React.Component {
+  componentDidMount() {
+    if (!this.props.tableData) {
+      this.createNewRow()
+    }
+  }
+
   handleChange = (fieldName, rowIndex) => input => {
     const inputValue = input.target ? input.target.value : input
     let newData = [...this.props.tableData]
