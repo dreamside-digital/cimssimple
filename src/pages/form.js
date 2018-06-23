@@ -32,22 +32,23 @@ const styles = {
 class TabbedForm extends React.Component {
   constructor(props) {
     super(props)
-    const queryString = this.props.location.search
-    this.params = new URLSearchParams(queryString)
-    const startingTab = this.params.get('step') ? (parseInt(this.params.get('step')) - 1) : 0
     this.state = {
-      value: startingTab
+      value: 0
     }
     this.props.clearForm();
   }
 
   componentDidMount() {
-    const projectId = this.params.get('id');
+    const queryString = this.props.location.search
+    const params = new URLSearchParams(queryString)
+    const startingTab = params.get('step') ? (parseInt(params.get('step')) - 1) : 0
+    const projectId = params.get('id');
     if (!projectId) {
       return this.createProjectAndStartEditing()
     }
     this.props.getLocalFormData(projectId);
     this.props.editProject(projectId);
+    this.setState({ value: startingTab })
   }
 
   componentWillUnmount() {
