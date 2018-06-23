@@ -2,7 +2,7 @@ import React from 'react'
 import Link, { navigateTo } from 'gatsby-link'
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
-import { saveLocalFormData, getLocalFormData, startEditing } from '../redux/modules/form';
+import { updateForm, getLocalFormData, startEditing } from '../redux/modules/form';
 import { editProject } from '../redux/modules/user';
 import { createLocalProject } from '../redux/modules/projects';
 import uuidv4 from 'uuid/v4'
@@ -20,6 +20,7 @@ import Step2 from '../containers/step-2'
 import Step3 from '../containers/step-3'
 import Step4 from '../containers/step-4'
 import Navigation from '../components/navigation/Navigation'
+import PageContainer from '../components/PageContainer'
 
 
 const styles = {
@@ -41,14 +42,14 @@ class TabbedForm extends React.Component {
     if (!projectId) {
       return this.createProjectAndStartEditing()
     }
-    this.props.saveLocalFormData('currentTab', startingTab, projectId)
-    this.props.editProject(projectId);
     this.props.getLocalFormData(projectId);
+    this.props.editProject(projectId);
+    this.props.updateForm('currentTab', startingTab, projectId)
   }
 
   createProjectAndStartEditing() {
     const projectId = uuidv4();
-    this.props.createProject({ projectId })
+    this.props.createProject(projectId)
     this.props.editProject(projectId)
     navigateTo(`/form?id=${projectId}`)
   }
@@ -58,7 +59,7 @@ class TabbedForm extends React.Component {
   }
 
   handleChange = (event, value) => {
-    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.props.updateForm('currentTab', value, this.props.projectId)
     this.scrollToTop()
   }
 
@@ -67,7 +68,7 @@ class TabbedForm extends React.Component {
     const next = currentTab + 1;
     const value = next > 3 ? 0 : next;
 
-    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.props.updateForm('currentTab', value, this.props.projectId)
     this.scrollToTop()
   }
 
@@ -76,7 +77,7 @@ class TabbedForm extends React.Component {
     const prev = currentTab - 1;
     const value = prev < 0 ? 0 : prev;
 
-    this.props.saveLocalFormData('currentTab', value, this.props.projectId)
+    this.props.updateForm('currentTab', value, this.props.projectId)
     this.scrollToTop()
   }
 
@@ -84,73 +85,77 @@ class TabbedForm extends React.Component {
     const { classes } = this.props
     const { value } = this.state
     const currentTab = this.props.formData.currentTab ? parseInt(this.props.formData.currentTab) : 0
+    console.log('this.props.formData', this.props.formData)
+    console.log('CURRENT TAB', currentTab)
 
     return (
       <div>
         <Navigation initiativeName={this.props.formData['initiativeName']} />
-        <AppBar position="static">
-          <Tabs value={currentTab} onChange={this.handleChange} centered>
-            <Tab label="Step 1" />
-            <Tab label="Step 2" />
-            <Tab label="Step 3" />
-            <Tab label="Step 4" />
-          </Tabs>
-        </AppBar>
-        {currentTab === 0 && (
-          <Step1
-            startEditing={this.props.startEditing}
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            projectId={this.props.projectId}
+        <PageContainer>
+          <AppBar position="static">
+            <Tabs value={currentTab} onChange={this.handleChange} centered>
+              <Tab label="Step 1" />
+              <Tab label="Step 2" />
+              <Tab label="Step 3" />
+              <Tab label="Step 4" />
+            </Tabs>
+          </AppBar>
+          {currentTab === 0 && (
+            <Step1
+              startEditing={this.props.startEditing}
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              projectId={this.props.projectId}
+              />
+          )}
+          {currentTab === 1 && (
+            <Step2
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              startEditing={this.props.startEditing}
+              projectId={this.props.projectId}
             />
-        )}
-        {currentTab === 1 && (
-          <Step2
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            startEditing={this.props.startEditing}
-            projectId={this.props.projectId}
-          />
-        )}
-        {currentTab === 2 && (
-          <Step3
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            startEditing={this.props.startEditing}
-            projectId={this.props.projectId}
-          />
-        )}
-        {currentTab === 3 && (
-          <Step4
-            formData={this.props.formData}
-            saveLocalFormData={this.props.saveLocalFormData}
-            startEditing={this.props.startEditing}
-            projectId={this.props.projectId}
-          />
-        )}
+          )}
+          {currentTab === 2 && (
+            <Step3
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              startEditing={this.props.startEditing}
+              projectId={this.props.projectId}
+            />
+          )}
+          {currentTab === 3 && (
+            <Step4
+              formData={this.props.formData}
+              updateForm={this.props.updateForm}
+              startEditing={this.props.startEditing}
+              projectId={this.props.projectId}
+            />
+          )}
 
-        <Grid container justify="space-between">
-          <Grid item>
-            {
-              this.state.value > 0 &&
-            <Button color="primary" variant="raised" onClick={this.previousTab}>Back</Button>
-            }
-            {
-              this.state.value === 0 &&
-              <Button color="primary" variant="raised" component={Link} to={'/'}>Home</Button>
-            }
+          <Grid container justify="space-between">
+            <Grid item>
+              {
+                this.state.value > 0 &&
+              <Button color="primary" variant="raised" onClick={this.previousTab}>Back</Button>
+              }
+              {
+                this.state.value === 0 &&
+                <Button color="primary" variant="raised" component={Link} to={'/'}>Home</Button>
+              }
+            </Grid>
+            <Grid item>
+              {
+                this.state.value === 3 &&
+                <Button color="secondary" variant="raised" component={Link} to={'/'}>All done!</Button>
+              }
+              {
+                this.state.value < 3 &&
+              <Button color="secondary" variant="raised" onClick={this.nextTab}>Next</Button>
+              }
+            </Grid>
           </Grid>
-          <Grid item>
-            {
-              this.state.value === 3 &&
-              <Button color="secondary" variant="raised" component={Link} to={'/'}>All done!</Button>
-            }
-            {
-              this.state.value < 3 &&
-            <Button color="secondary" variant="raised" onClick={this.nextTab}>Next</Button>
-            }
-          </Grid>
-        </Grid>
+        </PageContainer>
       </div>
     )
   }
@@ -168,8 +173,8 @@ const mapDispatchToProps = dispatch => {
     startEditing: () => {
       dispatch(startEditing())
     },
-    saveLocalFormData: (fieldId, value, projectId) => {
-      dispatch(saveLocalFormData(fieldId, value, projectId))
+    updateForm: (fieldId, value, projectId) => {
+      dispatch(updateForm(fieldId, value, projectId))
     },
     getLocalFormData: id => {
       dispatch(getLocalFormData(id))
@@ -177,8 +182,8 @@ const mapDispatchToProps = dispatch => {
     editProject: (id) => {
       dispatch(editProject(id))
     },
-    createProject: (opts) => {
-      dispatch(createLocalProject(opts))
+    createProject: (projectId) => {
+      dispatch(createLocalProject(projectId))
     },
   }
 }

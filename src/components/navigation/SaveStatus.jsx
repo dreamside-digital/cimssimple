@@ -13,25 +13,21 @@ const styles = {
 
 const SaveStatus = (props) => {
   console.log('save status props', props)
-  const activeForm = props.user.editingProject ? 'form' : 'planningTool';
 
-  if (props.saveError) {
+  if (props.user.saveError) {
     return <Chip label='Unable to save, please refresh and try again.' style={styles.error} />
   }
 
-  if ((props.user.editingProject && props.isFormSaved) || (props.user.editingPlan && props.isPlanningToolSaved)) {
+  if (props.user.isSaved) {
     return <Chip label="Saved locally" style={styles.saved} />
   }
 
-  return <Chip label='Editing...' style={styles.error} />
+  return <Chip label='Editing...' />
 
 }
 
 const mapStateToProps = (state) => {
   return {
-    isFormSaved: state.form.isSaved,
-    isPlanningToolSaved: state.planningTool.isSaved,
-    saveError: state.form.saveError,
     user: state.user
   }
 }

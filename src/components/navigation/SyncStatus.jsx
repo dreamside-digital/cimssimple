@@ -25,7 +25,7 @@ const SyncStatus = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    isSynced: state.user.synced,
+    isSynced: state.user.isSynced,
     isLoggedIn: state.user.isLoggedIn,
   }
 }

@@ -14,14 +14,26 @@ class TextInput extends React.Component {
     }
   }
 
-  handleChange = e => {
-    this.setState({ value: e.target.value })
+  handleChange = value => {
+    if (this.props.onChange) {
+      this.props.onChange(value)
+    }
+    this.setState({ value })
   }
 
   handleBlur = e => this.props.handleChange(this.state.value)
 
   render() {
-    return <TextField type="text" onBlur={this.handleBlur} onChange={this.handleChange} value={this.state.value} style={styles} />
+    return (
+      <TextField
+        type="text"
+        onBlur={this.handleBlur}
+        onChange={this.handleChange}
+        value={this.state.value}
+        style={styles}
+        {...this.props}
+      />
+    )
   }
 }
 

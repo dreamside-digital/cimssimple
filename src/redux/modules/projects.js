@@ -2,7 +2,7 @@ import * as localForage from 'localforage'
 import uuidv4 from 'uuid/v4'
 import firebase from '../../config/firebase'
 import { map } from 'lodash'
-import { syncStatus } from './user';
+import { updateSyncStatus, updateSaveStatus, saveError, syncError } from './user';
 
 const emptyProject = {
   initiativeName: 'Unnamed project',
@@ -14,6 +14,13 @@ export function createProject(newProject) {
   return {
     type: 'CREATE_PROJECT',
     newProject,
+  }
+}
+
+export function updateProjectData(projectData) {
+  return {
+    type: 'UPDATE_PROJECT_DATA',
+    projectData,
   }
 }
 
@@ -31,9 +38,10 @@ export function deleteProject(id) {
   }
 }
 
-export function createLocalProject({ projectId = uuidv4() }) {
+export function createLocalProject(projectId=uuidv4()) {
   return (dispatch, getState) => {
-    dispatch(syncStatus(false));
+    dispatch(updateSyncStatus(false));
+    dispatch(updateSaveStatus(false))
     const state = getState()
     const projectState = state.projects
     const user = state.user.user;
@@ -46,18 +54,21 @@ export function createLocalProject({ projectId = uuidv4() }) {
       .setItem('projects', projects)
       .then(val => {
         dispatch(createProject(val))
+        dispatch(updateSaveStatus(true))
       })
       .catch(err => {
         console.log('ERROR', err)
+        dispatch(saveError(err))
       })
 
     if (isLoggedIn) {
       const db = firebase.database();
       const ref = db.ref(`users/${user.uid}/projects`);
       ref.update(projects).then(() => {
-        dispatch(syncStatus(true));
+        dispatch(updateSyncStatus(true));
       }).catch(err => {
-        dispatch(syncStatus(false));
+        dispatch(updateSyncStatus(false));
+        dispatch(syncError(err))
       })
     }
   }
@@ -71,18 +82,43 @@ export function getProjectData() {
 
     if (isLoggedIn && !!user.projects) {
       dispatch(populateProjectData(user.projects))
-      dispatch(syncStatus(true))
+      dispatch(updateSyncStatus(true))
     } else {
       localForage
         .getItem('projects')
         .then(data => {
           dispatch(populateProjectData(data))
+          dispatch(updateSaveStatus(true))
         })
         .catch(err => {
           console.log('ERROR', err)
+          dispatch(saveError(err))
         })
     }
   }
+}
+
+export function saveProjectData () {
+  return (dispatch, getState) => {
+    dispatch(updateSaveStatus(false))
+    dispatch(updateSyncStatus(false))
+
+    const state = getState();
+    const form = state.form;
+    const projectId = state.user.editingProject
+    const updatedProjects = {
+      ...state.projects,
+      [projectId]: form
+    }
+
+    localForage.setItem('projects', updatedProjects).then((dataObj) => {
+      dispatch(updateProjectData(updatedProjects))
+      dispatch(updateSaveStatus(true))
+    }).catch(err => {
+      console.log('ERROR', err)
+      dispatch(saveError(err))
+    })
+  };
 }
 
 export function syncProjectData() {
@@ -91,7 +127,7 @@ export function syncProjectData() {
     const user = state.user.user
 
     if (!state.user.isLoggedIn) {
-      dispatch(syncStatus(false));
+      dispatch(updateSyncStatus(false));
       return null;
     }
 
@@ -102,6 +138,7 @@ export function syncProjectData() {
       .once('value')
       .then(snapshot => {
         const onlineProjects = snapshot.val()
+        console.log("onlineProjects", onlineProjects)
         localForage
           .getItem('projects')
           .then(localProjects => {
@@ -109,35 +146,41 @@ export function syncProjectData() {
 
             ref.update(syncedProjects).then(val => {
               console.log('SYNCED WITH FIREBASE!!')
-              dispatch(syncStatus(true))
+              dispatch(updateSyncStatus(true))
             }).catch(err => {
               console.log('FIREBASE ERROR', err)
-              dispatch(syncStatus(false))
+              dispatch(updateSyncStatus(false))
             })
 
             localForage
               .setItem('projects', syncedProjects)
               .then(data => {
                 dispatch(populateProjectData(data))
+                dispatch(updateSaveStatus(true))
               })
               .catch(err => {
                 console.log('LOCALFORAGE ERROR', err)
+                dispatch(updateSaveStatus(false))
+                dispatch(saveError(err))
               })
           })
           .catch(err => {
             console.log('LOCALFORAGE ERROR', err)
+            dispatch(saveError(err))
           })
       })
       .catch(err => {
         console.log('FIREBASE ERROR', err)
-        dispatch(syncStatus(false))
+        dispatch(updateSyncStatus(false))
+        dispatch(syncError(err))
       })
   }
 }
 
 export function deleteLocalProject(id) {
   return (dispatch, getState) => {
-    dispatch(syncStatus(false));
+    dispatch(updateSyncStatus(false));
+    dispatch(updateSaveStatus(false));
     const state = getState()
     const user = state.user.user
     const isLoggedIn = state.user.isLoggedIn
@@ -153,9 +196,12 @@ export function deleteLocalProject(id) {
       .setItem('projects', updatedProjects)
       .then(projects => {
         dispatch(populateProjectData(projects))
+        dispatch(updateSaveStatus(true))
       })
       .catch(err => {
         console.log('ERROR', err)
+        dispatch(updateSaveStatus(false))
+        dispatch(saveError(err))
       })
 
     if (isLoggedIn) {
@@ -163,10 +209,11 @@ export function deleteLocalProject(id) {
       const ref = db.ref(`users/${user.uid}/projects/${id}`)
 
       ref.remove().then(() => {
-        dispatch(syncStatus(true));
+        dispatch(updateSyncStatus(true));
       }).catch(err => {
         console.log('firebase error', err)
-        dispatch(syncStatus(false));
+        dispatch(updateSyncStatus(false));
+        dispatch(syncError(err))
       })
     }
   }
@@ -180,6 +227,13 @@ export const reducer = (state = {}, action) => {
       return {
         ...state,
         ...action.newProject,
+      }
+    }
+
+    case 'UPDATE_PROJECT_DATA': {
+      return {
+        ...state,
+        ...action.projectData,
       }
     }
 

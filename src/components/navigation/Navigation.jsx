@@ -22,7 +22,7 @@ const styles = {
 
 const Navigation = props => {
   return (
-    <AppBar position="static" color="default">
+    <AppBar position="fixed" color="default">
       <Toolbar>
         <Grid container spacing={0}>
           <Grid item hidden={{ smDown: true }} xs={12}>

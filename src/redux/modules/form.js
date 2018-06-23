@@ -1,6 +1,6 @@
 import * as localForage from "localforage";
-import { syncStatus } from './user';
-import { syncProjectData } from './projects'
+import { updateSaveStatus, updateSyncStatus, saveError } from './user';
+import { saveProjectData } from './projects'
 
 // Actions
 
@@ -16,18 +16,6 @@ function updatePageData (data) {
   }
 }
 
-function updateSaveStatus(isSaved) {
-  return {
-    type: 'UPDATE_SAVE_STATUS', isSaved
-  }
-}
-
-function saveError(error) {
-  return {
-    type: 'SAVE_ERROR', error
-  }
-}
-
 export function clearForm() {
   return {
     type: 'CLEAR_FORM'
@@ -36,29 +24,19 @@ export function clearForm() {
 
 export function startEditing() {
   return dispatch => {
-    dispatch(syncStatus(false))
+    dispatch(updateSyncStatus(false))
     dispatch(updateSaveStatus(false))
   }
 }
 
-export function saveLocalFormData (id, data, projectId) {
+export function updateForm (id, data, projectId) {
   return (dispatch, getState) => {
-    dispatch(updateSaveStatus(false))
-    dispatch(syncStatus(false))
 
     const state = getState();
     const form = {...state.form, [id]: data};
-    const updatedProjects = {
-      ...state.projects,
-      [projectId]: form
-    }
 
-    localForage.setItem('projects', updatedProjects).then((dataObj) => {
-      dispatch(updateFormData(form));
-    }).catch(err => {
-      console.log('ERROR', err)
-      dispatch(saveError(err))
-    })
+    dispatch(updateFormData(form));
+    dispatch(saveProjectData())
   };
 }
 
@@ -74,18 +52,12 @@ export function getLocalFormData (editingProjectId) {
 
 // Reducer
 
-const initialState = {
-  isSaved: true,
-}
-
-export const reducer = (state = initialState, action) => {
+export const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'UPDATE_FORM_DATA': {
       return {
         ...state,
-        ...action.dataObj,
-        isSaved: true,
-        saveError: false
+        ...action.dataObj
       };
     }
 
@@ -93,21 +65,6 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.data
-      }
-    }
-
-    case 'UPDATE_SAVE_STATUS': {
-      return {
-        ...state,
-        isSaved: action.isSaved,
-        saveError: false
-      }
-    }
-
-    case 'SAVE_ERROR': {
-      return {
-        ...state,
-        saveError: action.error
       }
     }
 

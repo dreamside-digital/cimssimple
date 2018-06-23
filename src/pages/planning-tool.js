@@ -2,8 +2,8 @@ import React from 'react'
 import Link from 'gatsby-link'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { saveLocalPlanData, getLocalPlanData, updateSaveStatus } from '../redux/modules/planningTool';
-import { editPlan } from '../redux/modules/user';
+import { updatePlan, getLocalPlanData } from '../redux/modules/planningTool';
+import { editPlan, updateSaveStatus } from '../redux/modules/user';
 
 import Grid from 'material-ui/Grid'
 import Button from 'material-ui/Button'
@@ -15,6 +15,7 @@ import InputSection from '../components/InputSection'
 import Label from '../components/Label'
 import TextInput from '../components/inputs/TextInput'
 import Question from '../components/Question'
+import PageContainer from '../components/PageContainer'
 
 const styles = {
   contentContainer: {
@@ -89,38 +90,41 @@ class PlanningTool extends React.Component {
   }
 
   saveTable = fields => {
-    this.props.saveLocalPlanData('tableData', fields, this.props.planId)
+    this.props.updatePlan('tableData', fields, this.props.planId)
   }
 
   saveTitle = title => {
-    this.props.saveLocalPlanData('projectTitle', title, this.props.planId)
+    this.props.updatePlan('projectTitle', title, this.props.planId)
   }
 
   render() {
     const tableData = (this.props.planData && this.props.planData.tableData) ? this.props.planData.tableData : initialTableData
-    console.log('this.props.planData', this.props.planData)
+
     return (
       <div>
         <Navigation initiativeName={this.props.planData.projectTitle} />
-        <div className={this.props.classes.contentContainer}>
-          <div className={this.props.classes.titleInput}>
-            <InputSection>
-              <Label htmlFor="projectTitle" small>Project title</Label>
-              <TextInput
-                id="projectTitle"
-                handleChange={this.saveTitle}
-                value={this.props.planData.projectTitle}
-              />
-            </InputSection>
+        <PageContainer>
+          <div className={this.props.classes.contentContainer}>
+            <div className={this.props.classes.titleInput}>
+              <InputSection>
+                <Label htmlFor="projectTitle" small>Project title</Label>
+                <TextInput
+                  id="projectTitle"
+                  handleChange={this.saveTitle}
+                  value={this.props.planData.projectTitle}
+                  onChange={() => this.props.updateSaveStatus(false)}
+                />
+              </InputSection>
+            </div>
+            <FlexTable
+              id="planning-tool"
+              handleSave={this.saveTable}
+              tableStructure={tableStructure}
+              tableData={tableData}
+              onChange={() => this.props.updateSaveStatus(false)}
+            />
           </div>
-          <FlexTable
-            id="planning-tool"
-            handleSave={this.saveTable}
-            tableStructure={tableStructure}
-            tableData={tableData}
-            onChange={() => updateSaveStatus(false)}
-          />
-        </div>
+        </PageContainer>
       </div>
     )
   }
@@ -135,8 +139,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveLocalPlanData: (fieldId, value, planId) => {
-      dispatch(saveLocalPlanData(fieldId, value, planId))
+    updatePlan: (fieldId, value, planId) => {
+      dispatch(updatePlan(fieldId, value, planId))
     },
     getLocalPlanData: id => {
       dispatch(getLocalPlanData(id))

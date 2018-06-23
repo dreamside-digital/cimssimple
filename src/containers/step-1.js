@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/form'
+import { updateForm, getLocalFormData } from '../redux/modules/form'
 import Link from 'gatsby-link'
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
@@ -27,7 +27,7 @@ class Step1 extends React.Component {
   generateChangeHandler = fieldId => {
     return value => {
       this.props.startEditing()
-      this.props.saveLocalFormData(fieldId, value, this.props.projectId)
+      this.props.updateForm(fieldId, value, this.props.projectId)
     }
   }
 

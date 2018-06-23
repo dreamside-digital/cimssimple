@@ -18,10 +18,28 @@ export function editPlan(id) {
   }
 }
 
-export function syncStatus(synced) {
+export function updateSyncStatus(isSynced) {
   return {
-    type: 'SYNC_STATUS',
-    synced,
+    type: 'UPDATE_SYNC_STATUS',
+    isSynced,
+  }
+}
+
+export function updateSaveStatus(isSaved) {
+  return {
+    type: 'UPDATE_SAVE_STATUS', isSaved
+  }
+}
+
+export function saveError(saveError) {
+  return {
+    type: 'SAVE_ERROR', saveError
+  }
+}
+
+export function syncError(syncError) {
+  return {
+    type: 'SYNC_ERROR', syncError
   }
 }
 
@@ -68,7 +86,16 @@ export function newLogin(user = null) {
 
 // Reducer
 
-export const reducer = (state = {}, action) => {
+const initialState = {
+  editingProject: null,
+  editingPlan: null,
+  isLoggedIn: false,
+  isSynced: false,
+  isSaved: false,
+  user: null
+}
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'EDIT_PROJECT': {
       return {
@@ -88,14 +115,35 @@ export const reducer = (state = {}, action) => {
       return { ...state, isLoggedIn: true, user: action.user }
     }
 
-    case 'USER_LOGGED_OUT':{
-      return { ...state, isLoggedIn: false, user: null }
+    case 'USER_LOGGED_OUT': {
+      return initialState
     }
 
-    case 'SYNC_STATUS': {
+    case 'UPDATE_SYNC_STATUS': {
       return {
         ...state,
-        synced: action.synced,
+        isSynced: action.isSynced,
+      }
+    }
+
+    case 'UPDATE_SAVE_STATUS': {
+      return {
+        ...state,
+        isSaved: action.isSaved,
+      }
+    }
+
+    case 'SYNC_ERROR': {
+      return {
+        ...state,
+        syncError: action.syncError,
+      }
+    }
+
+    case 'SAVE_ERROR': {
+      return {
+        ...state,
+        saveError: action.saveError,
       }
     }
 

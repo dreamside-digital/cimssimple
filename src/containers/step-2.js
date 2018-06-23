@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import uuidv4 from 'uuid/v4'
 import { map } from 'lodash'
 
-import { saveLocalFormData, getLocalFormData } from '../redux/modules/form'
+import { updateForm, getLocalFormData } from '../redux/modules/form'
 
 import Link from 'gatsby-link'
 import Button from 'material-ui/Button'
@@ -37,7 +37,7 @@ import {
 class Step2 extends React.Component {
   generateChangeHandler = fieldId => {
     return value => {
-      this.props.saveLocalFormData(fieldId, value, this.props.projectId)
+      this.props.updateForm(fieldId, value, this.props.projectId)
     }
   }
 

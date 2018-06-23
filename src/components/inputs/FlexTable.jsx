@@ -68,6 +68,9 @@ class FlexTable extends React.Component {
   };
 
   handleDeleteItem = (fieldName, index) => () => {
+    if (this.props.onChange) {
+      this.props.onChange()
+    }
     let newData = [...this.state.tableData[fieldName]];
     newData.splice(index, 1);
 
@@ -80,6 +83,9 @@ class FlexTable extends React.Component {
   };
 
   handleAddItem = fieldName => () => {
+    if (this.props.onChange) {
+      this.props.onChange()
+    }
     const newData = [...this.state.tableData[fieldName]].concat("");
     this.setState({
       tableData: {
