@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactSelect from 'react-select'
-import { uniq } from 'lodash'
+import { uniq, find } from 'lodash'
 
 import Select from 'material-ui/Select'
 import Checkbox from 'material-ui/Checkbox'
@@ -25,10 +25,10 @@ const styles = {
 const AnticipatedOutcomesSelector = props => {
   const onChange = input => {
     const newInput = input.target ? input.target.value : input
-    const value = [...props.value]
-    const newValue = value.concat(newInput)
-    props.handleChange(uniq(newValue))
-    console.log(newValue)
+    if (typeof(newInput) === "string") {
+      return props.handleChange(props.value.concat(newInput)) // custom user input
+    }
+    return props.handleChange(newInput) // dropdown selection
   }
 
   const handleDeleteItem = index => () => {
@@ -79,7 +79,7 @@ const AnticipatedOutcomesSelector = props => {
         {props.options.knowledge.map(option => {
           return (
             <MenuItem key={option} value={option}>
-              <Checkbox checked={props.value.indexOf(option) > -1} />
+              <Checkbox checked={props.value.indexOf(option) > -1}  />
               <ListItemText primary={option} />
             </MenuItem>
           )
@@ -90,7 +90,7 @@ const AnticipatedOutcomesSelector = props => {
         {props.options.longterm.map(option => {
           return (
             <MenuItem key={option} value={option}>
-              <Checkbox checked={props.value.indexOf(option) > -1} />
+              <Checkbox checked={props.value.indexOf(option) > -1}  />
               <ListItemText primary={option} />
             </MenuItem>
           )

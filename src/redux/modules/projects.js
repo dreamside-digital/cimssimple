@@ -11,7 +11,6 @@ const emptyProject = {
 // Actions
 
 export function createProject(newProject) {
-  const projectId = uuidv4()
   return {
     type: 'CREATE_PROJECT',
     newProject,
@@ -44,7 +43,6 @@ export function createLocalProject() {
       [projectId]: emptyProject,
     }
     const projects = { ...projectState, ...newProject }
-
     localForage
       .setItem('projects', projects)
       .then(val => {

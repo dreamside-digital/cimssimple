@@ -71,7 +71,7 @@ class Step3 extends React.Component {
             <DocketingTable
               id="docketing"
               handleChange={this.generateChangeHandler('docketing')}
-              tableData={this.props.formData['docketing']}
+              tableData={this.props.formData['docketing'] || []}
               tableStructure={docketingTableStructure}
             />
           </InputSection>

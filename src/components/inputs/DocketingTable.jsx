@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { map, orderBy } from 'lodash'
+import { map, find, without } from 'lodash'
 import uuidv4 from 'uuid/v4'
 import Table, {
   TableBody,
@@ -53,26 +53,8 @@ const styles = {
   },
 }
 
-const NewDocket = () => {
-  return (
-    <Paper style={styles.container}>
-      <Table>
-        <TableBody>
-          <DocketForm
-            docket={docket}
-            uid={uid}
-            handleDelete={this.handleDeleteDocket(uid)}
-            handleChange={this.handleChange}
-            classes={this.props.classes}
-          />
-        </TableBody>
-      </Table>
-    </Paper>
-  )
-}
-
 const DocketForm = props => {
-  const { docket, uid } = props;
+  const { docket } = props;
 
   return(
     <TableRow className={props.classes.row}>
@@ -90,7 +72,7 @@ const DocketForm = props => {
                 value={docket.docketType}
                 options={docketTypeOptions}
                 id="docket-type"
-                handleChange={props.handleChange('docketType', uid)}
+                handleChange={props.handleChange('docketType', docket.uid)}
                 style={styles.input}
                 SelectDisplayProps={{
                   style: { whiteSpace: 'pre-wrap' },
@@ -107,7 +89,7 @@ const DocketForm = props => {
               type={'date'}
               label="Date"
               value={docket.date}
-              onChange={props.handleChange('date', uid)}
+              onChange={props.handleChange('date', docket.uid)}
               InputProps={{ className: props.classes.input }}
               className={props.classes.formControl}
               InputLabelProps={{
@@ -120,7 +102,7 @@ const DocketForm = props => {
               type={'number'}
               label="Hours spent"
               value={docket.hours}
-              onChange={props.handleChange('hours', uid)}
+              onChange={props.handleChange('hours', docket.uid)}
               InputProps={{ className: props.classes.input }}
               className={props.classes.formControl}
               InputLabelProps={{
@@ -133,7 +115,7 @@ const DocketForm = props => {
               type={'number'}
               label="Minutes spent"
               value={docket.minutes}
-              onChange={props.handleChange('minutes', uid)}
+              onChange={props.handleChange('minutes', docket.uid)}
               InputProps={{ className: props.classes.input }}
               className={props.classes.formControl}
               InputLabelProps={{
@@ -151,7 +133,7 @@ const DocketForm = props => {
               type={'text'}
               label="Description"
               value={docket.details}
-              onChange={props.handleChange('details', uid)}
+              onChange={props.handleChange('details', docket.uid)}
               InputProps={{ className: props.classes.input }}
               className={props.classes.formControl}
               InputLabelProps={{
@@ -181,20 +163,22 @@ const DocketForm = props => {
 
 
 class DocketingTable extends React.Component {
-
   handleChange = (fieldName, uid) => input => {
     const inputValue = input.target ? input.target.value : input
-    let newData = {...this.props.tableData}
-    newData[uid][fieldName] = inputValue
+    let newTableData = [...this.props.tableData]
+    const docketToUpdate = find(newTableData, docket => docket.uid === uid)
+    const docketIndex = newTableData.indexOf(docketToUpdate)
+    docketToUpdate[fieldName] = inputValue
+    newTableData[docketIndex] = docketToUpdate
 
-    this.props.handleChange(newData)
+    this.props.handleChange(newTableData)
   }
 
   handleDeleteDocket = (uid) => () => {
-    let newData = {...this.props.tableData}
-    delete newData[uid]
+    const docketToDelete = find(this.props.tableData, (docket) => {return docket.uid === uid})
+    const newTableData = without(this.props.tableData, docketToDelete)
 
-    this.props.handleChange(newData)
+    this.props.handleChange(newTableData)
   }
 
   defaultRowData = (row = {}) => {
@@ -206,16 +190,15 @@ class DocketingTable extends React.Component {
 
   createNewRow = () => {
     const uid = uuidv4()
-    const emptyRowData = this.defaultRowData({ allowDelete: true })
-    let newTableData = this.props.tableData ? this.props.tableData : {}
-    newTableData[uid] = emptyRowData
+    const emptyDocket = this.defaultRowData({ allowDelete: true, uid: uid })
+    let newTableData = this.props.tableData ? this.props.tableData : []
+    newTableData.unshift(emptyDocket)
 
     this.props.handleChange(newTableData)
   }
 
   render() {
-    const tableData = this.props.tableData ? this.props.tableData : {}
-    const rows = orderBy(this.props.tableData, 'date')
+    const tableData = this.props.tableData ? this.props.tableData : []
     return (
       <Paper style={styles.container}>
         <Button
@@ -234,13 +217,11 @@ class DocketingTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {map(tableData, (docket, uid) => {
-              console.log(docket)
+            {map(tableData, (docket, index) => {
               return(
-                <DocketForm key={`${this.props.id}-row-${uid}`}
+                <DocketForm key={`${this.props.id}-row-${docket.uid}`}
                   docket={docket}
-                  uid={uid}
-                  handleDelete={this.handleDeleteDocket(uid)}
+                  handleDelete={this.handleDeleteDocket(docket.uid)}
                   handleChange={this.handleChange}
                   classes={this.props.classes}
                 />
