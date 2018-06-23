@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactSelect from 'react-select'
-import { uniq, find } from 'lodash'
 
 import Select from 'material-ui/Select'
 import Checkbox from 'material-ui/Checkbox'
